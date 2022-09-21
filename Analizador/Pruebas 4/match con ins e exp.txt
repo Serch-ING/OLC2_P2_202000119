@@ -1,0 +1,23 @@
+
+fn main () {
+    let mut test =1;
+    match 9 {
+        6 | 7 | 8 =>  test = 100,
+        9 | 10 |11 |12|13|14|15 => test = 9 ,
+        _ => test = 15,
+    }
+    println!("test: {}", test);
+    
+    
+    let mut test2 = match test {
+        10000 => {
+            println!("Usando test = {}", test);
+            12453;
+        }
+        6 | 7 | 8 => 666,
+        9 | 10 |11 |12|13|14|15 => 999 ,
+        _ => 111, 
+    };
+    println!("test2: {}", test2);
+
+}

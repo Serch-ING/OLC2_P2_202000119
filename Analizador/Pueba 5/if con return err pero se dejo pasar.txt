@@ -1,0 +1,20 @@
+fn main () {
+    
+    let x = funcion ();
+    println!("el valor x es {} ",x);
+    
+}
+
+
+fn funcion () -> i64 {
+    let mut counter = 0;
+    let result = if counter == 0 {
+        return 11;
+        66;
+    }else{
+        6;
+    };
+    
+    println!("el valor result es {} ",result);
+    return 99;
+}

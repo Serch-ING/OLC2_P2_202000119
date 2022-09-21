@@ -1,0 +1,21 @@
+
+fn main() {
+     
+     let s =  "sas".to_string();
+     
+
+    // `sqrt()` is now a method instead of a function.
+    println!("{:?}",s);
+
+    println!("{}",s.type_name());
+}
+
+pub trait AnyExt {
+    fn type_name(&self) -> &'static str;
+}
+
+impl<T> AnyExt for T {
+    fn type_name(&self) -> &'static str {
+        std::any::type_name::<T>()
+    }
+}

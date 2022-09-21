@@ -1,0 +1,13 @@
+fn main () {
+    let mut x: i64 = 3;
+    println!("The value of x main antes is: {}", x );
+    foo(x+1,0+1);
+    x=100;
+    println!("The value of x main despues is: {}", x );
+}
+
+fn foo ( x : i64 , y : i64 ) {
+    x = 10;
+    println!("The value of x en foo is: {}",x);
+    println!("The value of y en foo is: {}",y);
+}

@@ -1,0 +1,31 @@
+
+fn main () {
+    let x  = funcion ();
+    println!(" x es {} ",x);
+}
+
+fn funcion () -> i64{
+    let mut counter = 0;
+
+    let result = loop {
+        counter = counter + 1;
+        print!("{}",counter);
+        
+        if counter == 1 { 
+            continue;
+        }
+        
+        print!(" , ");
+        
+        if counter == 10 {
+            break counter * 2;
+            //break;
+            //return counter * 2;
+            //return;
+        }
+    };
+    //println!("el valor es saber ");
+    println!("el valor es {} ",result);
+    return 9999;
+    
+}

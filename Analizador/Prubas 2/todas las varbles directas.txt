@@ -1,0 +1,9 @@
+fn main () {
+    foo(1, 2.1,true,'?',"tipo String".to_string(),"tipo &str");
+}
+
+
+
+fn foo( a: i64, b: f64 , c: bool , d:char, e: String, f:&str) {
+    println!("The value of a: {} b: {} c: {} d: {} e: {} f: {}",a,b,c,d,e,f);
+}

@@ -1,0 +1,8 @@
+fn main () {
+    another_function(99);
+}
+
+fn another_function ( x : i64) {
+    x = 10;
+    println!("The value of x is: {}",x+5);
+}

@@ -1,0 +1,10 @@
+//println!("Hola a todos");
+//println!("Hola a todos");
+//println!(" {} ", "a");
+//println!(" {} {}", "a","a");
+//println!(" nose cunto sera {} + {} = {}", 1.5,2.5,4);
+//println!(1 "hola");
+println!(" {} ", 1+1);
+println!(" {} ", 1-1);
+//println!(" {} ", 1.2+1.1);
+//println!(" {} ", 1.2-1.1);

@@ -1,0 +1,56 @@
+fn main () {
+
+    //CON A 
+    println!("{}","a">"hola");
+    
+    let string4: String = "a".to_string();
+    let string5: String = "hola".to_string();
+    
+    println!("{}",string4>string5);
+    
+    let string6: &str = "a";
+    let string7: &str = "hola";
+    println!("{}",string6>string7);
+    
+    //CON S
+    println!("{}","s">"hola");
+    
+    let string4: String = "s".to_string();
+    let string5: String = "hola".to_string();
+    
+    println!("{}",string4>string5);
+    
+    let string6: &str = "s";
+    let string7: &str = "hola";
+    println!("{}",string6>string7);
+    
+    
+    //IMPRESIONES
+        
+    //let string1: String = "hello".to_owned();
+    let string1: String = "hello".to_string();
+    let string2: &str = "world";
+    //let string1 = "hello".to_owned();
+    //let string1 = "hello".to_string();
+    //let string2 = "world";
+    
+    println!("{}",string1);
+    println!("{}",string2);
+    
+    //println!(string1);
+    //println!(string2);
+    
+    //let string3: &str = string1 + string2;
+    let string3: String = string1 + string2;
+    println!("{}",string3);
+    //println!(string3);
+    
+    //println!("{}",string1);
+    println!("{}",string2);
+    
+    println!("{}","mario");
+    println!("{}","mario".to_string());
+    
+    
+    
+}

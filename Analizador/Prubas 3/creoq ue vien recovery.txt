@@ -1,0 +1,705 @@
+reservadas = {
+    # ACCESO
+    'pub': 'PUBLICO',
+    # TIPOS
+    'i64': 'TIPOINT',
+    'f64': 'TIPOFLOAT',
+    'bool': 'TIPOBOOL',
+    'char': 'TIPOCHAR',
+    'String': 'TIPOSTRING',
+    '&str': 'DIRSTRING',
+    # CASTEO
+    'as': 'AS',
+    # IMPRIMIR
+    'println!': 'PRINTLN',
+    'print!': 'PRINT',
+    # DECLARAR
+    'let': 'LET',
+    'mut': 'MUT',
+    # FUNCIONES
+    'fn': 'FUNCION',
+    'main': 'MAIN',
+    # FUNCIONES NATIVAS
+    'abs': 'ABS',
+    'sqrt': 'SQRT',
+    'to_string()': 'TOSTRING',
+    'to_owned()': 'TOOWNED',
+    'clone()': 'CLONE',
+    # VECTORES
+    'Vec': 'VECTOR',
+    'vec!': 'VECT',
+    # FUNCIONES NATIVAS VECTORES
+    '::new()': 'NEW',
+    'len()': 'LEN',
+    'push': 'PUSH',
+    'remove': 'REMOVE',
+    'contains': 'CONTAINS',
+    'insert': 'INSERT',
+    'capacity()': 'CAPACITY',
+    '::with_capacity': 'WCAPACITY',
+    # SENTENCIAS
+    'if': 'IF',
+    'else': 'ELSE',
+    'match': 'MATCH',
+    # CICLOS
+    'loop': 'LOOP',
+    'while': 'WHILE',
+    'for': 'FOR',
+    'in': 'IN',
+    # SENTENCIAS DE RETORNO
+    'break': 'BREAK',
+    'continue': 'CONTINUE',
+    'return': 'RETURN',
+    # STRUCT
+    'struct': 'STRUCT',
+    # MODULO
+    'mod': 'MOD',
+    # POTENCIAS
+    '::pow': 'POW',
+    '::powf': 'POWF',
+    # BOOLS
+    'true': 'TRUE',
+    'false': 'FALSE'
+}
+
+tokens = [
+             # ** ** ** ** ** OPERACION MATEMATICA ** ** ** ** **
+             'SUMA',
+             'RESTA',
+             'MULTI',
+             'DIVI',
+             'MODULO',
+             # ** ** ** ** ** OPERACION RELACIONAL ** ** ** ** **
+             'MENORIGUAL',
+             'MAYORIGUAL',
+             'IGUALDAD',
+             'DESIGUALDAD',
+             'MENOR',
+             'MAYOR',
+             # ** ** ** ** ** OPERACION LOGICA ** ** ** ** **
+             'OR',
+             'AND',
+             'NOT',
+             # ** ** ** ** ** SIMBOLOS LENGUAJE ** ** ** ** **
+             'LI',
+             'LD',
+             'CI',
+             'CD',
+             'PI',
+             'PD',
+             'PYC',
+             'DP',
+             'COMA',
+             'PUNTO',
+             'IGUAL',
+             'BARRA',
+             'GBAJO',
+             'REFER',
+             # ********** EXPRESIONES REGUALES **********
+             'FLOAT',
+             'ENTERO',
+             'CADENA',
+             'CARACTER',
+             'ID',
+             'ERR'
+         ] + list(reservadas.values())
+
+# Tokens
+# ********** OPERACION MATEMATICA **********
+t_SUMA = r'\+'
+t_RESTA = r'-'
+t_MULTI = r'\*'
+t_DIVI = r'/'
+t_MODULO = r'%'
+# ********** OPERACION RELACIONAL **********
+t_MENORIGUAL = r'<='
+t_MAYORIGUAL = r'>='
+t_IGUALDAD = r'=='
+t_DESIGUALDAD = r'!='
+t_MENOR = r'<'
+t_MAYOR = r'>'
+# ********** OPERACION LOGICA **********
+t_OR = r'\|\|'
+t_AND = r'&&'
+t_NOT = r'!'
+# ********** SIMBOLOS LENGUAJE **********
+t_LI = r'\{'
+t_LD = r'\}'
+t_CI = r'\['
+t_CD = r'\]'
+t_PI = r'\('
+t_PD = r'\)'
+t_PYC = r';'
+t_DP = r':'
+t_COMA = r','
+t_PUNTO = r'\.'
+t_IGUAL = r'='
+t_BARRA = r'\|'
+t_GBAJO = r'_'
+t_REFER = r'&'
+
+
+def t_FLOAT(t):
+    r'\d+\.\d+'
+    try:
+        t.value = float(t.value)
+        print("Se reconcio FLOAT ", t.value)
+    except ValueError:
+        print("Float value too large %d", t.value)
+        t.value = 0
+    return t
+
+
+def t_ENTERO(t):
+    r'\d+'
+    try:
+        t.value = int(t.value)
+        print("Se reconcio ENTERO ", t.value)
+    except ValueError:
+        print("Integer value too large %d", t.value)
+        t.value = 0
+    return t
+
+
+def t_Especiales_0(t):
+    r'::[a-zA-Z_][a-zA-Z_0-9]*\(\)'
+    return revicion_reservadas(t)
+
+
+def t_Especiales_1(t):
+    r'[a-zA-Z][a-zA-Z_0-9]*\(\)'
+    return revicion_reservadas(t)
+
+
+def t_Especiales_2(t):
+    r'::[a-zA-Z][a-zA-Z_0-9]*'
+    return revicion_reservadas(t)
+
+
+def t_Especiales_3(t):
+    r'[a-zA-Z][a-zA-Z_0-9]*!'
+    return revicion_reservadas(t)
+
+
+def t_Especiales_4(t):
+    r'&[a-zA-Z][a-zA-Z_0-9]*'
+    return revicion_reservadas(t)
+
+
+# [a-zA-Z_][a-zA-Z_0-9]*
+def t_ID(t):
+    r'[a-zA-Z][a-zA-Z_0-9]*'
+    t.type = reservadas.get(t.value, 'ID')
+    print("Se reconcio: ", t.type, ": ", t.value)
+    return t
+
+
+def revicion_reservadas(t):
+    t.type = reservadas.get(t.value, 'ERR')
+    print("Se reconcio: ", t.type, ": ", t.value)
+    return t
+
+
+def t_CADENA(t):
+    r'\".*?\"'
+    t.value = t.value[1:-1]  # remuevo las comillas
+    print("Se reconcio cadena: ", t.value)
+    return t
+
+
+def t_CARACTER(t):
+    r'\'.?\''
+    t.value = t.value[1:-1]  # remuevo las comillas
+    print("Se reconcio caracter: ", t.value)
+    return t
+
+
+# Comentario simple // ...
+def t_COMENTARIO(t):
+    r'//.*\n'
+    print("Se reconcio comentario: ", t.value.replace('\n', ''))
+    t.lexer.lineno += 1
+
+
+# Caracteres ignorados
+t_ignore = " \t\r"
+
+
+def t_newline(t):
+    r'\n+'
+    t.lexer.lineno += t.value.count("\n")
+
+
+def t_error(t):
+    print("Error lexico ", t.value[0])
+    t.lexer.skip(1)
+
+
+# Construyendo el analizador léxico
+import ply.lex as lex
+
+lexer = lex.lex()
+# procedencia
+# Asociación de operadores y precedencia
+precedence = (
+    ('left', 'OR'),
+    ('left', 'AND'),
+    ('left', 'MAYORIGUAL', 'MAYOR', 'MENORIGUAL', 'MENOR', 'IGUALDAD', 'DESIGUALDAD'),
+    ('left', 'SUMA', 'RESTA'),
+    ('left', 'MULTI', 'DIVI'),
+    ('left', 'MODULO'),
+    ('right', 'POWF', 'POW'),
+    ('right', 'NOT', 'UMENOS')
+)
+
+
+# Definición de la gramática
+def p_init(t):
+    'init            : instrucciones'
+    t[0] = t[1]
+
+
+def p_instrucciones_lista(t):
+    '''instrucciones    : instrucciones instruccion
+                        | instruccion'''
+
+    if len(t) > 2:
+        t[1].append(t[2])
+        t[0] = t[1]
+
+    else:
+        t[0] = [t[1]]
+
+
+def p_instruccion(t):
+    '''instruccion      : impresiones
+                        | declaracion
+                        | asignacion
+                        | funcion
+                        | llamada PYC
+                        | start_match PYC
+                         '''
+    # start_match
+    t[0] = t[1]
+
+
+'''xxx'''
+from AST.Expresion import Identificador
+from AST.Instruccion import Declaracion, Asignacion, Funcion, Llamada
+from AST.TablaSimbolos.Tipos import tipo
+from AST.Expresion.Nativas import Nativas
+from AST.Expresion.Operaciones import Logica
+from AST.Instruccion.Match import Match, BloqueMatch
+from AST.Expresion import Primitivo
+from AST.Instruccion import Imprimir
+from AST.Expresion.Operaciones import Aritmetica, Relacional
+
+
+def p_start_match(t):
+    '''start_match : MATCH expresiones LI matches LD '''
+    t[0] = Match.Match(t[2], t[4])
+
+
+def p_matches(t):
+    '''matches : matches bloque_match
+                | bloque_match'''
+    if len(t) > 2:
+        t[1].append(t[2])
+        t[0] = t[1]
+
+    else:
+        t[0] = [t[1]]
+
+
+def p_list_match(t):
+    '''bloque_match :  varios_match IGUAL MAYOR contenido_match COMA
+                    | varios_match IGUAL MAYOR LI instrucciones LD '''
+
+    if len(t) == 6:
+        t[0] = BloqueMatch.BloqueMatch(t[1], [t[4]])
+    elif len(t) == 7:
+        t[0] = BloqueMatch.BloqueMatch(t[1], t[5])
+
+
+def p_contenido_match(t):
+    ''' contenido_match : instruccion
+                        | expresiones  '''
+    t[0] = t[1]
+
+
+def p_varios_match(t):
+    '''varios_match : varios_match BARRA expresiones
+                    | expresiones
+                    | GBAJO'''
+
+    if len(t) > 2:
+        t[1].append(t[3])
+        t[0] = t[1]
+
+    else:
+        t[0] = [t[1]]
+
+
+# instrucciones
+def p_llamada(t):
+    '''llamada  : ID PI PD
+                | ID PI lista_expres PD'''
+
+    if len(t) == 4:
+        print("=== llamda tipo 1")
+        t[0] = Llamada.Llamada(t[1], [])
+    else:
+        print("=== llamda tipo 2")
+        t[0] = Llamada.Llamada(t[1], t[3])
+
+
+def p_lista_expres(t):
+    '''lista_expres : lista_expres COMA  expresiones
+                    | expresiones '''
+
+    if len(t) > 2:
+        t[1].append(t[3])
+        t[0] = t[1]
+
+    else:
+        t[0] = [t[1]]
+
+
+def p_funciones(t):
+    '''funcion  : FUNCION MAIN PI PD LI instrucciones LD
+                |  FUNCION ID PI PD tipo_funcion LI instrucciones LD
+                |  FUNCION ID PI parametros PD tipo_funcion LI instrucciones LD'''
+
+    if len(t) == 8:
+        t[0] = Funcion.Funcion(t[2], None, [], t[6])
+    elif len(t) == 9:
+        t[0] = Funcion.Funcion(t[2], t[5], [], t[7])
+    elif len(t) == 10:
+        print("t2 ", t[2])
+        print("t5 ", t[5])
+        print("t4 ", t[4])
+        print("t7 ", t[7])
+        t[0] = Funcion.Funcion(t[2], t[6], t[4], t[8])
+
+
+def p_parametros(t):
+    '''parametros : parametros COMA definiciones
+                  | definiciones'''
+
+    if len(t) > 2:
+        t[1].append(t[3])
+        t[0] = t[1]
+
+    else:
+        t[0] = [t[1]]
+
+
+def p_definiciones(t):
+    """ definiciones : referencias mutable ID VECTOR tipado_vector
+                    | referencias mutable ID tipado """
+
+    if len(t) == 5:    t[0] = Declaracion.Declaracion(Identificador.Identificador(t[3]), None, t[4], t[1])
+
+
+def p_referencias(t):
+    '''referencias : REFER
+                    | '''
+
+    if len(t) > 1:
+        t[0] = True
+
+    else:
+        t[0] = False
+
+
+def p_tipado_vect(t):
+    '''tipado_vector : '''
+
+
+def p_accceso(t):
+    '''acceso   : PUBLICO
+                |'''
+    if len(t) > 1:
+        t[0] = True
+
+    else:
+        t[0] = False
+
+
+def p_tipo_funcion(t):
+    '''tipo_funcion : RESTA MAYOR tipo_datos
+                    | RESTA MAYOR VECTOR MENOR tipo_datos MAYOR
+                    |'''
+
+    if len(t) == 4:
+        t[0] = t[3]
+    elif len(t) == 1:
+        t[0] = None
+
+
+def p_declaracion(t):
+    '''declaracion  : LET mutable ID tipado PYC
+                        | LET mutable ID tipado IGUAL expresiones PYC'''
+
+    if len(t) == 6:
+        t[0] = Declaracion.Declaracion(Identificador.Identificador(t[3]), None, t[4], t[2])
+
+    elif len(t) == 8:
+        print("Llego bien a declarar ", t[6])
+        t[0] = Declaracion.Declaracion(Identificador.Identificador(t[3]), t[6], t[4], t[2])
+
+
+def p_asignacio(t):
+    '''asignacion      : ID IGUAL expresiones PYC '''
+
+    t[0] = Asignacion.Asignacion(t[1], t[3])
+
+
+def p_mutable(t):
+    '''mutable      : MUT
+                        | '''
+    if len(t) > 1:
+        t[0] = True
+
+    else:
+        t[0] = False
+
+
+def p_tipado(t):
+    '''tipado      : DP tipo_datos
+                        | '''
+    if len(t) > 1:
+        t[0] = t[2]
+    else:
+        t[0] = None
+
+
+def p_tipo_datos(t):
+    '''tipo_datos     : TIPOINT
+                      | TIPOFLOAT
+                      | TIPOCHAR
+                      | TIPOSTRING
+                      | DIRSTRING
+                      | TIPOBOOL '''
+
+    if t[1] == "i64":
+        t[0] = tipo.ENTERO
+    elif t[1] == "f64":
+        t[0] = tipo.DECIMAL
+    elif t[1] == "char":
+        t[0] = tipo.CARACTER
+    elif t[1] == "String":
+        t[0] = tipo.STRING
+    elif t[1] == "&str":
+        t[0] = tipo.DIRSTRING
+    elif t[1] == "bool":
+        t[0] = tipo.BOOLEANO
+
+
+def p_instruccion_imprimir(t):
+    '''impresiones     : PRINTLN PI CADENA PD PYC
+                       | PRINT PI CADENA PD PYC
+                       | PRINTLN PI CADENA COMA impresion_valores PD PYC
+                       | PRINT PI CADENA COMA  impresion_valores PD PYC'''
+
+    print("Se va imprimir: ", t[5])
+
+    if len(t) == 6:
+
+        if t[1] == 'println!':
+            t[0] = Imprimir.Imprimir(Primitivo.Primitivo(t[3], 'STRING'), True, [])
+            # print("\nRe reocnocio: println! con el token: ", t[3], "\n")
+        elif t[1] == 'print!':
+            t[0] = Imprimir.Imprimir(Primitivo.Primitivo(t[3], 'STRING'), False, [])
+            # print("\nRe reocnocio: print! con el token: ", t[3], "\n")
+
+    else:
+
+        if t[1] == 'println!':
+            t[0] = Imprimir.Imprimir(t[3], True, t[5])
+            # print("\nRe reocnocio: println! con el token: ", t[5], "\n")
+
+        elif t[1] == 'print!':
+            t[0] = Imprimir.Imprimir(t[3], False, t[5])
+            # print("\nRe reocnocio: print! con el token: ", t[5], "\n")
+
+
+def p_imprimir_lista_valores(t):
+    '''impresion_valores     :  impresion_valores COMA expresiones
+                         | expresiones '''
+
+    if len(t) > 2:
+        t[1].append(t[3])
+        t[0] = t[1]
+
+    else:
+        t[0] = [t[1]]
+
+
+def p_bloque(t):
+    '''bloque : '''
+
+
+def p_expresiones(t):
+    '''expresiones  : funcion_nativa
+                    | expre_logica
+                    | expre_relacional
+                    | expre_aritmetica
+                    | expre_valor'''
+
+    t[0] = t[1]
+
+
+#  | start_match
+#  if len(t) == 2:
+#     if t.slice[1].type == 'start_match':
+#        t[0] = t[1]
+
+def p_funcion_nativa(t):
+    '''funcion_nativa : expresiones PUNTO nativas '''
+
+    if len(t) > 2:
+        t[0] = Nativas.Nativas(t[1], t[3])
+    else:
+        t[0] = t[1]
+
+
+def p_nativas(t):
+    '''nativas      : ABS
+                    | SQRT
+                    | TOSTRING
+                    | TOOWNED
+                    | CLONE'''
+
+    t[0] = t[1]
+
+
+def p_expre_logica(t):
+    ''' expre_logica : expresiones OR expresiones
+                    | expresiones AND expresiones
+                    | NOT  expresiones'''
+    if len(t) == 3:
+        if t.slice[1].type == 'NOT':
+            t[0] = Logica.Logica(t[2], "!", None, True)
+    elif len(t) == 4:
+        if t.slice[2].type == 'OR':
+            t[0] = Logica.Logica(t[1], "||", t[3], False)
+        elif t.slice[2].type == 'AND':
+            t[0] = Logica.Logica(t[1], "&&", t[3], False)
+
+
+def p_expre_relacional(t):
+    '''expre_relacional : expresiones MAYORIGUAL expresiones
+                    | expresiones MAYOR expresiones
+                    | expresiones MENORIGUAL expresiones
+                    | expresiones MENOR expresiones
+                    | expresiones IGUALDAD expresiones
+                    | expresiones DESIGUALDAD expresiones'''
+
+    if len(t) == 4:
+        if t[2] == ">=":
+            t[0] = Relacional.Relacional(t[1], ">=", t[3], False)
+        elif t[2] == ">":
+            t[0] = Relacional.Relacional(t[1], ">", t[3], False)
+        elif t[2] == "<=":
+            t[0] = Relacional.Relacional(t[1], "<=", t[3], False)
+        elif t[2] == "<":
+            t[0] = Relacional.Relacional(t[1], "<", t[3], False)
+        elif t[2] == "==":
+            t[0] = Relacional.Relacional(t[1], "==", t[3], False)
+        elif t[2] == "!=":
+            t[0] = Relacional.Relacional(t[1], "!=", t[3], False)
+
+
+
+def p_expre_aritmetica(t):
+    '''expre_aritmetica : RESTA expresiones %prec UMENOS
+                    | PI expresiones PD
+                    | expresiones SUMA expresiones
+                    | expresiones RESTA expresiones
+                    | expresiones MULTI expresiones
+                    | expresiones DIVI expresiones
+                    | expresiones MODULO expresiones
+                    | POWF PI expresiones COMA expresiones PD
+                    | POW PI expresiones COMA expresiones PD'''
+
+
+    if len(t) == 3:
+        if t[1] == "-":
+            t[0] = Aritmetica.Aritmetica(t[2], "-", 0, True)
+    elif len(t) == 4:
+        if t[2] == "+":
+            t[0] = Aritmetica.Aritmetica(t[1], "+", t[3], False)
+        elif t[2] == "-":
+            t[0] = Aritmetica.Aritmetica(t[1], "-", t[3], False)
+        elif t[2] == "*":
+            t[0] = Aritmetica.Aritmetica(t[1], "*", t[3], False)
+        elif t[2] == "/":
+            t[0] = Aritmetica.Aritmetica(t[1], "/", t[3], False)
+        elif t[2] == "%":
+            t[0] = Aritmetica.Aritmetica(t[1], "%", t[3], False)
+        elif t[1] == "(" and t[3] == ")":
+            t[0] = t[2]
+    elif len(t) == 7:
+        if t[1] == "::pow":
+            t[0] = Aritmetica.Aritmetica(t[3], "^", t[5], False)
+        elif t[1] == "::powf":
+            t[0] = Aritmetica.Aritmetica(t[3], "^f", t[5], False)
+
+
+def p_expre_valor(t):
+    '''expre_valor : datos_cast'''
+    t[0] = t[1]
+
+
+def p_datos_cast(t):
+    ''' datos_cast : datos'''
+    t[0]=t[1]
+
+def p_datos(t):
+    '''datos : ENTERO
+            | FLOAT
+            | CADENA
+            | CARACTER
+            | ID
+            | TRUE
+            | FALSE'''
+
+    if t.slice[1].type == 'ENTERO':
+        t[0] = Primitivo.Primitivo(t[1], 'ENTERO')
+    elif t.slice[1].type == 'FLOAT':
+        t[0] = Primitivo.Primitivo(t[1], 'DECIMAL')
+    elif t.slice[1].type == 'CADENA':
+        t[0] = Primitivo.Primitivo(t[1], 'DIRSTRING')
+    elif t.slice[1].type == 'TRUE':
+        t[0] = Primitivo.Primitivo(True, 'BOOLEANO')
+    elif t.slice[1].type == 'FALSE':
+        t[0] = Primitivo.Primitivo(False, 'BOOLEANO')
+    elif t.slice[1].type == 'CARACTER':
+        t[0] = Primitivo.Primitivo(t[1], 'CARACTER')
+    elif t.slice[1].type == 'ID':
+        t[0] = Identificador.Identificador(t[1])
+    elif t.slice[1].type == 'start_match':
+        t[0] = t[1]
+
+
+def p_error(t):
+    try:
+        print("\n========================= Error sintáctico en '%s'" % t.value, " =========================")
+    except:
+        print("")
+
+    if t:
+        print("Token: ", t, "\n")
+        parser.errok()
+    else:
+        print("Syntax error at EOF")
+
+
+import ply.yacc as yacc
+
+parser = yacc.yacc()
+
+
+def parse(input):
+    return parser.parse(input)

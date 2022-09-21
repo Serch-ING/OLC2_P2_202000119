@@ -1,0 +1,44 @@
+fn main () {
+    let mut x= 3;
+    let mut y= 4;
+    foo(x,&mut y);
+    x = 4 ;
+    println!("The value of y main is: {}",y);
+    println!("The value of x main is: {}",x);
+    
+    let mut v = vec![0, 1];
+    println!("V antes: {:?}",v);
+    push_two(&mut v);
+    println!("V despues 1: {:?}",v);
+    
+    let mut a = vec![0, 1];
+    a.push(2);
+    println!("A antes: {:?}",v);
+    push_two_po(a);
+    println!("A despues: {:?}",v);
+    
+    let mut b = vec![0, 1];
+    push_two_bo(&mut b);
+}
+
+fn push_two_bo(mut b:  &Vec<u8>) {
+    b.push(2);
+    println!("B dentro de funcion: {:?}",b);
+}
+
+fn push_two(v: &mut Vec<u8>) {
+    v.push(2);
+}
+
+fn push_two_po(mut a: Vec<u8>) {
+    a.push(10);
+    println!("A dentro de funcion: {:?}",a);
+}
+
+
+
+fn foo( x: i64, y : &mut i64) {
+    //x = x + y;
+    *y= 99;
+    println!("The value of x foo is: {}",x);
+}

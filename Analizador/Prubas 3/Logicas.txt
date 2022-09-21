@@ -1,0 +1,23 @@
+fn main () {
+    let a:bool = true && false;
+    println!("Valor a: {}",a);
+    
+    let b:bool = true || false;
+    println!("Valor b: {}",b);
+    
+    let c:bool = !b;
+    println!("Valor c: !b {}",c);
+    
+    let d:bool = !a;
+    println!("Valor d: !a {}",d);
+
+    println!("Valor 1 and: {}",true && true);
+    println!("Valor 2 and: {}",false && false);
+    println!("Valor 1 or: {}",true || true);
+    println!("Valor 2 or: {}",false || false);
+    
+    println!("Valor a&&b and: {}",a && b);
+    println!("Valor c&&d and: {}",c && d);
+    println!("Valor a||b: {}",a || b);
+    println!("Valor c||d: {}",c || d);
+}

@@ -1,0 +1,7 @@
+println!(hola1);
+println!(hola2);
+println!(hola_3);
+//println!(::error);
+print!(hola4);
+print!(hola5);
+print!(hola_6);

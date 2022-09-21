@@ -1,0 +1,19 @@
+fn f(n: i64) -> i64 {
+    return n;
+}
+
+fn k(a: &mut [[i64; 3]; 3]) {
+    a[0][2]= 66;
+    println!("print 1 {:?}",a);
+    a[0][2]= 33;
+}
+
+
+fn main (){
+   let x = 99;
+   println!("el valor de x es: {}",f(x));
+   let mut matA: [[i64; 3]; 3] = [[1,0,0],[0,2,0],[0,0,3]];
+   matA[0][2]= 99;
+   k(&mut matA);
+   println!("print 2 {:?}",matA );
+}

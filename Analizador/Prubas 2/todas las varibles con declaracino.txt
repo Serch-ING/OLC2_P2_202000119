@@ -1,0 +1,16 @@
+fn main () {
+    let a: i64 = -2;
+    let b: f64 = -2.2;
+    let c: bool = false;
+    let d: char = '@';
+    let e: String = "tipos String".to_string();
+    let f: &str = "tipos &str";
+
+    foo(a, b,c,d,e,f);
+}
+
+
+
+fn foo( a: i64, b: f64 , c: bool , d:char, e: String, f:&str) {
+    println!("The value of a: {} b: {} c: {} d: {} e: {} f: {}",a,b,c,d,e,f);	
+}

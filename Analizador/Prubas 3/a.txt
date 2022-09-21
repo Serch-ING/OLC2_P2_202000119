@@ -1,0 +1,34 @@
+fn main () {
+
+        
+    let cadena = match 16 {
+        6 | 7 | 8 => "Rango de 6 a 8",
+        9 | 10 |11 |12|13|14|15 => "Rango de 9 a 15",
+
+        _ => "Resto de casos", 
+    };
+
+    println!("cadena: {}", cadena);
+
+    let x = match 15 {
+        6 | 7 | 8 => 10,
+        9 | 10 |11 |12|13|14|15 => 6,
+
+        _ => 40, 
+    };
+
+    println!("x: {}", x);
+
+   let numero = 15;
+   println!("numero: {}", numero );
+    match x{
+
+        1 | 2 | 3 => {
+            let x = 100;
+            println!("Rango de 1 a 3");
+        } 
+        6 | 7 | 8 => println!("Rango de 6 a 8l");,
+        9 | 10 |11 |12|13|14|15 => println!("Rango de 9 a 15");, 
+        _ => println!("Resto de casos");, 
+      };
+}

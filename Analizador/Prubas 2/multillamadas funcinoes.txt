@@ -1,0 +1,33 @@
+
+fn main () {
+    println!("vamos a llamar a la otra funcion");
+    another_function ();
+
+}
+
+fn another_function () {
+
+    println!(" Funciono el llamda desde main");
+    let x = 10;
+    let y = 25;
+
+    let z = x + y;
+
+    println!("Sum of x and y = {} ",z);
+    z = 0;
+	println!("Sum of x and y = {} ",z);
+	 otraotra ();
+}
+
+fn otraotra () {
+
+    println!(" Funciono el llamda desde another_function ");
+    let x = 1;
+    let y = 2;
+
+    let mut  z = x + y;
+
+    println!("Sum of x and y = {} ",z);
+    z = 0;
+	println!("Sum of x and y = {} ",z);
+}

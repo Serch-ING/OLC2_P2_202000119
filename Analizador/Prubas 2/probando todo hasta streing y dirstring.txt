@@ -1,0 +1,46 @@
+fn main () {
+    let a: i64 = -2;
+    let b: f64 = -2.2;
+    let string1: String = "hello".to_string();
+    let string2: &str = "world";
+    let string3 = string1 + string2;
+    println!("The value of cadena 1 {}",string3 );
+    //let z = string3 +string2;
+    let z = string2 + string3 ;
+    println!("The value of cadena 2 {}",z );
+    foo(a, b);
+}
+
+
+
+fn foo( a: i64, b: f64) {
+    println!("The value of  a {}",a);
+    println!("The value of b {}",b);
+    println!("The value of  a pow: {}",a.abs);
+    println!("The value of b pow: {}",b.abs);
+    //println!("The value of  a sqrt: {}",a.abs.sqrt);
+    println!("The value of b sqrt: {}",b.abs.sqrt);
+   // let copia: i64 = a.clone();
+   // let copia = a.clone();
+   // let copia: f64 = b.clone();
+   // let copia = b.clone();
+   
+    //let copia = "hello".to_string().clone();
+    
+    let string1: String = "hello".to_string();
+    let string2: &str = "world";
+    let string3 = string1: + string2;
+    println!("cadenas test {}",string3 );
+
+    let copia = string1.clone();
+    println!("copia  {}",copia);
+    let string4 = copia + string2;
+    println!("cadenas test1 {} ",string4 );
+
+    let z = string3 +string2;
+    println!("cadena reutilizando {}",z );
+
+    let p = string4 +string2;
+    println!("cadena reutilizando 2 {}",p );
+ 	
+}

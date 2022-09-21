@@ -1,0 +1,45 @@
+fn main () {
+    
+    
+    if 3 == 3{
+	    println!("Entro aqui");
+	};
+	
+ 	if 3 != 3{
+	    println!("Entro aqui malo");
+	} else {
+	    println!(" else bueno"); 
+	   
+	};
+	
+	let numero = 3;
+	
+	if numero == 1{
+	    
+	    println!(" = 1 ");
+	    
+	} else if numero == 2{
+	    println!(" = 2");
+	} else if numero == 3{
+	    "ads";
+	    println!(" = 3");
+		let z = 99; 
+	    println!("z: {}",z);
+	}else {
+	    println!(" else");
+	};
+	
+	let valor = if 2 == 1{
+	    
+	    println!(" valor = 1 ");
+	     1;
+	} else if 3 == 2{
+	    println!("valor = 2");
+	    2;
+	}else{
+	    99;
+	};
+	
+	println!("valor final = {} ", valor);
+   
+}

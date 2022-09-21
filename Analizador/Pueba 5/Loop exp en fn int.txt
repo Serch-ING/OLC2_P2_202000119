@@ -1,0 +1,30 @@
+
+fn main () {
+    let x  = funcion ();
+    println!(" x es {} ",x);
+}
+
+fn funcion () -> i64{
+    let mut counter = 0;
+
+    loop {
+        counter = counter + 1;
+        print!("{}",counter);
+        
+        if counter == 1 { 
+            continue;
+        }
+        
+        print!(" , ");
+        
+        if counter == 10 {
+            //break counter * 2;
+            //break;
+            //return counter * 2;
+            //return;
+        }
+    }
+    
+    return 9999;
+    
+}
