@@ -41,17 +41,14 @@ class TablaErrores():
         self.lista.append(error)
 
     def print_errores(self):
-        print("====COMENZANDO LITA ERR =======")
-        for x in self.lista:
-
-            print("no: ",x.no," descripcion: ",x.descripcion," tipo: ",x.tipo," ambito: ",x.ambito," L: ",x.linea," C: ",x.columna," T: ",x.time)
+        #print("====COMENZANDO LITA ERR =======")
+        #for x in self.lista:
+        #    print("no: ",x.no," descripcion: ",x.descripcion," tipo: ",x.tipo," ambito: ",x.ambito," L: ",x.linea," C: ",x.columna," T: ",x.time)
+        pass
 
     def Data(self):
-        print("====COMENZANDO LITA ERR =======")
+        #print("====COMENZANDO LITA ERR =======")
         Reporte = ""
-
-
-
         for x in self.lista:
             Reporte += "<tr>"
             Reporte += "<td>" + str(x.no) + "</td>"

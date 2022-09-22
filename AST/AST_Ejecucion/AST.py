@@ -38,7 +38,7 @@ class AST(Intruccion):
             llamar_main.EjecutarInstruccion(controlador, ts)
 
             print("======Termino=======")
-            #print(controlador.consola)
+            print(controlador.consola)
 
             self.Reporte_Tabla_simbolos(ts)
             self.Reporte_Tabla_Errores()
@@ -53,7 +53,7 @@ class AST(Intruccion):
         Reporte = '<center><h6 class=\"titulos\" ><b>' + "Tabla Simbolos" + '</b></h6>\n'
         Reporte += '<table class="steelBlueCols"><thead><tr>  <th>No.</th> <th>ID</th>  <th>Tipo Simbolo</th> <th>Tipo de dato</th> <th>Ambito</th> <th>Fila</th> <th>Columna</th></thead><tbody>\n'
 
-        print("============== Tabla Simbolos =======================")
+        #print("============== Tabla Simbolos =======================")
         actual = ts
 
 
@@ -63,7 +63,7 @@ class AST(Intruccion):
 
     def reporte_solo(self,actual):
             Reporte = ""
-            print("=========== ", actual.name, " =========== ")
+            #print("=========== ", actual.name, " =========== ")
 
             for x in actual.tabla:
                 self.contador += 1
@@ -112,10 +112,10 @@ class AST(Intruccion):
                 self.anteerior_C = random.randint(1+self.anteerior_C, 10+self.anteerior_C)
                 Reporte += "<td>" + str(self.anteerior_C) + "</td>"
 
-                print(self.contador)
-                print(x)
-                print(TipoSimbolo)
-                print(TipoDato)
+                #print(self.contador)
+                #print(x)
+                #print(TipoSimbolo)
+                #print(TipoDato)
 
                 Reporte += "/<tr>\n"
 
@@ -130,7 +130,7 @@ class AST(Intruccion):
         Reporte = '<center><h6 class=\"titulos\" ><b>' + "Tabla Errores" + '</b></h6>\n'
         Reporte += '<table class="steelBlueCols"><thead><tr>  <th>No.</th> <th>Descripcion</th> <th>Tipo</th>  <th>Ambito</th>  <th>Fila</th> <th>Columna</th> <th>Fecha</th> </thead><tbody>  \n'
 
-        print("============== Tabla Errores =======================")
+        #print("============== Tabla Errores =======================")
 
         Reporte+= E_list.Data()
         self.Exportar_TablaErrores(Reporte)

@@ -29,18 +29,10 @@ def ventanas():
 
             f = io.open("../Analizador/entrada.txt", mode="r", encoding="utf-8")
             entrada = f.read()
-            # instrucciones = g.parse(entrada)
+            instrucciones = g.parse(entrada)
 
             CodeText = CodeTxt.get("1.0", 'end-1c')
-
-            #CodeText = entrada
-            instrucciones = g.parse(CodeText)
-
-
-            #messagebox.showinfo(title="Error", message="Ingrese un valor")
-
-
-
+            #instrucciones = g.parse(CodeText)
 
             ts = TablaDeSimbolos(None,"Main")
             controlador= Controlador()
@@ -49,9 +41,9 @@ def ventanas():
             consola = AST_ej.EjecutarInstruccion(controlador,ts)
             #print(consola)
 
-            ConsoleTxt.configure(state='normal')
-            ConsoleTxt.insert("1.0",consola)
-            ConsoleTxt.configure(state='disabled')
+            #ConsoleTxt.configure(state='normal')
+            #ConsoleTxt.insert("1.0",consola)
+            #ConsoleTxt.configure(state='disabled')
 
 
         notebook = ttk.Notebook(ventana)
