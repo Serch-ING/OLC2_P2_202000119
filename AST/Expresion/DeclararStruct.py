@@ -6,14 +6,12 @@ from AST.Abstracto.Expresion import Expresion
 
 class DeclararStruct(Expresion):
 
-    def ObtenerValor(self, controlador, ts):
+    def Obtener3D(self, controlador, ts):
         pass
 
     def __init__(self,id,declaraciones):
         self.identificador = id
         self.declaraciones = declaraciones
-
-
 
     def GuardarStruct(self, ts):
         print("================== Se guardo struct ================ ", self.identificador)

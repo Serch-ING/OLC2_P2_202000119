@@ -8,7 +8,7 @@ class ArregloData(Expresion):
     def __init__(self,expresiones):
         self.expresiones=expresiones
 
-    def ObtenerValor(self, controlador, ts):
+    def Obtener3D(self, controlador, ts):
         print("=== Llego a arreglo data")
         tipo = t.UNDEFINED
         expresionesCompiladas = []
@@ -16,7 +16,7 @@ class ArregloData(Expresion):
         # COMPILAR EXPRESIONES, OBTENER TAMAÑO DE CADA DIMENSION Y VALIDAR CONGRUENCIA DE TIPOS
         for i in range(0, len(self.expresiones)):
             expresion = self.expresiones[i]
-            valorExpresion = expresion.ObtenerValor(controlador,ts)
+            valorExpresion = expresion.Obtener3D(controlador, ts)
 
             if i == 0:
                 tipo = valorExpresion.tipo

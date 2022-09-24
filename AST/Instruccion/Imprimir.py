@@ -13,7 +13,7 @@ class Imprimir(Intruccion):
         self.tipo = tipo
         self.lista =lista
 
-    def EjecutarInstruccion(self, controlador, ts):
+    def Ejecutar3D(self, controlador, ts):
 
         global valor, tipo
         if len(self.lista) > 0:
@@ -32,12 +32,12 @@ class Imprimir(Intruccion):
                         if i <= len(self.lista)-1:
                             try:
                                 if isinstance(self.lista[i],AccesoArreglo):
-                                    array = self.lista[i].ObtenerValor(controlador,ts)
+                                    array = self.lista[i].Obtener3D(controlador, ts)
 
                                     if isinstance(array, RetornoType):
                                         texto_salida += str(array.valor)
                                 else:
-                                    valor = self.lista[i].ObtenerValor(controlador,ts)
+                                    valor = self.lista[i].Obtener3D(controlador, ts)
 
                                     texto_salida += str(valor.valor)
                             except:
@@ -70,10 +70,10 @@ class Imprimir(Intruccion):
                                     if isinstance(array, InstanciaArreglo) or  isinstance(array, InstanciaVector):
                                         texto_salida += self.ObtenerArrayText(array.valores)
                                     else:
-                                        texto_salida += str(self.lista[i].ObtenerValor(controlador, ts).valor)
+                                        texto_salida += str(self.lista[i].Obtener3D(controlador, ts).valor)
 
                                 elif isinstance(self.lista[i],AccesoArreglo):
-                                    array = self.lista[i].ObtenerValor(controlador,ts)
+                                    array = self.lista[i].Obtener3D(controlador, ts)
 
                                     if isinstance(array, RetornoType):
                                         if isinstance(array.valor,InstanciaVector):
@@ -81,12 +81,12 @@ class Imprimir(Intruccion):
                                         else:
                                             texto_salida += self.ObtenerArrayText(array.valor)
                                 elif isinstance(self.lista[i], AccesoStruct):
-                                    dato = self.lista[i].ObtenerValor(controlador, ts)
+                                    dato = self.lista[i].Obtener3D(controlador, ts)
                                     print(dato)
                                     if isinstance(dato.valor, InstanciaArreglo) or isinstance(dato.valor, InstanciaVector):
                                         texto_salida += self.ObtenerArrayText(dato.valor.valores)
                                     else:
-                                        texto_salida += str(self.lista[i].ObtenerValor(controlador, ts).valor)
+                                        texto_salida += str(self.lista[i].Obtener3D(controlador, ts).valor)
 
                                 #array = self.lista[i].ObtenerValor(controlador,ts)
 
@@ -106,7 +106,7 @@ class Imprimir(Intruccion):
 
             controlador.imprimir(texto_salida, self.tipo)
         else:
-            return_exp: RetornoType = self.expresion.ObtenerValor(controlador, ts)
+            return_exp: RetornoType = self.expresion.Obtener3D(controlador, ts)
 
             valor = return_exp.valor
             tipo = return_exp.tipo

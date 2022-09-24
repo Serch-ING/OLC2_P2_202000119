@@ -9,7 +9,7 @@ class Identificador(Expresion):
         self.id = id
         self.referencia = referencia
 
-    def ObtenerValor(self, controlador, ts):
+    def Obtener3D(self, controlador, ts):
         existe_id: Simbolos = ts.ObtenerSimbolo(self.id)
 
         if existe_id is not None:

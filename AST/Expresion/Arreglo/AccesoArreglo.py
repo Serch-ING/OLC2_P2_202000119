@@ -11,7 +11,7 @@ class AccesoArreglo(Expresion,Intruccion):
         self.listaExpresiones = listaExpresiones
         self.valor = valor
 
-    def EjecutarInstruccion(self, controlador, ts):
+    def Ejecutar3D(self, controlador, ts):
 
         ts.Print_Table()
         if ts.Existe_id(self.idArreglo) is not True:
@@ -25,14 +25,14 @@ class AccesoArreglo(Expresion,Intruccion):
             return RetornoType()
 
         dimensiones = self.compilarDimensiones(controlador, ts)
-        Expression = self.valor.ObtenerValor(controlador, ts)
+        Expression = self.valor.Obtener3D(controlador, ts)
         ValorExpresion = Expression.valor
 
         if arreglo.mut:
             arreglo.SetValor(dimensiones, 0, arreglo.valores, ValorExpresion)
 
 
-    def ObtenerValor(self, controlador,ts:TablaDeSimbolos) -> RetornoType:
+    def Obtener3D(self, controlador, ts:TablaDeSimbolos) -> RetornoType:
         #print("Llego a accesoL ",self.idArreglo, " lista dimensiones: ",self.listaExpresiones)
         #ts.Print_Table()
         #ts.padre.Print_Table()
@@ -49,7 +49,7 @@ class AccesoArreglo(Expresion,Intruccion):
 
             dimensiones = self.compilarDimensiones(controlador, ts)
 
-            valor = arreglo.ObtenerValor(dimensiones, 0, arreglo.valores)
+            valor = arreglo.Obtener3D(dimensiones, 0, arreglo.valores)
             return RetornoType(valor, arreglo.tipo)
 
         else:
@@ -63,7 +63,7 @@ class AccesoArreglo(Expresion,Intruccion):
         listaDimensiones = []
 
         for dim in self.listaExpresiones:
-            dimVal = dim.ObtenerValor(controlador,ts)
+            dimVal = dim.Obtener3D(controlador, ts)
             # operador ternario      hacer_si_true if condicion else hacer_si_false
             if dimVal.tipo != tipo.ENTERO and dimVal.tipo != tipo.USIZE:
                 return

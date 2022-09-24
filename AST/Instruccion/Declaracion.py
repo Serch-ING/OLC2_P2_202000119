@@ -13,20 +13,20 @@ class Declaracion(Intruccion):
         self.mut = mut
         self.referencia = referencia
 
-    def EjecutarInstruccion(self, controlador, ts):
+    def Ejecutar3D(self, controlador, ts):
         print(" ==== Declarar === ",self.expresion)
         if self.expresion is not None:
-            return_exp: RetornoType = self.expresion.ObtenerValor(controlador, ts)
+            return_exp: RetornoType = self.expresion.Obtener3D(controlador, ts)
             try:
                 ValorExpresion = return_exp.valor
                 TipoExpresion = return_exp.tipo
                 if TipoExpresion == tipo.ARRAY:
                     declaracion_arreglo = DeclaracionArreglo(self.mut,self.identificador.id,None, self.expresion)
-                    declaracion_arreglo.EjecutarInstruccion(controlador,ts)
+                    declaracion_arreglo.Ejecutar3D(controlador, ts)
                     return None
                 elif TipoExpresion == tipo.VECTOR:
                     declaracion_vector = DeclaracionVector(self.identificador.id,self.expresion,self.tipo,self.mut)
-                    declaracion_vector.EjecutarInstruccion(controlador,ts)
+                    declaracion_vector.Ejecutar3D(controlador, ts)
                     return None
                 elif TipoExpresion == tipo.STRUCT:
                     ts.Agregar_Simbolo(self.identificador.id, return_exp)

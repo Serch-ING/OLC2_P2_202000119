@@ -12,12 +12,12 @@ class Llamada(Intruccion, Expresion):
         self.identificador = identificador
         self.parametos = parametos
 
-    def EjecutarInstruccion(self, controlador, ts: TablaDeSimbolos):
+    def Ejecutar3D(self, controlador, ts: TablaDeSimbolos):
         print("====Funcion=== como intruccion")
-        self.ObtenerValor(controlador,ts)
+        self.Obtener3D(controlador, ts)
 
 
-    def ObtenerValor(self, controlador, ts: TablaDeSimbolos):
+    def Obtener3D(self, controlador, ts: TablaDeSimbolos):
         print("Se ejecuto llamada de: ", self.identificador, " desde: ", ts.name)
 
         if ts.Existe_id(self.identificador):
@@ -45,7 +45,7 @@ class Llamada(Intruccion, Expresion):
 
             if self.validar_parametros(self.parametos, simbolo_funcion.parametros, controlador, ts, ts_local):
 
-                retorno = simbolo_funcion.EjecutarInstruccion(controlador, ts_local)
+                retorno = simbolo_funcion.Ejecutar3D(controlador, ts_local)
 
                 if retorno is not None:
                     if isinstance(retorno,RetornoType):
@@ -73,7 +73,7 @@ class Llamada(Intruccion, Expresion):
                 aux_exp = parametros_llamada[i]
                 if not aux_referencia:
 
-                    aux_get_data:RetornoType = aux_exp.ObtenerValor(controlador, ts)
+                    aux_get_data:RetornoType = aux_exp.Obtener3D(controlador, ts)
                     aux_exp_valor = aux_get_data.valor
                     aux_exp_tipo = aux_get_data.tipo
 

@@ -38,7 +38,7 @@ def ventanas():
             controlador= Controlador()
             AST_ej = AST(instrucciones)
 
-            consola = AST_ej.EjecutarInstruccion(controlador,ts)
+            consola = AST_ej.Ejecutar3D(controlador, ts)
             #print(consola)
 
             #ConsoleTxt.configure(state='normal')

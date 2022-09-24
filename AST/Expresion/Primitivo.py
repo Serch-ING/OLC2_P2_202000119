@@ -7,7 +7,7 @@ class Primitivo(Expresion):
         self.valor = valor
         self.tipo = Tipos(tipo)
 
-    def ObtenerValor(self, controlador, ts) -> RetornoType:
+    def Obtener3D(self, controlador, ts) -> RetornoType:
         return RetornoType(self.valor,self.tipo.tipo)
 
 

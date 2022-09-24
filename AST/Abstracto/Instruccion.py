@@ -3,5 +3,5 @@ from abc import ABC,abstractmethod
 class Intruccion:
 
     @abstractmethod
-    def EjecutarInstruccion(self,controlador,ts):
+    def Ejecutar3D(self, controlador, ts):
         pass

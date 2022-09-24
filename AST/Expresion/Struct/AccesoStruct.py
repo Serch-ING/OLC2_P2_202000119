@@ -17,7 +17,7 @@ class AccesoStruct(Intruccion,Expresion):
         self.controlador = None
 
 
-    def EjecutarInstruccion(self, controlador, ts):
+    def Ejecutar3D(self, controlador, ts):
         print("====== Instruccion Struct ======")
         print(self.identificador)
         print(self.expresiones)
@@ -25,7 +25,7 @@ class AccesoStruct(Intruccion,Expresion):
 
 
         if isinstance(self.identificador, AccesoArreglo):
-            struck_ccr = self.identificador.ObtenerValor(controlador, ts)
+            struck_ccr = self.identificador.Obtener3D(controlador, ts)
             struck_dic = struck_ccr.valor.diccionario
         else:
             struck_ccr = ts.ObtenerSimbolo(self.identificador.id)
@@ -40,14 +40,14 @@ class AccesoStruct(Intruccion,Expresion):
                 if valor_acc is not  None:
                     if not hasattr(self.exp,'valor'):
                         if isinstance( self.exp,AccesoStruct):
-                            valor = self.exp.ObtenerValor(controlador,ts)
+                            valor = self.exp.Obtener3D(controlador, ts)
                             struck_dic[id].valor = valor.valor
                             return
 
 
                         else:
 
-                            valor = self.exp.ObtenerValor(controlador, ts)
+                            valor = self.exp.Obtener3D(controlador, ts)
                             struck_dic[id].valor = valor.valor
                             return None
                 print(Fore.BLUE + Style.BRIGHT + "ERROR Inst 2" + Style.RESET_ALL)
@@ -63,7 +63,7 @@ class AccesoStruct(Intruccion,Expresion):
             print(Fore.BLUE + Style.BRIGHT + "ERROR Inst" + Style.RESET_ALL)
 
 
-    def ObtenerValor(self, controlador, ts):
+    def Obtener3D(self, controlador, ts):
         print("====== Expresion Struct ======")
         print(self.identificador)
         print(self.expresiones)
@@ -76,7 +76,7 @@ class AccesoStruct(Intruccion,Expresion):
     def fn_obtner_valor(self,identificador,expresiones):
 
         if isinstance(identificador,AccesoArreglo):
-            struck_ccr = identificador.ObtenerValor(self.controlador,self.ts)
+            struck_ccr = identificador.Obtener3D(self.controlador, self.ts)
             print(struck_ccr)
             struck_dic = struck_ccr.valor.diccionario
         else:

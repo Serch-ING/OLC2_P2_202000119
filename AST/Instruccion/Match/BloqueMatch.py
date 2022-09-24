@@ -10,26 +10,26 @@ class BloqueMatch(Intruccion,Expresion):
         self.condicion=condicion
         self.ts_local = None
 
-    def EjecutarInstruccion(self, controlador, ts):
+    def Ejecutar3D(self, controlador, ts):
         #print("Se ejecuto instucccion con: ", ("ts","tslocal")[self.condicion])
         self.ts_local = TablaDeSimbolos(ts, "Matc" + str(id(self.matches)))
         retorno = None
 
         for intruccion in self.instrucciones:
             try:
-                retorno = intruccion.EjecutarInstruccion(controlador, (ts, self.ts_local)[self.condicion])
+                retorno = intruccion.Ejecutar3D(controlador, (ts, self.ts_local)[self.condicion])
             except:
                 pass
         return retorno
 
-    def ObtenerValor(self, controlador, ts):
+    def Obtener3D(self, controlador, ts):
         #print("Se ejecuto expresion con: ", ("ts", "tslocal")[self.condicion])
         self.ts_local = TablaDeSimbolos(ts, "Matc" + str(id(self.matches)))
         retorno = None
 
         for intruccion in self.instrucciones:
             try:
-                retorno = intruccion.ObtenerValor(controlador, (ts, self.ts_local)[self.condicion])
+                retorno = intruccion.Obtener3D(controlador, (ts, self.ts_local)[self.condicion])
             except:
-                intruccion.EjecutarInstruccion(controlador, (ts, self.ts_local)[self.condicion])
+                intruccion.Ejecutar3D(controlador, (ts, self.ts_local)[self.condicion])
         return retorno

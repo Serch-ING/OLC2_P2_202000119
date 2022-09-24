@@ -9,14 +9,14 @@ class Loop(Intruccion,Expresion):
     def __init__(self, lista_instrucciones):
         self.lista_instrucciones = lista_instrucciones
 
-    def ObtenerValor(self, controlador, ts):
+    def Obtener3D(self, controlador, ts):
         print("Llego a loop")
         try:
             while True:
                 ts_local = TablaDeSimbolos(ts, "Loop" + str(id(self)))
 
                 for instruccion in self.lista_instrucciones:
-                    retorno = instruccion.EjecutarInstruccion(controlador, ts_local)
+                    retorno = instruccion.Ejecutar3D(controlador, ts_local)
 
                     if retorno is not None:
                         if isinstance(retorno, RetornoType):
@@ -37,7 +37,7 @@ class Loop(Intruccion,Expresion):
             print("Error en el Loop")
 
 
-    def EjecutarInstruccion(self, controlador, ts):
+    def Ejecutar3D(self, controlador, ts):
         #print("Loop ins")
         #print("Llego a loop")
         #try:
@@ -45,7 +45,7 @@ class Loop(Intruccion,Expresion):
                 ts_local = TablaDeSimbolos(ts, "Loop" + str(id(self)))
 
                 for instruccion in self.lista_instrucciones:
-                    retorno = instruccion.EjecutarInstruccion(controlador, ts_local)
+                    retorno = instruccion.Ejecutar3D(controlador, ts_local)
 
                     if retorno is not None:
                         if isinstance(retorno, RetornoType):

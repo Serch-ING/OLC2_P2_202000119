@@ -18,7 +18,7 @@ class AST(Intruccion):
         self.anterior_L = 0
         self.anteerior_C =0
 
-    def EjecutarInstruccion(self, controlador, ts):
+    def Ejecutar3D(self, controlador, ts):
         #print("Iniciando ejecucion de instrucciones")
             print("=== Iniciando ejecucion de instrucciones ==")
 
@@ -35,7 +35,7 @@ class AST(Intruccion):
                     structt.GuardarStruct(ts)
 
             llamar_main = Llamada("main",[])
-            llamar_main.EjecutarInstruccion(controlador, ts)
+            llamar_main.Ejecutar3D(controlador, ts)
 
             print("======Termino=======")
             print(controlador.consola)

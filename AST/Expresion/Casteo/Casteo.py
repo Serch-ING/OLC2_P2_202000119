@@ -8,8 +8,8 @@ class Casteo(Expresion):
         self.expresion = expresion
         self.tipo_destino = tipo_destino
 
-    def ObtenerValor(self, controlador, ts):
-        return_exp1: RetornoType = self.expresion.ObtenerValor(controlador, ts)
+    def Obtener3D(self, controlador, ts):
+        return_exp1: RetornoType = self.expresion.Obtener3D(controlador, ts)
         valor_exp1 = return_exp1.valor
         tipo_exp1 = return_exp1.tipo
 

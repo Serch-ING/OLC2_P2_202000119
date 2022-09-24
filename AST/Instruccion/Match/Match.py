@@ -6,8 +6,8 @@ class Match(Intruccion,Expresion):
         self.expresion = expresion
         self.matches = matches
 
-    def ObtenerValor(self, controlador, ts):
-        return_exp: RetornoType = self.expresion.ObtenerValor(controlador, ts)
+    def Obtener3D(self, controlador, ts):
+        return_exp: RetornoType = self.expresion.Obtener3D(controlador, ts)
         valor_Exp = return_exp.valor
         tipo_Exp = return_exp.tipo
 
@@ -20,16 +20,16 @@ class Match(Intruccion,Expresion):
 
             for validation in match.matches:
                 if validation != '_':
-                    return_validacion: RetornoType = validation.ObtenerValor(controlador, ts)
+                    return_validacion: RetornoType = validation.Obtener3D(controlador, ts)
                     valor_v = return_validacion.valor
                     tipo_v = return_validacion.tipo
                     if valor_Exp == valor_v and tipo_Exp == tipo_v:
-                        return match.ObtenerValor(controlador, ts)
+                        return match.Obtener3D(controlador, ts)
                 else:
-                    return match.ObtenerValor(controlador, ts)
+                    return match.Obtener3D(controlador, ts)
 
-    def EjecutarInstruccion(self, controlador, ts):
-        return_exp: RetornoType = self.expresion.ObtenerValor(controlador, ts)
+    def Ejecutar3D(self, controlador, ts):
+        return_exp: RetornoType = self.expresion.Obtener3D(controlador, ts)
         valor_Exp = return_exp.valor
         tipo_Exp = return_exp.tipo
 
@@ -42,13 +42,13 @@ class Match(Intruccion,Expresion):
 
             for validation in match.matches:
                 if validation != '_':
-                    return_validacion: RetornoType = validation.ObtenerValor(controlador, ts)
+                    return_validacion: RetornoType = validation.Obtener3D(controlador, ts)
                     valor_v = return_validacion.valor
                     tipo_v = return_validacion.tipo
                     if valor_Exp == valor_v and tipo_Exp == tipo_v:
-                        return match.EjecutarInstruccion(controlador, ts)
+                        return match.Ejecutar3D(controlador, ts)
                 else:
-                    return match.EjecutarInstruccion(controlador, ts)
+                    return match.Ejecutar3D(controlador, ts)
 
 
 

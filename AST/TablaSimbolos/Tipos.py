@@ -25,6 +25,10 @@ class RetornoType():
         self.valor = valor
         self.final = final
 
+        self.codigo = ""
+        self.etiqueta = ""
+        self.temporal = ""
+
 class Tipos():
     def __init__(self, nombre):
         self.nombre = nombre

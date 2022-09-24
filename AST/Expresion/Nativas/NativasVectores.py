@@ -9,8 +9,8 @@ import copy
 
 class NativasVectores(Expresion,Intruccion):
 
-    def EjecutarInstruccion(self, controlador, ts):
-        self.ObtenerValor(controlador,ts)
+    def Ejecutar3D(self, controlador, ts):
+        self.Obtener3D(controlador, ts)
 
     def __init__(self, expresion1, funcion, expresion2 = None):
         self.exp1 = expresion1
@@ -18,7 +18,7 @@ class NativasVectores(Expresion,Intruccion):
         self.funcion = funcion
         self.expresion = None
 
-    def ObtenerValor(self, controlador, ts):
+    def Obtener3D(self, controlador, ts):
         if self.exp1 is not None:
             return_exp = ts.ObtenerSimbolo(self.expresion.id)
             valor_expresion = return_exp.valores
@@ -29,7 +29,7 @@ class NativasVectores(Expresion,Intruccion):
             print("=== exp tipo py === ", type(valor_expresion))
 
             if self.funcion == "remove":
-                exp1 = self.exp1.ObtenerValor(controlador, ts)
+                exp1 = self.exp1.Obtener3D(controlador, ts)
                 valor_exp1 = exp1.valor
                 valor_tipo = exp1.tipo
                 if tipo_expresion == valor_tipo:
@@ -39,7 +39,7 @@ class NativasVectores(Expresion,Intruccion):
 
             elif self.funcion == "push":
 
-                exp1 =  self.exp1.ObtenerValor(controlador,ts)
+                exp1 =  self.exp1.Obtener3D(controlador, ts)
                 valor_exp1 = exp1.valor
                 valor_tipo = exp1.tipo
                 bandera = False
@@ -64,11 +64,11 @@ class NativasVectores(Expresion,Intruccion):
                 return RetornoType(False, tipo.BOOLEANO)
 
             elif self.funcion == "insert":
-                exp1 = self.exp1.ObtenerValor(controlador, ts)
+                exp1 = self.exp1.Obtener3D(controlador, ts)
                 valor_exp1 = exp1.valor
                 valor_tipo1 = exp1.tipo
 
-                exp2 = self.exp2.ObtenerValor(controlador, ts)
+                exp2 = self.exp2.Obtener3D(controlador, ts)
                 valor_exp2 = exp2.valor
                 valor_tipo2 = exp2.tipo
 

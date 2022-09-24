@@ -9,7 +9,7 @@ class VectorData(Expresion):
         self.expresiones=expresiones
         self.exp2 = exp2
 
-    def ObtenerValor(self, controlador, ts):
+    def Obtener3D(self, controlador, ts):
         print("=== Llego a vector data")
         if self.exp2 is None:
             tipo = t.UNDEFINED
@@ -18,7 +18,7 @@ class VectorData(Expresion):
             # COMPILAR EXPRESIONES, OBTENER TAMAÑO DE CADA DIMENSION Y VALIDAR CONGRUENCIA DE TIPOS
             for i in range(0, len(self.expresiones)):
                 expresion = self.expresiones[i]
-                valorExpresion = expresion.ObtenerValor(controlador,ts)
+                valorExpresion = expresion.Obtener3D(controlador, ts)
     
                 if i == 0:
                     tipo = valorExpresion.tipo
@@ -63,6 +63,6 @@ class VectorData(Expresion):
                 valor.append(self.expresiones)
 
             vectorData = VectorData(valor)
-            retunr_var = vectorData.ObtenerValor(controlador,ts)
+            retunr_var = vectorData.Obtener3D(controlador, ts)
             return retunr_var
 

@@ -12,9 +12,9 @@ class Ifs(Intruccion,Expresion):
         self.bloque_else = bloque_else
         self.bloques_elif = bloques_elif
 
-    def EjecutarInstruccion(self, controlador, ts):
+    def Ejecutar3D(self, controlador, ts):
         print("If como  instruccion")
-        return_exp: RetornoType = self.condicion.ObtenerValor(controlador, ts)
+        return_exp: RetornoType = self.condicion.Obtener3D(controlador, ts)
         valor_Exp = return_exp.valor
         tipo_Exp = return_exp.tipo
 
@@ -30,7 +30,7 @@ class Ifs(Intruccion,Expresion):
                 if self.bloques_elif is not None:
 
                     for list_if in self.bloques_elif:
-                        return_if: RetornoType = list_if.condicion.ObtenerValor(controlador, ts)
+                        return_if: RetornoType = list_if.condicion.Obtener3D(controlador, ts)
                         valor_if = return_if.valor
                         tipo_if = return_if.tipo
 
@@ -50,7 +50,7 @@ class Ifs(Intruccion,Expresion):
         retorno = None
         for instruccion in lista:
             #try:
-                retorno = instruccion.EjecutarInstruccion(controlador, ts)
+                retorno = instruccion.Ejecutar3D(controlador, ts)
 
                 if retorno is not None:
                     if isinstance(retorno,RetornoType):
@@ -59,9 +59,9 @@ class Ifs(Intruccion,Expresion):
             #    print("Erro en if")
 
 
-    def ObtenerValor(self, controlador, ts):
+    def Obtener3D(self, controlador, ts):
         print("If como  expresion")
-        return_exp: RetornoType = self.condicion.ObtenerValor(controlador, ts)
+        return_exp: RetornoType = self.condicion.Obtener3D(controlador, ts)
         valor_Exp = return_exp.valor
         tipo_Exp = return_exp.tipo
 
@@ -77,7 +77,7 @@ class Ifs(Intruccion,Expresion):
                 if self.bloques_elif is not None:
 
                     for list_if in self.bloques_elif:
-                        return_if: RetornoType = list_if.condicion.ObtenerValor(controlador, ts)
+                        return_if: RetornoType = list_if.condicion.Obtener3D(controlador, ts)
                         valor_if = return_if.valor
                         tipo_if = return_if.tipo
 
@@ -93,9 +93,9 @@ class Ifs(Intruccion,Expresion):
         retorno = None
         for instruccion in lista:
             try:
-                retorno:RetornoType = instruccion.ObtenerValor(controlador, ts)
+                retorno:RetornoType = instruccion.Obtener3D(controlador, ts)
             except:
-                retorno = instruccion.EjecutarInstruccion(controlador, ts)
+                retorno = instruccion.Ejecutar3D(controlador, ts)
                 if retorno is not None:
                     if isinstance(retorno,RetornoType):
                         return retorno

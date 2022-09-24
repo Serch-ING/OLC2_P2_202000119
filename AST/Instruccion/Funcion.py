@@ -12,12 +12,12 @@ class Funcion(Intruccion):
         self.parametros = parametros
         self.instrucciones = instrucciones
 
-    def EjecutarInstruccion(self, controlador, ts):
+    def Ejecutar3D(self, controlador, ts):
         print("Intrucciones de : ", self.identificador)
 
         for instruccion in self.instrucciones:
 
-            retorno = instruccion.EjecutarInstruccion(controlador, ts)
+            retorno = instruccion.Ejecutar3D(controlador, ts)
 
             if retorno is not None and isinstance(retorno, RetornoType):
                 if retorno.final == tipo.BREAK:

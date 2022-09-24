@@ -5,7 +5,7 @@ from AST.TablaSimbolos.Tipos import RetornoType,tipo
 class Continue(Intruccion):
 
 
-    def EjecutarInstruccion(self, controlador, ts):
+    def Ejecutar3D(self, controlador, ts):
         print(" Se encontro con un continue: ")
 
         valor_Exp = RetornoType()

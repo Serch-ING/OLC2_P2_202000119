@@ -9,7 +9,7 @@ class ArregloInstancia(Expresion):
         self.tipo = tipo
         self.dimensiones = dimensiones
 
-    def ObtenerValor(self, controlador,ts) -> RetornoType:
+    def Obtener3D(self, controlador, ts) -> RetornoType:
 
         dimensionesCompiladas:[] = self.obtenerDimensiones(ts)
         dimensionesInt = []

@@ -8,13 +8,13 @@ class Repeticiones(Expresion):
         self.numero=numero
         self.tipo =tipo
 
-    def ObtenerValor(self, controlador, ts):
+    def Obtener3D(self, controlador, ts):
         if not self.tipo:
-            valor: RetornoType = self.valor.ObtenerValor(controlador, ts)
+            valor: RetornoType = self.valor.Obtener3D(controlador, ts)
             ValorExpresion = valor.valor
             TipoExpresion = valor.tipo
 
-            numero: RetornoType = self.numero.ObtenerValor(controlador, ts)
+            numero: RetornoType = self.numero.Obtener3D(controlador, ts)
             ValorEnumero = numero.valor
             Tiponumero = numero.tipo
 

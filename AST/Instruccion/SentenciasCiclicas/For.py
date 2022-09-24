@@ -9,12 +9,12 @@ class For(Intruccion):
         self.elementos = elementos
         self.lista_instrucciones = lista_instrucciones
 
-    def EjecutarInstruccion(self, controlador, ts):
+    def Ejecutar3D(self, controlador, ts):
         print("Con iteracion: ",self.ID_Iterable)
         tipo_for = self.elementos[0]
 
         if tipo_for == 1:
-                array = self.elementos[1].ObtenerValor(controlador,ts)
+                array = self.elementos[1].Obtener3D(controlador, ts)
                 if not isinstance(array.valor,InstanciaArreglo):
                     array = ts.ObtenerSimbolo(self.elementos[1].id)
                     valores = array.valores
@@ -30,7 +30,7 @@ class For(Intruccion):
                     ts_local.Agregar_Simbolo(self.ID_Iterable, newSimbolo)
 
                     for instruccion in self.lista_instrucciones:
-                        retorno = instruccion.EjecutarInstruccion(controlador, ts_local)
+                        retorno = instruccion.Ejecutar3D(controlador, ts_local)
 
                         if retorno is not None:
                             if isinstance(retorno, RetornoType):
@@ -50,8 +50,8 @@ class For(Intruccion):
 
 
         elif tipo_for == 2:
-            parametro1 = self.elementos[1].ObtenerValor(controlador,ts)
-            parametro2 = self.elementos[2].ObtenerValor(controlador,ts)
+            parametro1 = self.elementos[1].Obtener3D(controlador, ts)
+            parametro2 = self.elementos[2].Obtener3D(controlador, ts)
             parametro1_valor = parametro1.valor
             parametro2_valor = parametro2.valor
             for i in range(parametro1_valor,parametro2_valor):
@@ -62,7 +62,7 @@ class For(Intruccion):
                 ts_local.Agregar_Simbolo(self.ID_Iterable,newSimbolo)
 
                 for instruccion in self.lista_instrucciones:
-                    retorno = instruccion.EjecutarInstruccion(controlador, ts_local)
+                    retorno = instruccion.Ejecutar3D(controlador, ts_local)
 
                     if retorno is not None:
                         if isinstance(retorno, RetornoType):

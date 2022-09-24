@@ -7,10 +7,10 @@ class Asignacion(Intruccion):
         self.valor = valor
 
 
-    def EjecutarInstruccion(self, controlador, ts):
+    def Ejecutar3D(self, controlador, ts):
         if(ts.Existe_id(self.identificador)):
 
-            Expression: RetornoType = self.valor.ObtenerValor(controlador, ts)
+            Expression: RetornoType = self.valor.Obtener3D(controlador, ts)
             ValorExpresion = Expression.valor
             TipoExpresion = Expression.tipo
 

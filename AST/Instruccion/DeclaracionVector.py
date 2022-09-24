@@ -19,11 +19,11 @@ class DeclaracionVector(Intruccion):
         self.referencia = referencia
 
 
-    def EjecutarInstruccion(self, controlador, ts):
+    def Ejecutar3D(self, controlador, ts):
         print(Fore.BLUE + Style.BRIGHT + "Llegpo a declaracion arreglo" + Style.RESET_ALL)
         print("Llego bien a declarar vector jdsjdasfjkdfsa")
         if  not isinstance(self.expresion,list):
-            Exp_arreglo: RetornoType = self.expresion.ObtenerValor(controlador, ts)
+            Exp_arreglo: RetornoType = self.expresion.Obtener3D(controlador, ts)
             objetoVector = Exp_arreglo.valor
 
             if self.tipo != None:
@@ -53,7 +53,7 @@ class DeclaracionVector(Intruccion):
             else:
                 print("Llego solo con decalracion capacity")
 
-                self.capacidad= self.expresion.pop(0).ObtenerValor(controlador, ts).valor
+                self.capacidad= self.expresion.pop(0).Obtener3D(controlador, ts).valor
 
                 new_vector = InstanciaVector(self.tipo, 1, [])
                 new_vector.withcapacity = self.capacidad

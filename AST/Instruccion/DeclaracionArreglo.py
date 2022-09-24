@@ -12,9 +12,9 @@ class DeclaracionArreglo(Intruccion):
         self.expresion = expresion
         self.tipo = None
 
-    def EjecutarInstruccion(self, controlador, ts):
+    def Ejecutar3D(self, controlador, ts):
         print(Fore.BLUE + Style.BRIGHT + "Llegpo a declaracion arreglo" + Style.RESET_ALL)
-        Exp_arreglo: RetornoType = self.expresion.ObtenerValor(controlador,ts)
+        Exp_arreglo: RetornoType = self.expresion.Obtener3D(controlador, ts)
 
         if self.dimensiones is not None:
             self.tipo = self.dimensiones.pop(0)

@@ -7,15 +7,15 @@ class Logica(Operacion, Expresion):
     def __init__(self, exp1, signo, exp2, expU=False):
         super().__init__(exp1, signo, exp2, expU)
 
-    def ObtenerValor(self, controlador, ts):
+    def Obtener3D(self, controlador, ts):
 
-        return_exp1:RetornoType = self.exp1.ObtenerValor(controlador, ts)
+        return_exp1:RetornoType = self.exp1.Obtener3D(controlador, ts)
         valor_exp1 = return_exp1.valor
         tipo_exp1 = return_exp1.tipo
 
         if not self.expU:
 
-            return_exp2: RetornoType = self.exp2.ObtenerValor(controlador, ts)
+            return_exp2: RetornoType = self.exp2.Obtener3D(controlador, ts)
             valor_exp2 = return_exp2.valor
             tipo_exp2 = return_exp2.tipo
 

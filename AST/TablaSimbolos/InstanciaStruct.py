@@ -13,7 +13,7 @@ class InstanciaStruct(Expresion):
         self.asignaciones = asignaciones
         self.diccionario = 0
 
-    def ObtenerValor(self, controlador, ts):
+    def Obtener3D(self, controlador, ts):
         struct = ts.ObtenerSimbolo(self.identificador)
         declaraciones  = struct.valor.declaraciones
         diccionario = {}
@@ -27,7 +27,7 @@ class InstanciaStruct(Expresion):
 
             for y in self.asignaciones:
                 name = y.identificador
-                data = y.expresion.ObtenerValor(controlador,ts)
+                data = y.expresion.Obtener3D(controlador, ts)
                 agregar = data
                 if isinstance(y.expresion, Identificador):
                     data = ts.ObtenerSimbolo(y.expresion.id)

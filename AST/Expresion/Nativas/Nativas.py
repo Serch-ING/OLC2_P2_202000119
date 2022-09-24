@@ -12,9 +12,9 @@ class Nativas(Expresion):
         self.expresion = expresion
         self.funcion = funcion
 
-    def ObtenerValor(self, controlador, ts):
+    def Obtener3D(self, controlador, ts):
 
-        return_exp1: RetornoType = self.expresion.ObtenerValor(controlador, ts)
+        return_exp1: RetornoType = self.expresion.Obtener3D(controlador, ts)
         valor_exp1 = return_exp1.valor
         tipo_exp1 = return_exp1.tipo
         print("=== exp === ", self.expresion)
@@ -42,7 +42,7 @@ class Nativas(Expresion):
 
         elif self.funcion == "len()":
             if isinstance(self.expresion,AccesoArreglo):
-                return_exp1: RetornoType = self.expresion.ObtenerValor(controlador,ts)
+                return_exp1: RetornoType = self.expresion.Obtener3D(controlador, ts)
                 if isinstance(return_exp1,RetornoType):
                     return RetornoType(len(return_exp1.valor), tipo.ENTERO)
                 print(return_exp1)
