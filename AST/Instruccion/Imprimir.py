@@ -6,6 +6,8 @@ from AST.TablaSimbolos.InstanciaVector import InstanciaVector
 from AST.Expresion.Identificador import Identificador
 from AST.Expresion.Arreglo.AccesoArreglo import AccesoArreglo
 from AST.Expresion.Struct.AccesoStruct import AccesoStruct
+from AST.AST_Ejecucion.AST import Generador3D
+
 class Imprimir(Intruccion):
 
     def __init__(self,  expresion, tipo, lista):
@@ -14,110 +16,36 @@ class Imprimir(Intruccion):
         self.lista =lista
 
     def Ejecutar3D(self, controlador, ts):
+        global Generador3D
 
-        global valor, tipo
-        if len(self.lista) > 0:
-            texto_salida = ""
-
-            self.expresion = self.expresion.replace('\\n', '\n')
-            print( self.expresion )
-            if  self.expresion.count("{}") > 0:
-                formato_nomal = self.expresion.split("{}")
-                contador_nomal = self.expresion.count("{}")
-
-                if contador_nomal == len(self.lista):
-
-                    for i in range (0,len(formato_nomal)):
-                        texto_salida += str(formato_nomal[i])
-                        if i <= len(self.lista)-1:
-                            try:
-                                if isinstance(self.lista[i],AccesoArreglo):
-                                    array = self.lista[i].Obtener3D(controlador, ts)
-
-                                    if isinstance(array, RetornoType):
-                                        texto_salida += str(array.valor)
-                                else:
-                                    valor = self.lista[i].Obtener3D(controlador, ts)
-
-                                    texto_salida += str(valor.valor)
-                            except:
-                                print("Fallo en: ",self.lista[i])
-
-                    print("Print final: ", texto_salida)
-                            #print("Obtener tipo: ", self.lista[i].ObtenerTipo(controlador, ts))
-
-                else:
-                    # Error
-                    pass
+        codigo = ""
+        valorexp = self.expresion.Obtener3D(controlador,ts)
+        codigo += valorexp.codigo
 
 
-            if self.expresion.count("{:?}") > 0:
-                print("Llego a impresion")
-                ts.Print_Table()
-                formato_nomal = self.expresion.split("{:?}")
-                contador_nomal = self.expresion.count("{:?}")
 
-                if contador_nomal == len(self.lista):
+        if valorexp.tipo.tipo == t.ENTERO:
+            codigo += f'\tprintf(\"%d\",{valorexp.temporal}); \n'
+        elif valorexp.tipo.tipo == t.DECIMAL:
+            codigo += f'\tprintf(\"%f\",{valorexp.temporal}); \n'
+        elif valorexp.tipo.tipo == t.STRING or valorexp.tipo.tipo == t.DIRSTRING:
+            temp = Generador3D.obtenerTemporal()
+            caracter = Generador3D.obtenerTemporal()
+            codigo += f'\t{temp}  = {valorexp.temporal};\n'
+            etq1 = Generador3D.obtenerEtiqueta()
+            etq2 = Generador3D.obtenerEtiqueta()
 
-                    for i in range (0,len(formato_nomal)):
-                        texto_salida += str(formato_nomal[i])
-                        if i <= len(self.lista)-1:
-                            try:
-
-                                if isinstance(self.lista[i],Identificador):
-                                    array = ts.ObtenerSimbolo(self.lista[i].id)
-
-                                    if isinstance(array, InstanciaArreglo) or  isinstance(array, InstanciaVector):
-                                        texto_salida += self.ObtenerArrayText(array.valores)
-                                    else:
-                                        texto_salida += str(self.lista[i].Obtener3D(controlador, ts).valor)
-
-                                elif isinstance(self.lista[i],AccesoArreglo):
-                                    array = self.lista[i].Obtener3D(controlador, ts)
-
-                                    if isinstance(array, RetornoType):
-                                        if isinstance(array.valor,InstanciaVector):
-                                            texto_salida += self.ObtenerArrayText(array.valor.valores)
-                                        else:
-                                            texto_salida += self.ObtenerArrayText(array.valor)
-                                elif isinstance(self.lista[i], AccesoStruct):
-                                    dato = self.lista[i].Obtener3D(controlador, ts)
-                                    print(dato)
-                                    if isinstance(dato.valor, InstanciaArreglo) or isinstance(dato.valor, InstanciaVector):
-                                        texto_salida += self.ObtenerArrayText(dato.valor.valores)
-                                    else:
-                                        texto_salida += str(self.lista[i].Obtener3D(controlador, ts).valor)
-
-                                #array = self.lista[i].ObtenerValor(controlador,ts)
-
-                            except:
-                                print("Fallo en: ",self.lista[i])
-
-                    print("Print final: ", texto_salida)
-                            #print("Obtener tipo: ", self.lista[i].ObtenerTipo(controlador, ts))
-
-                else:
-                    # Error
-                    pass
+            codigo += f'\t{etq1}: \n'
+            codigo += f'\t{caracter} = Heap[(int){temp}]; \n'
+            codigo += f'\tif({caracter} == 0) goto {etq2};\n' \
+                      f'\tprintf(\"%c\",(char){caracter});\n' \
+                      f'\t{temp} = {temp} + 1;\n' \
+                      f'\tgoto {etq1};\n' \
+                      f'\t{etq2}:\n'
 
 
-            #formato_lista = self.expresion.split("{:?}")
-            #contador_lista  = self.expresion.count("{:?}")
+        Generador3D.agregarInstruccion(codigo)
 
-            controlador.imprimir(texto_salida, self.tipo)
-        else:
-            return_exp: RetornoType = self.expresion.Obtener3D(controlador, ts)
-
-            valor = return_exp.valor
-            tipo = return_exp.tipo
-            valor = valor.replace('\\n', '\n')
-            print("======!!!! ", tipo , " !!!!======")
-            if tipo == t.STRING or tipo == t.DIRSTRING:
-                print("Se confirmo")
-                controlador.imprimir(valor , self.tipo)
-            else:
-                #error
-                pass
 
     def ObtenerArrayText(self,array):
         print(type(array))

@@ -29,6 +29,13 @@ class RetornoType():
         self.etiqueta = ""
         self.temporal = ""
 
+    def iniciarRetorno(self,codigo, etiqueta, temporal,tipo):
+        self.codigo = codigo
+        self.etiqueta = etiqueta
+        self.temporal = temporal
+        self.tipo = tipo
+
+
 class Tipos():
     def __init__(self, nombre):
         self.nombre = nombre

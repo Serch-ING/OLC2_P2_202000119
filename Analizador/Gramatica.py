@@ -715,6 +715,7 @@ def p_tipado_vect(t):
     else:
         t[0]=t[3]
 
+
 def p_asignacio(t):
     '''asignacion      : ID IGUAL expresiones
                         '''

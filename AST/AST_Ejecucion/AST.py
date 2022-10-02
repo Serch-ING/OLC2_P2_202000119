@@ -1,6 +1,5 @@
 from ..Abstracto.Instruccion import Intruccion
 from AST.Instruccion import Funcion
-from AST.Instruccion.Llamada import Llamada
 from AST.Expresion.DeclararStruct import DeclararStruct
 from AST.TablaSimbolos.Tipos import RetornoType
 from AST.TablaSimbolos.Simbolos import Simbolos
@@ -8,6 +7,10 @@ from pathlib import Path
 from AST.TablaSimbolos import InstanciaStruct
 from Analizador.Gramatica import E_list
 import random
+from Generador3D.Generador3D import Generador3D
+from ..Instruccion.Llamada import Llamada
+
+Generador3D = Generador3D()
 
 class AST(Intruccion):
 
@@ -19,8 +22,10 @@ class AST(Intruccion):
         self.anteerior_C =0
 
     def Ejecutar3D(self, controlador, ts):
+
         #print("Iniciando ejecucion de instrucciones")
             print("=== Iniciando ejecucion de instrucciones ==")
+
 
 
         #try:
@@ -38,6 +43,7 @@ class AST(Intruccion):
             llamar_main.Ejecutar3D(controlador, ts)
 
             print("======Termino=======")
+            controlador.consola = Generador3D.generarMain()
             print(controlador.consola)
 
             self.Reporte_Tabla_simbolos(ts)
