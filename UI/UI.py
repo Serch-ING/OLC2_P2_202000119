@@ -41,9 +41,9 @@ def ventanas():
             consola = AST_ej.Ejecutar3D(controlador, ts)
             #print(consola)
 
-            #ConsoleTxt.configure(state='normal')
-            #ConsoleTxt.insert("1.0",consola)
-            #ConsoleTxt.configure(state='disabled')
+            ConsoleTxt.configure(state='normal')
+            ConsoleTxt.insert("1.0",consola)
+            ConsoleTxt.configure(state='disabled')
 
 
         notebook = ttk.Notebook(ventana)

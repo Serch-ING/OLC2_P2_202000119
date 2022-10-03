@@ -2,11 +2,20 @@
 
 
 
+
+    
+   
 fn main () {
-    
-   
-    println!("Hola mundo");
-    
-   
-    
+
+	let mut x : i64 = 5;
+
+	let mut y : i64 = 1;
+
+	println!("{} ",x);
+
+//let mut z : i64 = x + y;
+
+
 }
+
+ 

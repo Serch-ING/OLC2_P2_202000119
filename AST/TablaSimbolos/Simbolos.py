@@ -7,6 +7,7 @@ class Simbolos() :
         self.valor = 0
         self.tipo =  None
         self.mut = False
+        self.direccion =  0
 
         self.parametros= []
         self.instrucciones = []
@@ -24,11 +25,12 @@ class Simbolos() :
         #simbolo arreglo
         self.withcapacity = 0
 
-    def SimboloPremitivo(self,id,valor,tipo,mut):
+    def SimboloPremitivo(self,id,valor,tipo,mut,direccion):
         self.id = id
         self.valor = valor
         self.tipo = tipo
         self.mut = mut
+        self.direccion = direccion
 
     def SimboloFuncion(self,id,parametros,instrucciones,tipo):
         self.id = id

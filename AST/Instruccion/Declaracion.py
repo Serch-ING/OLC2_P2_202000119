@@ -17,39 +17,27 @@ class Declaracion(Intruccion):
         print(" ==== Declarar === ",self.expresion)
         if self.expresion is not None:
             return_exp: RetornoType = self.expresion.Obtener3D(controlador, ts)
-            try:
-                ValorExpresion = return_exp.valor
-                TipoExpresion = return_exp.tipo
-                if TipoExpresion == tipo.ARRAY:
-                    declaracion_arreglo = DeclaracionArreglo(self.mut,self.identificador.id,None, self.expresion)
-                    declaracion_arreglo.Ejecutar3D(controlador, ts)
-                    return None
-                elif TipoExpresion == tipo.VECTOR:
-                    declaracion_vector = DeclaracionVector(self.identificador.id,self.expresion,self.tipo,self.mut)
-                    declaracion_vector.Ejecutar3D(controlador, ts)
-                    return None
-                elif TipoExpresion == tipo.STRUCT:
-                    ts.Agregar_Simbolo(self.identificador.id, return_exp)
-                    return None
-            except:
-                print("Declaracion no se esta recuperando un dato")
-                return None
-
-
+            codigo = ""
             if self.tipo is not None:
+                sizeTabla = ts.size
+                temp1 = controlador.Generador3D.obtenerTemporal()
+                codigo += "\t/*Declaracion*/\n"
+                codigo += return_exp.codigo + "\n"
+                codigo += f'\t{temp1} = SP + {sizeTabla};\n'
+                codigo += f'\tStack[(int){temp1}] = {return_exp.temporal};\n'
+                ts.size += 1
 
-                if type(self.tipo) == type(TipoExpresion):
-
-                    newSimbolo = Simbolos()
-                    newSimbolo.SimboloPremitivo(self.identificador.id, ValorExpresion, self.tipo, self.mut)
-                    ts.Agregar_Simbolo(self.identificador.id, newSimbolo)
+                newSimbolo = Simbolos()
+                newSimbolo.SimboloPremitivo(self.identificador.id, None, self.tipo, self.mut,sizeTabla)
+                ts.Agregar_Simbolo(self.identificador.id, newSimbolo)
+                controlador.Generador3D.agregarInstruccion(codigo)
 
             else:
 
-                self.tipo = TipoExpresion
-                newSimbolo = Simbolos()
-                newSimbolo.SimboloPremitivo(self.identificador.id, ValorExpresion, self.tipo, self.mut)
-                ts.Agregar_Simbolo(self.identificador.id, newSimbolo)
+                #self.tipo = TipoExpresion
+                #newSimbolo = Simbolos()
+                #newSimbolo.SimboloPremitivo(self.identificador.id, ValorExpresion, self.tipo, self.mut)
+                #ts.Agregar_Simbolo(self.identificador.id, newSimbolo)
                 return None
 
         else:

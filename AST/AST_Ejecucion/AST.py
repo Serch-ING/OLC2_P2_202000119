@@ -43,7 +43,7 @@ class AST(Intruccion):
             llamar_main.Ejecutar3D(controlador, ts)
 
             print("======Termino=======")
-            controlador.consola = Generador3D.generarMain()
+            controlador.consola = controlador.Generador3D.generarMain()
             print(controlador.consola)
 
             self.Reporte_Tabla_simbolos(ts)

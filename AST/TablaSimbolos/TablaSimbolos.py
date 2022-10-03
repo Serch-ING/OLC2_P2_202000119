@@ -7,6 +7,7 @@ class TablaDeSimbolos():
         self.padre = padre
         self.name = name
         self.tabla = {}
+        self.size = 0
 
         # Solo para reportes
         self.siguiente = []
