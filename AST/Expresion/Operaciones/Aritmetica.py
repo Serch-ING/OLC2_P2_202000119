@@ -73,7 +73,13 @@ class Aritmetica(Operacion, Expresion):
         else:
 
             if self.operador == operador.RESTA:
-                pass
+                codigo += "/*NEGACION*/\n"
+                temp = controlador.Generador3D.obtenerTemporal()
+                codigo += f'\t{temp} = {exp1_temp} * {-1};\n'
+                retorno = RetornoType()
+                retorno.iniciarRetorno(codigo, "", temp, tipo_exp1)
+                return retorno
+
                 """if isinstance(valor_exp1, int):
                     return RetornoType(int(valor_exp1 * -1), tipo.ENTERO)
 
