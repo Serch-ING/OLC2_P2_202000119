@@ -1,17 +1,7 @@
-
-
-
-
-
-    
-   
 fn main () {
 
-	let mut x : i64 = 5;
-
-	let mut y : i64 = 1;
-
-	println!("{} ",x);
+	
+	println!("{} ",1+2*3/3-1);
 
 //let mut z : i64 = x + y;
 

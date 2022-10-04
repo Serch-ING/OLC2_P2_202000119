@@ -31,8 +31,8 @@ class Primitivo(Expresion):
             codigo += f'\tHeap[HP] = 0;\n'
             codigo += f'\tHP = HP +1;\n'
 
-        retorno = RetornoType()
-        retorno.iniciarRetorno(codigo,None,temp,self.tipo)
+        retorno = RetornoType(self.valor)
+        retorno.iniciarRetorno(codigo,None,temp,self.tipo.tipo)
         return retorno
 
 

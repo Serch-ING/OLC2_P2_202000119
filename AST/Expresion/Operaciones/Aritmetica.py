@@ -8,131 +8,78 @@ class Aritmetica(Operacion, Expresion):
         super().__init__(exp1, signo, exp2, expU)
 
     def Obtener3D(self, controlador, ts):
-
+        codigo = "/*ARITMETICA*/\n"
         return_exp1: RetornoType = self.exp1.Obtener3D(controlador, ts)
-        valor_exp1 = return_exp1.valor
+        exp1_temp = return_exp1.temporal
+        #valor_exp1 = return_exp1.valor
+        codigo += return_exp1.codigo + "\n"
         tipo_exp1 = return_exp1.tipo
 
         if not self.expU:
 
             return_exp2: RetornoType = self.exp2.Obtener3D(controlador, ts)
-            valor_exp2 = return_exp2.valor
-            tipo_exp2 = return_exp2.tipo
+            exp2_temp = return_exp2.temporal
+            #valor_exp2 = return_exp2.valor
+            codigo += return_exp2.codigo + "\n"
 
             if self.operador == operador.SUMA:
-
-                if tipo_exp1 == tipo.ENTERO and  tipo_exp2 == tipo.ENTERO:
-                    return RetornoType(int(valor_exp1 + valor_exp2),tipo.ENTERO)
-
-                elif tipo_exp1 == tipo.DECIMAL and tipo_exp2 == tipo.DECIMAL:
-                    return RetornoType(float(valor_exp1 + valor_exp2), tipo.DECIMAL)
-
-                elif (tipo_exp2 == tipo.USIZE or tipo_exp2 == tipo.ENTERO) and (tipo_exp2 == tipo.USIZE or tipo_exp2 == tipo.ENTERO):
-                    return RetornoType(int(valor_exp1 + valor_exp2), tipo.USIZE)
-
-                elif tipo_exp1 == tipo.STRING and tipo_exp2 == tipo.DIRSTRING:
-                    return RetornoType(str(valor_exp1 + valor_exp2),tipo.STRING)
-
-                elif tipo_exp1 == tipo.USIZE and tipo_exp2 == tipo.USIZE:
-                    return RetornoType(int(valor_exp1 + valor_exp2),tipo.USIZE)
-
-                else:
-                    return "No son el mismo formato"
+                codigo += "/*SUMA*/\n"
+                temp = controlador.Generador3D.obtenerTemporal()
+                codigo += f'\t{temp} = {exp1_temp} + {exp2_temp};\n'
+                retorno = RetornoType()
+                retorno.iniciarRetorno(codigo,"",temp,tipo_exp1)
+                return retorno
 
             elif self.operador == operador.RESTA:
-
-                if tipo_exp1 == tipo.ENTERO and  tipo_exp2 == tipo.ENTERO:
-                    return RetornoType(int(valor_exp1 - valor_exp2), tipo.ENTERO)
-
-                elif tipo_exp1 == tipo.DECIMAL and tipo_exp2 == tipo.DECIMAL:
-                    return RetornoType(float(valor_exp1 - valor_exp2), tipo.DECIMAL)
-
-                elif (tipo_exp2 == tipo.USIZE or tipo_exp2 == tipo.ENTERO) and (tipo_exp2 == tipo.USIZE or tipo_exp2 == tipo.ENTERO):
-                    return RetornoType(int(valor_exp1 - valor_exp2), tipo.USIZE)
-
-                elif tipo_exp1 == tipo.USIZE and tipo_exp2 == tipo.USIZE:
-                    return RetornoType(int(valor_exp1 - valor_exp2),tipo.USIZE)
-
-                else:
-                    return "No son el mismo formato"
+                codigo += "/*RESTA*/\n"
+                temp = controlador.Generador3D.obtenerTemporal()
+                codigo += f'\t{temp} = {exp1_temp} - {exp2_temp};\n'
+                retorno = RetornoType()
+                retorno.iniciarRetorno(codigo, "", temp, tipo_exp1)
+                return retorno
 
             elif self.operador == operador.MULTIPLICACION:
-
-                if tipo_exp1 == tipo.ENTERO and  tipo_exp2 == tipo.ENTERO:
-                    return RetornoType(int(valor_exp1 * valor_exp2), tipo.ENTERO)
-
-                elif tipo_exp1 == tipo.DECIMAL and tipo_exp2 == tipo.DECIMAL:
-                    return RetornoType(float(valor_exp1 * valor_exp2), tipo.DECIMAL)
-
-                elif (tipo_exp2 == tipo.USIZE or tipo_exp2 == tipo.ENTERO) and (tipo_exp2 == tipo.USIZE or tipo_exp2 == tipo.ENTERO):
-                    return RetornoType(int(valor_exp1 * valor_exp2), tipo.USIZE)
-
-                elif tipo_exp1 == tipo.USIZE and tipo_exp2 == tipo.USIZE:
-                    return RetornoType(int(valor_exp1 * valor_exp2),tipo.USIZE)
-
-                else:
-                    return "No son el mismo formato"
+                codigo += "/*MULTIPLICACION*/\n"
+                temp = controlador.Generador3D.obtenerTemporal()
+                codigo += f'\t{temp} = {exp1_temp} * {exp2_temp};\n'
+                retorno = RetornoType()
+                retorno.iniciarRetorno(codigo, "", temp, tipo_exp1)
+                return retorno
 
             elif self.operador == operador.DIVISION:
-
-                if tipo_exp1 == tipo.ENTERO and  tipo_exp2 == tipo.ENTERO:
-                    return RetornoType(int(valor_exp1 / valor_exp2), tipo.ENTERO)
-
-                elif tipo_exp1 == tipo.DECIMAL and tipo_exp2 == tipo.DECIMAL:
-                    return RetornoType(float(valor_exp1 / valor_exp2), tipo.DECIMAL)
-
-                elif (tipo_exp2 == tipo.USIZE or tipo_exp2 == tipo.ENTERO) and (tipo_exp2 == tipo.USIZE or tipo_exp2 == tipo.ENTERO):
-                    return RetornoType(int(valor_exp1 / valor_exp2), tipo.USIZE)
-
-                elif tipo_exp1 == tipo.USIZE and tipo_exp2 == tipo.USIZE:
-                    return RetornoType(int(valor_exp1 / valor_exp2),tipo.USIZE)
-
-                else:
-                    return "No son el mismo formato"
+                codigo += "/*DIVISION*/\n"
+                temp = controlador.Generador3D.obtenerTemporal()
+                codigo += f'\t{temp} = {exp1_temp} / {exp2_temp};\n'
+                retorno = RetornoType()
+                retorno.iniciarRetorno(codigo, "", temp, tipo_exp1)
+                return retorno
 
             elif self.operador == operador.MOD:
-
-                if tipo_exp1 == tipo.ENTERO and  tipo_exp2 == tipo.ENTERO:
-                    return RetornoType(int(valor_exp1 % valor_exp2), tipo.ENTERO)
-
-                elif tipo_exp1 == tipo.DECIMAL and tipo_exp2 == tipo.DECIMAL:
-                    return RetornoType(float(valor_exp1 % valor_exp2), tipo.DECIMAL)
-
-                elif (tipo_exp2 == tipo.USIZE or tipo_exp2 == tipo.ENTERO) and (tipo_exp2 == tipo.USIZE or tipo_exp2 == tipo.ENTERO):
-                    return RetornoType(int(valor_exp1 % valor_exp2), tipo.USIZE)
-
-                elif tipo_exp1 == tipo.USIZE and tipo_exp2 == tipo.USIZE:
-                    return RetornoType(int(valor_exp1 % valor_exp2),tipo.USIZE)
-
-                else:
-                    return "No son el mismo formato"
+                codigo += "/*MODULO*/\n"
+                temp = controlador.Generador3D.obtenerTemporal()
+                codigo += f'\t{temp} = (int){exp1_temp} % (int){exp2_temp};\n'
+                retorno = RetornoType()
+                retorno.iniciarRetorno(codigo, "", temp, tipo_exp1)
+                return retorno
 
             elif self.operador == operador.POT:
 
-                if tipo_exp1 == tipo.ENTERO and  tipo_exp2 == tipo.ENTERO:
-                    return RetornoType(int(valor_exp1 ** valor_exp2), tipo.ENTERO)
-
-                else:
-                    return "No son el mismo formato"
+                pass
 
             elif self.operador == operador.POTF:
 
-                if tipo_exp1 == tipo.DECIMAL and tipo_exp2 == tipo.DECIMAL:
-                    return RetornoType(float(valor_exp1 ** valor_exp2), tipo.DECIMAL)
-
-                else:
-                    return "No son el mismo formato"
+                pass
 
         else:
 
             if self.operador == operador.RESTA:
-
-                if isinstance(valor_exp1, int):
+                pass
+                """if isinstance(valor_exp1, int):
                     return RetornoType(int(valor_exp1 * -1), tipo.ENTERO)
 
                 elif isinstance(valor_exp1, float):
                     return RetornoType(float(valor_exp1 * -1), tipo.DECIMAL)
 
                 else:
-                    return "No es digito"
+                    return "No es digito" """
 

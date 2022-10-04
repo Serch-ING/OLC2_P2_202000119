@@ -46,7 +46,13 @@ class Imprimir(Intruccion):
                                     texto_salida += self.addsimbolos(valoid.temporal,valoid.tipo)
                                     print("")
                                 else:
-                                    texto_salida += self.addsimbolos(self.lista[i].valor,self.lista[i].tipo.tipo)
+                                    #try:
+                                        ObtenerRetorno =  self.lista[i].Obtener3D(controlador,ts)
+                                        controlador.Generador3D.agregarInstruccion(ObtenerRetorno.codigo)
+                                        texto_salida += self.addsimbolos(ObtenerRetorno.temporal , ObtenerRetorno.tipo)
+
+                                    #except:
+                                    #    texto_salida += self.addsimbolos(self.lista[i].valor,self.lista[i].tipo.tipo)
                             except:
                                 print("Fallo en: ", self.lista[i])
 
@@ -87,7 +93,7 @@ class Imprimir(Intruccion):
         return txt
 
     def Codigofinal(self, retornotype, controlador):
-        codigo = ""
+        codigo = "/* Imprimir */\n"
         valorexp = retornotype
         codigo += valorexp.codigo
         temp = controlador.Generador3D.obtenerTemporal()
