@@ -60,8 +60,15 @@ class Imprimir(Intruccion):
                     self.Codigofinal(retorno,controlador)
                     print("Print final: ", texto_salida)
         else:
+
             valorexp = self.expresion.Obtener3D(controlador, ts)
+            if self.tipo:
+                self.expresion.valor +="\n"
+                valorexp = self.expresion.Obtener3D(controlador, ts)
+
             codigo += valorexp.codigo
+
+
             temp = controlador.Generador3D.obtenerTemporal()
             caracter = controlador.Generador3D.obtenerTemporal()
             codigo += f'\t{temp}  = {valorexp.temporal};\n'
@@ -88,6 +95,14 @@ class Imprimir(Intruccion):
             txt += "¢"
             txt += str(valor)
             txt += "¢"
+        elif t.BOOLEANO == tipo:
+            txt += "¥"
+            txt += str(valor)
+            txt += "¥"#215×
+        elif t.STRING == tipo or t.DIRSTRING == tipo  or t.CARACTER == tipo :
+            txt += "×"
+            txt += str(valor)
+            txt += "×"#215×
         else:
             txt += str(valor)
         return txt
@@ -104,19 +119,42 @@ class Imprimir(Intruccion):
         etq3 = controlador.Generador3D.obtenerEtiqueta()
         etq4 = controlador.Generador3D.obtenerEtiqueta()
         etq5 = controlador.Generador3D.obtenerEtiqueta()
+
+        etq6 = controlador.Generador3D.obtenerEtiqueta()
+        temp2 = controlador.Generador3D.obtenerTemporal()
+        etq7 = controlador.Generador3D.obtenerEtiqueta()
+        etq8 = controlador.Generador3D.obtenerEtiqueta()
+
+        caracterTemp = controlador.Generador3D.obtenerTemporal()
+
         codigo += f'\t{etq1}: \n'
         codigo += f'\t{caracter} = Heap[(int){temp}]; \n'
         codigo += f'\tif({caracter} == 0) goto {etq2};\n'
 
+        codigo += f'\tif({caracter} == 215) goto {etq6};\n'
         codigo += f'\tif({caracter} == 165) goto {etq3};\n'
         codigo += f'\tif({caracter} == 162) goto {etq4};\n'
 
         codigo += f'\tprintf(\"%c\",(char){caracter});\n'
         codigo += f'\tgoto {etq5};\n'
+#string----------------
+        codigo += f'\t{etq6}:\n'
+        codigo += f'\t{temp} = {temp} + 1;\n'
+        codigo += f'\t{temp2} = Heap[(int){temp}]; \n'
 
+        codigo += f'\t{etq7}:\n'
+        codigo += f'\t{caracterTemp} = Heap[(int){temp2}]; \n'
+        codigo += f'\tif ({caracterTemp} != 0) goto {etq8};\n'
+        codigo += f'\tgoto {etq5};\n'
+
+        codigo += f'\t{etq8}:\n'
+        codigo += f'\tprintf(\"%c\",(char){caracterTemp});\n'
+        codigo += f'\t{temp2} = {temp2} + 1;\n'
+        codigo += f'\tgoto {etq7};\n'
+#-------------------------
         codigo += f'\t{etq3}:\n' \
                   f'\t{temp} = {temp} + 1;\n' \
-                  f'\t{caracter} = Heap[(int){temp}]; \n'\
+                  f'\t{caracter} = Heap[(int){temp}]; \n' \
                   f'\tprintf(\"%d\",(int){caracter});\n'
         codigo += f'\tgoto {etq5};\n'
 
@@ -140,14 +178,14 @@ class Imprimir(Intruccion):
         codigo += f'\t{temp} = HP;\n'
 
         for caracter in texto:
-            if (caracter == "¥" or caracter == "¢") and not validacion1:
+            if (caracter == "¥" or caracter == "¢" or caracter == "×") and not validacion1:
                 codigo += f'\tHeap[HP] = {ord(caracter)};\n'
                 codigo += f'\tHP = HP +1;\n'
                 validacion1 = True
                 continue
 
             if validacion1:
-                if caracter == "¥" or caracter == "¢":
+                if caracter == "¥" or caracter == "¢" or caracter == "×":
                     codigo += f'\tHeap[HP] = {temporal};\n'
                     codigo += f'\tHP = HP +1;\n'
                     temporal = ""

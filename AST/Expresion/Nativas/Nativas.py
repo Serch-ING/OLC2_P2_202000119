@@ -33,7 +33,8 @@ class Nativas(Expresion):
 
         elif self.funcion == "to_string()" or self.funcion == "to_owned()":
             if tipo_exp1 == tipo.DIRSTRING:
-                return RetornoType(valor_exp1, tipo.STRING)
+                return_exp1.tipo = tipo.DIRSTRING
+                return return_exp1
 
         elif self.funcion == "clone()":
             if tipo_exp1 == tipo.STRING:

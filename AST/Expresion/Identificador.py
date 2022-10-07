@@ -19,7 +19,7 @@ class Identificador(Expresion):
 
             temp1 = controlador.Generador3D.obtenerTemporal()
             temp2 = controlador.Generador3D.obtenerTemporal()
-            codigo += "\t/* ACCEDER ID */\n"
+            codigo += "/* ACCEDER ID */\n"
             codigo += f'\t{temp1} = SP + {existe_id.direccion};\n'
             codigo += f'\t{temp2} = Stack[(int){temp1}];\n'
             controlador.Generador3D.agregarInstruccion(codigo)

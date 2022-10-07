@@ -18,7 +18,14 @@ class Primitivo(Expresion):
             temp = controlador.Generador3D.obtenerTemporal()
             codigo = f'\t{temp} = {self.valor};'
 
-        elif self.tipo.tipo != ttipo.STRING or self.tipo.tipo != ttipo.DIRSTRING:
+        elif self.tipo.tipo == ttipo.BOOLEANO:
+            temp = controlador.Generador3D.obtenerTemporal()
+            if self.valor:
+                codigo = f'\t{temp} = {1};'
+            else:
+                codigo = f'\t{temp} = {0};'
+
+        elif self.tipo.tipo != ttipo.STRING or self.tipo.tipo != ttipo.DIRSTRING or self.tipo.tipo != ttipo.CARACTER:
 
             temp = controlador.Generador3D.obtenerTemporal()
             codigo += f'\t{temp} = HP;\n'

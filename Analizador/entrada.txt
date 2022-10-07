@@ -1,10 +1,33 @@
 fn main () {
 
-	
-	println!("{} ",1+2*3/3-1);
-
-//let mut z : i64 = x + y;
-
+        
+    println!("----------------------");
+    println!("----ARCHIVO BASICO----");
+    println!("----------------------");
+    
+    
+    
+    let bo1: bool = false;
+    let bol21: bool = !bo1;
+    let cad1: String = "imprimir".to_string();
+    let cad21: String = "cadena valida".to_string();
+    let letra1: char = 'c';
+    
+    
+    let val11 = 7 - (5 + 10 * (2 + 4 * (5 + 2 * 3)) - 8 * 3 * 3) + 50 * (6 * 2);
+    let val21 = (2 * 2 * 2 * 2) - 9 - (8 - 6 + (3 * 3 - 6 * 5 - 7 - (9 + 7 * 7 * 7) + 10) - 5) + 8 - (6 - 5 * (2 * 3));
+    let val31 = val11 + ((2 + val21 * 3) + 1 - ((2 * 2 * 2) - 2) * 2) - 2;
+    
+    println!("El valor de val11 es:              {}",val11);
+    println!("El valor de val21 es:              {}",val21);
+    println!("El valor de val31 es:              {}",val31);
+    println!("El resultado de la operación es:  {}",val31);
+    println!("El valor de bo1 es:                {}",bo1);
+    println!("El valor de cad1 es:               {}",cad1);
+    println!("El valor de cad21 es:               {}",cad21);
+    println!("El valor de letra1 es:             {}",letra1);
+    println!("El valor de bol21:            {}",bol21);
+    println!("");
 
 }
 

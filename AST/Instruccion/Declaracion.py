@@ -18,10 +18,11 @@ class Declaracion(Intruccion):
         if self.expresion is not None:
             return_exp: RetornoType = self.expresion.Obtener3D(controlador, ts)
             codigo = ""
+
             if self.tipo is not None:
                 sizeTabla = ts.size
                 temp1 = controlador.Generador3D.obtenerTemporal()
-                codigo += "\t/*Declaracion*/\n"
+                codigo += "/*Declaracion*/\n"
                 codigo += return_exp.codigo + "\n"
                 codigo += f'\t{temp1} = SP + {sizeTabla};\n'
                 codigo += f'\tStack[(int){temp1}] = {return_exp.temporal};\n'
@@ -33,12 +34,21 @@ class Declaracion(Intruccion):
                 controlador.Generador3D.agregarInstruccion(codigo)
 
             else:
+                #ValorExpresion = return_exp.valor
+                TipoExpresion = return_exp.tipo
+                self.tipo = TipoExpresion
+                sizeTabla = ts.size
+                temp1 = controlador.Generador3D.obtenerTemporal()
+                codigo += "/*Declaracion*/\n"
+                codigo += return_exp.codigo + "\n"
+                codigo += f'\t{temp1} = SP + {sizeTabla};\n'
+                codigo += f'\tStack[(int){temp1}] = {return_exp.temporal};\n'
+                ts.size += 1
 
-                #self.tipo = TipoExpresion
-                #newSimbolo = Simbolos()
-                #newSimbolo.SimboloPremitivo(self.identificador.id, ValorExpresion, self.tipo, self.mut)
-                #ts.Agregar_Simbolo(self.identificador.id, newSimbolo)
-                return None
+                newSimbolo = Simbolos()
+                newSimbolo.SimboloPremitivo(self.identificador.id, None, self.tipo, self.mut, sizeTabla)
+                ts.Agregar_Simbolo(self.identificador.id, newSimbolo)
+                controlador.Generador3D.agregarInstruccion(codigo)
 
         else:
 
