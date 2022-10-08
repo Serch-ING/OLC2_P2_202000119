@@ -18,118 +18,30 @@ class Relacional(Operacion, Expresion):
         tipo_exp1 = return_exp1.tipo
         tipo_exp2 = return_exp2.tipo
 
+        temp_exp1 = return_exp1.temporal
+        temp_exp2 = return_exp2.temporal
+
         if self.operador == operador.MAYORIGUAL:
-
-            if tipo_exp1 == t.ENTERO and  tipo_exp2 == t.ENTERO:
-                return RetornoType(valor_exp1 >= valor_exp2,t.BOOLEANO)
-
-            elif tipo_exp1 == t.DECIMAL and tipo_exp2 == t.DECIMAL :
-                return RetornoType(valor_exp1 >= valor_exp2,t.BOOLEANO)
-
-            elif (tipo_exp2 == t.USIZE or tipo_exp2 == t.ENTERO )  and (tipo_exp2 == t.USIZE or tipo_exp2 == t.ENTERO ):
-                return RetornoType(valor_exp1 >= valor_exp2,t.BOOLEANO)
-
-            elif tipo_exp1 == t.STRING and tipo_exp2 == t.STRING:
-                return RetornoType(valor_exp1 >= valor_exp2, t.BOOLEANO)
-
-            elif tipo_exp1 == t.DIRSTRING and tipo_exp2 == t.DIRSTRING:
-                return RetornoType(valor_exp1 >= valor_exp2, t.BOOLEANO)
-
-            else:
-                return "No son el mismo formato"
+            pass
 
         elif self.operador == operador.MAYORQUE:
 
-            if tipo_exp1 == t.ENTERO and  tipo_exp2 == t.ENTERO:
-                return RetornoType(valor_exp1 > valor_exp2, t.BOOLEANO)
-
-            elif tipo_exp1 == t.DECIMAL and tipo_exp2 == t.DECIMAL:
-                return RetornoType(valor_exp1 > valor_exp2, t.BOOLEANO)
-
-            elif (tipo_exp2 == t.USIZE or tipo_exp2 == t.ENTERO )  and (tipo_exp2 == t.USIZE or tipo_exp2 == t.ENTERO ) :
-                return RetornoType(valor_exp1 > valor_exp2,t.BOOLEANO)
-
-            elif tipo_exp1 == t.STRING and tipo_exp2 == t.STRING:
-                return RetornoType(valor_exp1 > valor_exp2, t.BOOLEANO)
-
-            elif tipo_exp1 == t.DIRSTRING and tipo_exp2 == t.DIRSTRING:
-                return RetornoType(valor_exp1 > valor_exp2, t.BOOLEANO)
-
-            else:
-                return "No son el mismo formato"
+            retorno = RetornoType(valor_exp1 > valor_exp2)
+            codigo = return_exp1.codigo
+            codigo += return_exp2.codigo
+            controlador.Generador3D.agregarInstruccion(codigo)
+            retorno.codigo += f'({temp_exp1} > {temp_exp2})'
+            return retorno
 
         elif self.operador == operador.MENORIGUAL:
-
-            if tipo_exp1 == t.ENTERO and  tipo_exp2 == t.ENTERO:
-                return RetornoType(valor_exp1 <= valor_exp2, t.BOOLEANO)
-
-            elif tipo_exp1 == t.DECIMAL and tipo_exp2 == t.DECIMAL:
-                return RetornoType(valor_exp1 <= valor_exp2, t.BOOLEANO)
-
-            elif (tipo_exp2 == t.USIZE or tipo_exp2 == t.ENTERO )  and (tipo_exp2 == t.USIZE or tipo_exp2 == t.ENTERO ):
-                return RetornoType(valor_exp1 <= valor_exp2,t.BOOLEANO)
-
-            elif tipo_exp1 == t.STRING and tipo_exp2 == t.STRING:
-                return RetornoType(valor_exp1 <= valor_exp2, t.BOOLEANO)
-
-            elif tipo_exp1 == t.DIRSTRING and tipo_exp2 == t.DIRSTRING:
-                return RetornoType(valor_exp1 <= valor_exp2, t.BOOLEANO)
-
-            else:
-                return "No son el mismo formato"
+           pass
 
         elif self.operador == operador.MENORQUE:
-
-            if tipo_exp1 == t.ENTERO and  tipo_exp2 == t.ENTERO:
-                return RetornoType(valor_exp1 < valor_exp2, t.BOOLEANO)
-
-            elif tipo_exp1 == t.DECIMAL and tipo_exp2 == t.DECIMAL:
-                return RetornoType(valor_exp1 < valor_exp2, t.BOOLEANO)
-
-            elif (tipo_exp2 == t.USIZE or tipo_exp2 == t.ENTERO ) and (tipo_exp2 == t.USIZE or tipo_exp2 == t.ENTERO ):
-                return RetornoType(valor_exp1 < valor_exp2,t.BOOLEANO)
-
-            elif tipo_exp1 == t.STRING and tipo_exp2 == t.STRING:
-                return RetornoType(valor_exp1 < valor_exp2, t.BOOLEANO)
-
-            elif tipo_exp1 == t.DIRSTRING and tipo_exp2 == t.DIRSTRING:
-                return RetornoType(valor_exp1 < valor_exp2, t.BOOLEANO)
-
-            else:
-                return "No son el mismo formato"
+            pass
 
         elif self.operador == operador.IGUALIGUAL:
-
-            if tipo_exp1 == t.ENTERO and  tipo_exp2 == t.ENTERO:
-                return RetornoType(valor_exp1 == valor_exp2, t.BOOLEANO)
-
-            elif tipo_exp1 == t.DECIMAL and tipo_exp2 == t.DECIMAL:
-                return RetornoType(valor_exp1 == valor_exp2, t.BOOLEANO)
-
-            elif (tipo_exp2 == t.USIZE or tipo_exp2 == t.ENTERO )  and (tipo_exp2 == t.USIZE or tipo_exp2 == t.ENTERO ):
-                return RetornoType(valor_exp1 == valor_exp2,t.BOOLEANO)
-
-            elif isinstance(valor_exp1, str) and isinstance(valor_exp2, str):
-                return RetornoType(valor_exp1 == valor_exp2, t.BOOLEANO)
-
-            else:
-                return "No son el mismo formato"
+            pass
 
         elif self.operador == operador.DIFERENCIA:
-
-            if tipo_exp1 == t.ENTERO and  tipo_exp2 == t.ENTERO:
-                return RetornoType(valor_exp1 != valor_exp2, t.BOOLEANO)
-
-            elif tipo_exp1 == t.DECIMAL and tipo_exp2 == t.DECIMAL:
-                return RetornoType(valor_exp1 != valor_exp2, t.BOOLEANO)
-
-            elif (tipo_exp2 == t.USIZE or tipo_exp2 == t.ENTERO )  and (tipo_exp2 == t.USIZE or tipo_exp2 == t.ENTERO ):
-                return RetornoType(valor_exp1 != valor_exp2,t.BOOLEANO)
-
-            elif isinstance(valor_exp1, str) and isinstance(valor_exp2, str):
-                print(valor_exp1 != valor_exp2)
-                return RetornoType(valor_exp1 != valor_exp2, t.BOOLEANO)
-
-            else:
-                return "No son el mismo formato"
+           pass
 

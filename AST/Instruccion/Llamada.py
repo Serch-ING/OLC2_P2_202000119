@@ -25,12 +25,6 @@ class Llamada(Intruccion, Expresion):
                 ts_local = TablaDeSimbolos(ts, self.identificador)
             else:
                 bandera = True
-                #bandera = False
-                pointer = ts
-                #while pointer is not None:
-                #    if pointer.name == self.identificador:
-                #        bandera = True
-                #    pointer = pointer.padre
 
                 if bandera:
                     apuntador = ts
@@ -45,11 +39,9 @@ class Llamada(Intruccion, Expresion):
 
             if self.validar_parametros(self.parametos, simbolo_funcion.parametros, controlador, ts, ts_local):
 
-                retorno = simbolo_funcion.Ejecutar3D(controlador, ts_local)
+                codigo = simbolo_funcion.Ejecutar3D(controlador, ts_local)
 
-                if retorno is not None:
-                    if isinstance(retorno,RetornoType):
-                        return retorno
+                return  codigo
             else:
                 print("Aqui fallo2")
         else:

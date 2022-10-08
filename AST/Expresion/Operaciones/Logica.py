@@ -12,7 +12,7 @@ class Logica(Operacion, Expresion):
         return_exp1:RetornoType = self.exp1.Obtener3D(controlador, ts)
         tipo_exp1 = return_exp1.tipo
         exp1_temp = return_exp1.temporal
-
+        valor_exp1 = return_exp1.valor
 
         if not self.expU:
 
@@ -47,7 +47,7 @@ class Logica(Operacion, Expresion):
                     codigo += f'\t{temp1} = 1;\n'
                     codigo += f'\t{etq3}:\n'
 
-                    retorno = RetornoType()
+                    retorno = RetornoType(not valor_exp1)
                     retorno.iniciarRetorno(codigo, "", temp1, tipo_exp1)
                     return retorno
 

@@ -46,6 +46,7 @@ int HP = 0;\n"""
 
     def agregarInstruccion(self, codigo):
         self.main += codigo + '\n'
+        print(self.main)
 
     def generarMain(self):
         codigo_SALIDA = self.generarEncabezado()

@@ -14,29 +14,11 @@ class Funcion(Intruccion):
 
     def Ejecutar3D(self, controlador, ts):
         print("Intrucciones de : ", self.identificador)
-
+        codigo = ""
         for instruccion in self.instrucciones:
-
-            retorno = instruccion.Ejecutar3D(controlador, ts)
-
-            if retorno is not None and isinstance(retorno, RetornoType):
-                if retorno.final == tipo.BREAK:
-                    E_list.agregar_error("Se utilizo sentencia BREAK fuera de sentencia ciclica", 2, ts.name,
-                                         0, 0)
-                    continue
-
-                if isinstance(self.tipo, Identificador):
-                    self.tipo = ts.ObtenerSimbolo(self.tipo.id).tipo
-                if retorno.tipo == self.tipo:
-                    return retorno
-
-                if self.tipo is None:
-                    if retorno.tipo != tipo.UNDEFINED:
-                        print("####Se esta intentando regresar un dato en un metodo ")
-                else:
-                    print("####Se intento regresar un dato diferente al de la funcion ")
-
-                return RetornoType()
+            instruccion.Ejecutar3D(controlador, ts)
+            print(instruccion)
+        return codigo
 
         if self.tipo is not None:
                 print("####Se ejecuto pero esperaba retornar un dato ")

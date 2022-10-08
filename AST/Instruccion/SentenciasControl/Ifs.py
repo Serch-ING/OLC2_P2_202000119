@@ -14,47 +14,46 @@ class Ifs(Intruccion,Expresion):
 
     def Ejecutar3D(self, controlador, ts):
         print("If como  instruccion")
-        return_exp: RetornoType = self.condicion.Obtener3D(controlador, ts)
-        valor_Exp = return_exp.valor
-        tipo_Exp = return_exp.tipo
+        codigo = "/* IF instruccion */\n"
+        etq1 = controlador.Generador3D.obtenerEtiqueta()
+        etq2 = controlador.Generador3D.obtenerEtiqueta()
+        etq3 = None
 
-        if tipo_Exp == tipo.BOOLEANO :
+        return_exp1:RetornoType = self.condicion.Obtener3D(controlador, ts)
+        codigotemp = return_exp1.codigo
 
-            if valor_Exp:
+        ts_local1 = TablaDeSimbolos(ts, "If" + str(id(self)))
+        bloque_if = self.Recorrer_ins(controlador,ts_local1,self.bloque_if)
 
-                ts_local = TablaDeSimbolos(ts, "If" + str(id(self)))
-                return self.Recorrer_ins(controlador, ts_local, self.bloque_if)
+        codigo += f'\tif {codigotemp} goto {etq1};\n'
+        codigo += f'\tgoto {etq2};\n'
+        codigo += f'\t{etq1}:\n'
+        codigo += bloque_if
 
-            else:
+        if self.bloque_else != None:
+            etq3 = controlador.Generador3D.obtenerEtiqueta()
+            codigo += f'\tgoto {etq3};\n'
 
-                if self.bloques_elif is not None:
+        codigo += f'\t{etq2}:\n'
 
-                    for list_if in self.bloques_elif:
-                        return_if: RetornoType = list_if.condicion.Obtener3D(controlador, ts)
-                        valor_if = return_if.valor
-                        tipo_if = return_if.tipo
+        if self.bloque_else != None:
+            ts_local2 = TablaDeSimbolos(ts, "If" + str(id(self)))
+            bloque_else = self.Recorrer_ins(controlador, ts_local2, self.bloque_else)
+            codigo += bloque_else
+            codigo += f'\t{etq3}:\n'
 
-                        if tipo_if == tipo.BOOLEANO :
-                            if valor_if:
-                                return self.Recorrer_ins(controlador, ts, self.bloques_elif)
 
-                if self.bloque_else is not None:
-                    ts_local = TablaDeSimbolos(ts, "Else" + str(id(self)))
-                    return self.Recorrer_ins(controlador, ts_local,self.bloque_else)
-        else:
+        #cabiar
+        controlador.Generador3D.agregarInstruccion(codigo)
 
-            E_list.agregar_error("La expresion en if no es booleano : " + str(valor_Exp), 2, ts.name,
-                                 0, 0)
-            E_list.print_errores()
+
+
     def Recorrer_ins(self,controlador,ts,lista):
-        retorno = None
+        codigo = None
         for instruccion in lista:
             #try:
-                retorno = instruccion.Ejecutar3D(controlador, ts)
-
-                if retorno is not None:
-                    if isinstance(retorno,RetornoType):
-                        return retorno
+                codigo = instruccion.Ejecutar3D(controlador, ts)
+                return codigo
             #except:
             #    print("Erro en if")
 

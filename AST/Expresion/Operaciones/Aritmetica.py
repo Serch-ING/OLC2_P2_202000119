@@ -11,7 +11,7 @@ class Aritmetica(Operacion, Expresion):
         codigo = "/*ARITMETICA*/\n"
         return_exp1: RetornoType = self.exp1.Obtener3D(controlador, ts)
         exp1_temp = return_exp1.temporal
-        #valor_exp1 = return_exp1.valor
+        valor_exp1 = return_exp1.valor
         codigo += return_exp1.codigo + "\n"
         tipo_exp1 = return_exp1.tipo
 
@@ -19,14 +19,14 @@ class Aritmetica(Operacion, Expresion):
 
             return_exp2: RetornoType = self.exp2.Obtener3D(controlador, ts)
             exp2_temp = return_exp2.temporal
-            #valor_exp2 = return_exp2.valor
+            valor_exp2 = return_exp2.valor
             codigo += return_exp2.codigo + "\n"
 
             if self.operador == operador.SUMA:
                 codigo += "/*SUMA*/\n"
                 temp = controlador.Generador3D.obtenerTemporal()
                 codigo += f'\t{temp} = {exp1_temp} + {exp2_temp};\n'
-                retorno = RetornoType()
+                retorno = RetornoType(valor_exp1+valor_exp2)
                 retorno.iniciarRetorno(codigo,"",temp,tipo_exp1)
                 return retorno
 
@@ -34,7 +34,7 @@ class Aritmetica(Operacion, Expresion):
                 codigo += "/*RESTA*/\n"
                 temp = controlador.Generador3D.obtenerTemporal()
                 codigo += f'\t{temp} = {exp1_temp} - {exp2_temp};\n'
-                retorno = RetornoType()
+                retorno = RetornoType(valor_exp1 - valor_exp2)
                 retorno.iniciarRetorno(codigo, "", temp, tipo_exp1)
                 return retorno
 
@@ -42,7 +42,7 @@ class Aritmetica(Operacion, Expresion):
                 codigo += "/*MULTIPLICACION*/\n"
                 temp = controlador.Generador3D.obtenerTemporal()
                 codigo += f'\t{temp} = {exp1_temp} * {exp2_temp};\n'
-                retorno = RetornoType()
+                retorno = RetornoType(valor_exp1 * valor_exp2)
                 retorno.iniciarRetorno(codigo, "", temp, tipo_exp1)
                 return retorno
 
@@ -50,7 +50,7 @@ class Aritmetica(Operacion, Expresion):
                 codigo += "/*DIVISION*/\n"
                 temp = controlador.Generador3D.obtenerTemporal()
                 codigo += f'\t{temp} = {exp1_temp} / {exp2_temp};\n'
-                retorno = RetornoType()
+                retorno = RetornoType(valor_exp1 / valor_exp2)
                 retorno.iniciarRetorno(codigo, "", temp, tipo_exp1)
                 return retorno
 
@@ -58,7 +58,7 @@ class Aritmetica(Operacion, Expresion):
                 codigo += "/*MODULO*/\n"
                 temp = controlador.Generador3D.obtenerTemporal()
                 codigo += f'\t{temp} = (int){exp1_temp} % (int){exp2_temp};\n'
-                retorno = RetornoType()
+                retorno = RetornoType(valor_exp1 % valor_exp2)
                 retorno.iniciarRetorno(codigo, "", temp, tipo_exp1)
                 return retorno
 
@@ -80,7 +80,7 @@ class Aritmetica(Operacion, Expresion):
                 codigo += f'\t{temp2} = {temp2} + {1};\n'
                 codigo += f'\tgoto {etq3};\n'
                 codigo += f'\t{etq2}:\n'
-                retorno = RetornoType()
+                retorno = RetornoType(valor_exp1 ** valor_exp2)
                 retorno.iniciarRetorno(codigo, "", temp1, tipo_exp1)
                 return retorno
 
@@ -102,7 +102,7 @@ class Aritmetica(Operacion, Expresion):
                 codigo += f'\t{temp2} = {temp2} + {1};\n'
                 codigo += f'\tgoto {etq3};\n'
                 codigo += f'\t{etq2}:\n'
-                retorno = RetornoType()
+                retorno = RetornoType(valor_exp1 ** valor_exp2)
                 retorno.iniciarRetorno(codigo, "", temp1, tipo_exp1)
                 return retorno
 
@@ -112,7 +112,7 @@ class Aritmetica(Operacion, Expresion):
                 codigo += "/*NEGACION*/\n"
                 temp = controlador.Generador3D.obtenerTemporal()
                 codigo += f'\t{temp} = {exp1_temp} * {-1};\n'
-                retorno = RetornoType()
+                retorno = RetornoType(valor_exp1 * -1)
                 retorno.iniciarRetorno(codigo, "", temp, tipo_exp1)
                 return retorno
 
