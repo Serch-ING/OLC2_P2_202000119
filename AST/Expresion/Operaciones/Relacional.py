@@ -7,6 +7,8 @@ class Relacional(Operacion, Expresion):
 
     def __init__(self, exp1, signo, exp2, expU):
         super().__init__(exp1, signo, exp2, expU)
+        self.etiquetaV = ""
+        self.etiquetaF = ""
 
     def Obtener3D(self, controlador, ts):
         return_exp1:RetornoType = self.exp1.Obtener3D(controlador, ts)
@@ -21,27 +23,77 @@ class Relacional(Operacion, Expresion):
         temp_exp1 = return_exp1.temporal
         temp_exp2 = return_exp2.temporal
 
-        if self.operador == operador.MAYORIGUAL:
-            pass
+        codigo = ""
 
-        elif self.operador == operador.MAYORQUE:
+        if self.operador == operador.MAYORIGUAL:
+            codigo += return_exp1.codigo + "\n"
+            codigo += return_exp2.codigo + "\n"
+            codigo += f'\tif ({return_exp1.temporal} >= {return_exp2.temporal}) goto {self.etiquetaV};\n'
+            codigo += f'\tgoto {self.etiquetaF};\n'
 
             retorno = RetornoType(valor_exp1 > valor_exp2)
-            codigo = return_exp1.codigo
-            codigo += return_exp2.codigo
-            controlador.Generador3D.agregarInstruccion(codigo)
-            retorno.codigo += f'({temp_exp1} > {temp_exp2})'
+            retorno.iniciarRetorno(codigo, "", "", t.BOOLEANO)
+            retorno.etiquetaV = self.etiquetaV
+            retorno.etiquetaF = self.etiquetaF
+            return retorno
+
+        elif self.operador == operador.MAYORQUE:
+            codigo += return_exp1.codigo + "\n"
+            codigo += return_exp2.codigo + "\n"
+            codigo += f'\tif ({return_exp1.temporal} > {return_exp2.temporal}) goto {self.etiquetaV};\n'
+            codigo += f'\tgoto {self.etiquetaF};\n'
+
+            retorno = RetornoType(valor_exp1 > valor_exp2)
+            retorno.iniciarRetorno(codigo,"","", t.BOOLEANO)
+            retorno.etiquetaV = self.etiquetaV
+            retorno.etiquetaF = self.etiquetaF
             return retorno
 
         elif self.operador == operador.MENORIGUAL:
-           pass
+            codigo += return_exp1.codigo + "\n"
+            codigo += return_exp2.codigo + "\n"
+            codigo += f'\tif ({return_exp1.temporal} <= {return_exp2.temporal}) goto {self.etiquetaV};\n'
+            codigo += f'\tgoto {self.etiquetaF};\n'
+
+            retorno = RetornoType(valor_exp1 > valor_exp2)
+            retorno.iniciarRetorno(codigo, "", "", t.BOOLEANO)
+            retorno.etiquetaV = self.etiquetaV
+            retorno.etiquetaF = self.etiquetaF
+            return retorno
 
         elif self.operador == operador.MENORQUE:
-            pass
+            codigo += return_exp1.codigo + "\n"
+            codigo += return_exp2.codigo + "\n"
+            codigo += f'\tif ({return_exp1.temporal} < {return_exp2.temporal}) goto {self.etiquetaV};\n'
+            codigo += f'\tgoto {self.etiquetaF};\n'
+
+            retorno = RetornoType(valor_exp1 > valor_exp2)
+            retorno.iniciarRetorno(codigo, "", "", t.BOOLEANO)
+            retorno.etiquetaV = self.etiquetaV
+            retorno.etiquetaF = self.etiquetaF
+            return retorno
 
         elif self.operador == operador.IGUALIGUAL:
-            pass
+            codigo += return_exp1.codigo + "\n"
+            codigo += return_exp2.codigo + "\n"
+            codigo += f'\tif ({return_exp1.temporal} == {return_exp2.temporal}) goto {self.etiquetaV};\n'
+            codigo += f'\tgoto {self.etiquetaF};\n'
+
+            retorno = RetornoType(valor_exp1 > valor_exp2)
+            retorno.iniciarRetorno(codigo, "", "", t.BOOLEANO)
+            retorno.etiquetaV = self.etiquetaV
+            retorno.etiquetaF = self.etiquetaF
+            return retorno
 
         elif self.operador == operador.DIFERENCIA:
-           pass
+            codigo += return_exp1.codigo + "\n"
+            codigo += return_exp2.codigo + "\n"
+            codigo += f'\tif ({return_exp1.temporal} != {return_exp2.temporal}) goto {self.etiquetaV};\n'
+            codigo += f'\tgoto {self.etiquetaF};\n'
+
+            retorno = RetornoType(valor_exp1 > valor_exp2)
+            retorno.iniciarRetorno(codigo, "", "", t.BOOLEANO)
+            retorno.etiquetaV = self.etiquetaV
+            retorno.etiquetaF = self.etiquetaF
+            return retorno
 

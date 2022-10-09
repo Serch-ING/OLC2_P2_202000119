@@ -16,8 +16,7 @@ class Funcion(Intruccion):
         print("Intrucciones de : ", self.identificador)
         codigo = ""
         for instruccion in self.instrucciones:
-            instruccion.Ejecutar3D(controlador, ts)
-            print(instruccion)
+            codigo += instruccion.Ejecutar3D(controlador, ts)
         return codigo
 
         if self.tipo is not None:

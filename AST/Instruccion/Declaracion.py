@@ -13,6 +13,7 @@ class Declaracion(Intruccion):
         self.mut = mut
         self.referencia = referencia
 
+
     def Ejecutar3D(self, controlador, ts):
         print(" ==== Declarar === ",self.expresion)
         if self.expresion is not None:
@@ -31,7 +32,8 @@ class Declaracion(Intruccion):
                 newSimbolo = Simbolos()
                 newSimbolo.SimboloPremitivo(self.identificador.id, None, self.tipo, self.mut,sizeTabla)
                 ts.Agregar_Simbolo(self.identificador.id, newSimbolo)
-                controlador.Generador3D.agregarInstruccion(codigo)
+                return codigo
+                #controlador.Generador3D.agregarInstruccion(codigo)
 
             else:
                 #ValorExpresion = return_exp.valor

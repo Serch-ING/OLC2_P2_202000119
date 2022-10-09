@@ -43,12 +43,14 @@ class Imprimir(Intruccion):
 
                                 elif isinstance(self.lista[i], Identificador):
                                     valoid = self.lista[i].Obtener3D(controlador,ts)
+                                    codigo += valoid.codigo
                                     texto_salida += self.addsimbolos(valoid.temporal,valoid.tipo)
                                     print("")
                                 else:
                                     #try:
                                         ObtenerRetorno =  self.lista[i].Obtener3D(controlador,ts)
-                                        controlador.Generador3D.agregarInstruccion(ObtenerRetorno.codigo)
+                                        codigo += ObtenerRetorno.codigo
+                                        #controlador.Generador3D.agregarInstruccion(ObtenerRetorno.codigo)
                                         texto_salida += self.addsimbolos(ObtenerRetorno.temporal , ObtenerRetorno.tipo)
 
                                     #except:
@@ -57,8 +59,9 @@ class Imprimir(Intruccion):
                                 print("Fallo en: ", self.lista[i])
 
                     retorno = self.obtenerCadenaUnida(texto_salida, controlador)
-                    self.Codigofinal(retorno,controlador)
+                    codigo += self.Codigofinal(retorno,controlador)
                     print("Print final: ", texto_salida)
+                    return  codigo
         else:
 
             valorexp = self.expresion.Obtener3D(controlador, ts)
@@ -82,8 +85,8 @@ class Imprimir(Intruccion):
                       f'\t{temp} = {temp} + 1;\n' \
                       f'\tgoto {etq1};\n' \
                       f'\t{etq2}:\n'
-
-        controlador.Generador3D.agregarInstruccion(codigo)
+        return codigo
+        #controlador.Generador3D.agregarInstruccion(codigo)
 
     def addsimbolos(self,valor,tipo):
         txt = ""
@@ -167,7 +170,9 @@ class Imprimir(Intruccion):
         codigo += f'\t{temp} = {temp} + 1;\n' \
                   f'\tgoto {etq1};\n' \
                   f'\t{etq2}:\n'
-        controlador.Generador3D.agregarInstruccion(codigo)
+
+        return codigo
+        #controlador.Generador3D.agregarInstruccion(codigo)
 
 
     def obtenerCadenaUnida(self, texto, controlador):

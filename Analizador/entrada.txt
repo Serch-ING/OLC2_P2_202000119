@@ -1,12 +1,14 @@
 fn main () {
 
         
-    if 2>1 {
+    if 2 != 2 {
         let x = 1;
+	println!("{}",x); 
     }else{
         let x = 2;
+	println!("{}",x); 
     }
-    println!("{}",x); 
+    
 
 }
 

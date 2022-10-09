@@ -15,45 +15,54 @@ class Ifs(Intruccion,Expresion):
     def Ejecutar3D(self, controlador, ts):
         print("If como  instruccion")
         codigo = "/* IF instruccion */\n"
-        etq1 = controlador.Generador3D.obtenerEtiqueta()
-        etq2 = controlador.Generador3D.obtenerEtiqueta()
-        etq3 = None
+        etqSalida = controlador.Generador3D.obtenerEtiqueta()
 
+        self.condicion.etiquetaV = controlador.Generador3D.obtenerEtiqueta()
+        self.condicion.etiquetaF = controlador.Generador3D.obtenerEtiqueta()
         return_exp1:RetornoType = self.condicion.Obtener3D(controlador, ts)
-        codigotemp = return_exp1.codigo
-
-        ts_local1 = TablaDeSimbolos(ts, "If" + str(id(self)))
-        bloque_if = self.Recorrer_ins(controlador,ts_local1,self.bloque_if)
-
-        codigo += f'\tif {codigotemp} goto {etq1};\n'
-        codigo += f'\tgoto {etq2};\n'
-        codigo += f'\t{etq1}:\n'
-        codigo += bloque_if
-
-        if self.bloque_else != None:
-            etq3 = controlador.Generador3D.obtenerEtiqueta()
-            codigo += f'\tgoto {etq3};\n'
-
-        codigo += f'\t{etq2}:\n'
-
-        if self.bloque_else != None:
-            ts_local2 = TablaDeSimbolos(ts, "If" + str(id(self)))
-            bloque_else = self.Recorrer_ins(controlador, ts_local2, self.bloque_else)
-            codigo += bloque_else
-            codigo += f'\t{etq3}:\n'
 
 
-        #cabiar
-        controlador.Generador3D.agregarInstruccion(codigo)
+        codigo += return_exp1.codigo
+        codigo += f'\t{return_exp1.etiquetaV}:\n'
+        ts_local = TablaDeSimbolos(ts, "If" + str(id(self)))
+        codigo += self.Recorrer_ins(controlador,ts_local,self.bloque_if)
+        codigo += f'\tgoto {etqSalida};\n'
+        codigo += f'\t{return_exp1.etiquetaF}:\n'
+
+        if self.bloques_elif != None:
+            contador = 0
+            for insElseif in self.bloques_elif:
+
+                insElseif.etiquetaV = controlador.Generador3D.obtenerEtiqueta()
+                insElseif.etiquetaF = controlador.Generador3D.obtenerEtiqueta()
+
+                expElseif = insElseif.Obtener3D(controlador,ts)
+                codigo += "\n\n"
+                codigo += expElseif.codigo
+                codigo += f'\t{expElseif.etiquetaV}:\n'
+                ts_localElif  = TablaDeSimbolos(ts, "ElIf" + str(id(self)) + str(contador))
+                codigo += self.Recorrer_ins(controlador, ts_localElif, insElseif.bloque_if)
+                codigo += f'\tgoto {etqSalida};\n'
+                codigo += f'\t{expElseif.etiquetaF}:\n'
+                contador += 1
+
+        if self.bloque_else!= None:
+            ts_localElse = TablaDeSimbolos(ts, "Else" + str(id(self)))
+            codigo += self.Recorrer_ins(controlador, ts_localElse, self.bloque_else)
+
+        codigo += f'\t{etqSalida}: \n'
+        return codigo
 
 
 
     def Recorrer_ins(self,controlador,ts,lista):
-        codigo = None
+        codigo = ""
         for instruccion in lista:
             #try:
-                codigo = instruccion.Ejecutar3D(controlador, ts)
-                return codigo
+                codigo += instruccion.Ejecutar3D(controlador, ts)
+                print(codigo)
+                print(instruccion)
+        return codigo
             #except:
             #    print("Erro en if")
 

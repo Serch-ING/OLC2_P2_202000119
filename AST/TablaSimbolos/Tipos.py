@@ -28,6 +28,8 @@ class RetornoType():
         self.codigo = ""
         self.etiqueta = ""
         self.temporal = ""
+        self.etiquetaV = ""
+        self.etiquetaF = ""
 
     def iniciarRetorno(self,codigo, etiqueta, temporal,tipo):
         self.codigo = codigo

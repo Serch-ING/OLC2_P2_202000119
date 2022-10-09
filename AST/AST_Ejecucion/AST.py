@@ -35,12 +35,16 @@ class AST(Intruccion):
                 if isinstance(intruccion,Funcion.Funcion):
                         funcion = intruccion
                         funcion.agregarFuncion(ts)
+
                 elif isinstance(intruccion, DeclararStruct):
                     structt = intruccion
                     structt.GuardarStruct(ts)
 
             llamar_main = Llamada("main",[])
-            llamar_main.Ejecutar3D(controlador, ts)
+            codigomain = llamar_main.Ejecutar3D(controlador, ts)
+            print(codigomain)
+            controlador.Generador3D.agregarInstruccion(codigomain)
+
 
             print("======Termino=======")
             controlador.consola = controlador.Generador3D.generarMain()

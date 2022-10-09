@@ -14,7 +14,7 @@ class Llamada(Intruccion, Expresion):
 
     def Ejecutar3D(self, controlador, ts: TablaDeSimbolos):
         print("====Funcion=== como intruccion")
-        self.Obtener3D(controlador, ts)
+        return self.Obtener3D(controlador, ts)
 
 
     def Obtener3D(self, controlador, ts: TablaDeSimbolos):
@@ -41,7 +41,7 @@ class Llamada(Intruccion, Expresion):
 
                 codigo = simbolo_funcion.Ejecutar3D(controlador, ts_local)
 
-                return  codigo
+                return codigo
             else:
                 print("Aqui fallo2")
         else:

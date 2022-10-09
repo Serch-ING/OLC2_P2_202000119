@@ -22,7 +22,7 @@ class Identificador(Expresion):
             codigo += "/* ACCEDER ID */\n"
             codigo += f'\t{temp1} = SP + {existe_id.direccion};\n'
             codigo += f'\t{temp2} = Stack[(int){temp1}];\n'
-            controlador.Generador3D.agregarInstruccion(codigo)
+            #controlador.Generador3D.agregarInstruccion(codigo)
             retorno = RetornoType()
             retorno.iniciarRetorno(codigo,"",temp2,existe_id.tipo)
             return  retorno
