@@ -1,13 +1,6 @@
 fn main () {
-     let x1: i64 = 15;
-
-    if x1 % 2 == 0 {
-        println!(">>>>> numeroPar ingreso a if verdadero, {} es par",x1);
-    }
-    else {
-        println!(">>>>> numeroPar ingreso a if falso, {} no es par",x1);
-    }
-
+    let b:i64 = 100;
+    println!(" valor de b: {:?}",b);
 }
 
  

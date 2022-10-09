@@ -62,6 +62,47 @@ class Imprimir(Intruccion):
                     codigo += self.Codigofinal(retorno,controlador)
                     print("Print final: ", texto_salida)
                     return  codigo
+
+            if self.expresion.count("{:?}") > 0:
+                print(self.expresion)
+                formato_nomal = self.expresion.split("{:?}")
+                contador_nomal = self.expresion.count("{:?}")
+
+                if contador_nomal == len(self.lista):
+
+                    for i in range(0, len(formato_nomal)):
+                        texto_salida += str(formato_nomal[i])
+
+                        if i <= len(self.lista) - 1:
+                            try:
+
+                                if isinstance(self.lista[i], AccesoArreglo):
+                                    array = self.lista[i].ObtenerValor(controlador, ts)
+
+                                    if isinstance(array, RetornoType):
+                                        texto_salida += str(array.valor)
+
+                                elif isinstance(self.lista[i], Identificador):
+                                    valoid = self.lista[i].Obtener3D(controlador,ts)
+                                    codigo += valoid.codigo
+                                    texto_salida += self.addsimbolos(valoid.temporal,valoid.tipo)
+                                    print("")
+                                else:
+                                    #try:
+                                        ObtenerRetorno =  self.lista[i].Obtener3D(controlador,ts)
+                                        codigo += ObtenerRetorno.codigo
+                                        #controlador.Generador3D.agregarInstruccion(ObtenerRetorno.codigo)
+                                        texto_salida += self.addsimbolos(ObtenerRetorno.temporal , ObtenerRetorno.tipo)
+
+                                    #except:
+                                    #    texto_salida += self.addsimbolos(self.lista[i].valor,self.lista[i].tipo.tipo)
+                            except:
+                                print("Fallo en: ", self.lista[i])
+
+                    retorno = self.obtenerCadenaUnida(texto_salida, controlador)
+                    codigo += self.Codigofinal(retorno,controlador)
+                    print("Print final: ", texto_salida)
+                    return  codigo
         else:
 
             valorexp = self.expresion.Obtener3D(controlador, ts)
