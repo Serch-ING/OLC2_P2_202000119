@@ -1,13 +1,13 @@
 fn main () {
+     let x1: i64 = 15;
 
-        
-    if 2 > 1 && 2 == 2 {
-        let x = 1;
-	    println!("{}",x); 
-    }else{
-        let x = 2;
-	    println!("{}",x); 
+    if x1 % 2 == 0 {
+        println!(">>>>> numeroPar ingreso a if verdadero, {} es par",x1);
     }
+    else {
+        println!(">>>>> numeroPar ingreso a if falso, {} no es par",x1);
+    }
+
 }
 
  

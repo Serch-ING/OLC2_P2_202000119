@@ -30,7 +30,7 @@ class Declaracion(Intruccion):
                 ts.size += 1
 
                 newSimbolo = Simbolos()
-                newSimbolo.SimboloPremitivo(self.identificador.id, None, self.tipo, self.mut,sizeTabla)
+                newSimbolo.SimboloPremitivo(self.identificador.id,return_exp.valor, self.tipo, self.mut,sizeTabla)
                 ts.Agregar_Simbolo(self.identificador.id, newSimbolo)
                 return codigo
                 #controlador.Generador3D.agregarInstruccion(codigo)

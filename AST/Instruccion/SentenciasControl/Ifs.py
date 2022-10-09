@@ -36,15 +36,19 @@ class Ifs(Intruccion,Expresion):
                 insElseif.etiquetaV = controlador.Generador3D.obtenerEtiqueta()
                 insElseif.etiquetaF = controlador.Generador3D.obtenerEtiqueta()
 
-                expElseif = insElseif.Obtener3D(controlador,ts)
-                codigo += "\n\n"
-                codigo += expElseif.codigo
-                codigo += f'\t{expElseif.etiquetaV}:\n'
-                ts_localElif  = TablaDeSimbolos(ts, "ElIf" + str(id(self)) + str(contador))
-                codigo += self.Recorrer_ins(controlador, ts_localElif, insElseif.bloque_if)
-                codigo += f'\tgoto {etqSalida};\n'
-                codigo += f'\t{expElseif.etiquetaF}:\n'
+                ts_localElif = TablaDeSimbolos(ts, "ElIf" + str(id(self)) + str(contador))
+                expElseif = insElseif.Ejecutar3D(controlador,ts_localElif)
+                codigo += expElseif
                 contador += 1
+
+                #codigo += "\n\n"
+                #codigo += expElseif.codigo
+                #codigo += f'\t{expElseif.etiquetaV}:\n'
+                #ts_localElif  = TablaDeSimbolos(ts, "ElIf" + str(id(self)) + str(contador))
+                #codigo += self.Recorrer_ins(controlador, ts_localElif, insElseif.bloque_if)
+                #codigo += f'\tgoto {etqSalida};\n'
+                #codigo += f'\t{expElseif.etiquetaF}:\n'
+                #contador += 1
 
         if self.bloque_else!= None:
             ts_localElse = TablaDeSimbolos(ts, "Else" + str(id(self)))
@@ -58,13 +62,15 @@ class Ifs(Intruccion,Expresion):
     def Recorrer_ins(self,controlador,ts,lista):
         codigo = ""
         for instruccion in lista:
-            #try:
+            try:
                 codigo += instruccion.Ejecutar3D(controlador, ts)
+
+            except:
+                print("Erro en if")
                 print(codigo)
                 print(instruccion)
         return codigo
-            #except:
-            #    print("Erro en if")
+
 
 
     def Obtener3D(self, controlador, ts):

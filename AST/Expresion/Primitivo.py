@@ -8,11 +8,14 @@ class Primitivo(Expresion):
     def __init__(self, valor, tipo) :
         self.valor = valor
         self.tipo = Tipos(tipo)
+        self.etiquetaV = ""
+        self.etiquetaF = ""
 
     def Obtener3D(self, controlador, ts) -> RetornoType:
 
         temp = None
         codigo = ""
+        retorno = RetornoType(self.valor)
 
         if self.tipo.tipo == ttipo.ENTERO or  self.tipo.tipo == ttipo.DECIMAL:
             temp = controlador.Generador3D.obtenerTemporal()
@@ -20,10 +23,22 @@ class Primitivo(Expresion):
 
         elif self.tipo.tipo == ttipo.BOOLEANO:
             temp = controlador.Generador3D.obtenerTemporal()
-            if self.valor:
-                codigo = f'\t{temp} = {1};'
+
+            if self.etiquetaV != "" and self.valor == True:
+                codigo += f"goto {self.etiquetaV};\n"
+                retorno.etiquetaV = self.etiquetaV
+                retorno.etiquetaF = self.etiquetaF
+
+            elif self.etiquetaF != "" and self.valor == False:
+                codigo += f"goto {self.etiquetaF};\n"
+                retorno.etiquetaV = self.etiquetaV
+                retorno.etiquetaF = self.etiquetaF
+
             else:
-                codigo = f'\t{temp} = {0};'
+                if self.valor:
+                    codigo = f'\t{temp} = 1;'
+                else:
+                    codigo = f'\t{temp} = 0;'
 
         elif self.tipo.tipo != ttipo.STRING or self.tipo.tipo != ttipo.DIRSTRING or self.tipo.tipo != ttipo.CARACTER:
 
@@ -38,7 +53,7 @@ class Primitivo(Expresion):
             codigo += f'\tHeap[HP] = 0;\n'
             codigo += f'\tHP = HP +1;\n'
 
-        retorno = RetornoType(self.valor)
+
         retorno.iniciarRetorno(codigo,None,temp,self.tipo.tipo)
         return retorno
 

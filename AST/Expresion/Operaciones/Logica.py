@@ -64,27 +64,20 @@ class Logica(Operacion, Expresion):
 
         else:
             if self.operador == operador.NOT:
+                self.exp1.etiquetaV = self.etiquetaF
+                self.exp1.etiquetaF = self.etiquetaV
+
                 return_exp1: RetornoType = self.exp1.Obtener3D(controlador, ts)
                 tipo_exp1 = return_exp1.tipo
                 valor_exp1 = return_exp1.valor
 
                 if tipo_exp1 == tipo.BOOLEANO:
 
-                    codigo = "/*NOT*/\n"
-                    temp1 = controlador.Generador3D.obtenerTemporal()
-                    etq1 = controlador.Generador3D.obtenerEtiqueta()
-                    etq2 = controlador.Generador3D.obtenerEtiqueta()
-                    etq3 = controlador.Generador3D.obtenerEtiqueta()
-                    codigo += f'\tif ({return_exp1.temporal} == {1}) goto {etq1};\n'
-                    codigo += f'\tgoto {etq2};\n'
-                    codigo += f'\t{etq1}:\n'
-                    codigo += f'\t{temp1} = 0;\n'
-                    codigo += f'\tgoto {etq3};\n'
-                    codigo += f'\t{etq2}:\n'
-                    codigo += f'\t{temp1} = 1;\n'
-                    codigo += f'\t{etq3}:\n'
+                    codigo += return_exp1.codigo + "\n"
 
                     retorno = RetornoType(not valor_exp1)
-                    retorno.iniciarRetorno(codigo, "", temp1, tipo_exp1)
+                    retorno.iniciarRetorno(codigo, "", "", tipo_exp1)
+                    retorno.etiquetaF = self.etiquetaF
+                    retorno.etiquetaV = self.etiquetaV
                     return retorno
 
