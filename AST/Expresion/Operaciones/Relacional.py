@@ -20,9 +20,6 @@ class Relacional(Operacion, Expresion):
         tipo_exp1 = return_exp1.tipo
         tipo_exp2 = return_exp2.tipo
 
-        temp_exp1 = return_exp1.temporal
-        temp_exp2 = return_exp2.temporal
-
         codigo = ""
 
         if self.operador == operador.MAYORIGUAL:
