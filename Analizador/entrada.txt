@@ -1,7 +1,6 @@
 fn main () {
-	
-    let mut a: i64 = 0;
-	a = -1;
+ let mut a: i64 = 909;
+a = -1;
     while (a < 5) {
         a = a + 1;
         if a == 3 {
@@ -14,8 +13,6 @@ fn main () {
 
         println!("El valor de a es: {}, ", a);
     }
-
-   
-
-
+println!("Se debió imprimir");
+    
 }
