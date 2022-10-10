@@ -1,38 +1,57 @@
 from AST.Abstracto.Instruccion import Intruccion
 from AST.TablaSimbolos.Tipos import tipo,RetornoType
 from AST.TablaSimbolos.TablaSimbolos import TablaDeSimbolos
+from AST.Instruccion.SentenciasControl.Ifs import Ifs
+from AST.Instruccion.SentenciasTranferencia.Break import Break
+from AST.Instruccion.SentenciasTranferencia.Continue import Continue
 
 class While(Intruccion):
     def __init__(self,expresion,lista_instrucciones):
-        self.expresion = expresion
+        self.condicion = expresion
         self.lista_instrucciones = lista_instrucciones
+        self.etqE = ""
+        self.etqS = ""
 
     def Ejecutar3D(self, controlador, ts):
-        return_exp: RetornoType = self.expresion.Obtener3D(controlador, ts)
-        valor_Exp = return_exp.valor
-        tipo_Exp = return_exp.tipo
 
-        if tipo_Exp == tipo.BOOLEANO:
-            if valor_Exp:
-                #try:
-                    while self.expresion.Obtener3D(controlador, ts).valor:
-                        ts_local = TablaDeSimbolos(ts, "While" + str(id(self)))
 
-                        for instruccion in self.lista_instrucciones:
-                            retorno = instruccion.Ejecutar3D(controlador, ts_local)
+        codigo = "/* WHILE instruccion */\n"
 
-                            if retorno is not None:
-                                if isinstance(retorno,RetornoType):
-                                    if retorno.final == tipo.BREAK:
-                                        if retorno.tipo != tipo.UNDEFINED:
-                                            print("Se intento regresar dato con break")
+        self.condicion.etiquetaV = controlador.Generador3D.obtenerEtiqueta()
+        self.condicion.etiquetaF = controlador.Generador3D.obtenerEtiqueta()
+        return_exp1: RetornoType = self.condicion.Obtener3D(controlador, ts)
 
-                                        return None
+        etqWhile = controlador.Generador3D.obtenerEtiqueta()
+        self.etqE= etqWhile
+        self.etqS=return_exp1.etiquetaF
+        codigo += f'{etqWhile}:\n'
+        codigo += return_exp1.codigo
+        codigo += f'\t{return_exp1.etiquetaV}:\n'
 
-                                    if retorno.final == tipo.CONTINUE:
-                                        break
+        ts_local = TablaDeSimbolos(ts, "While" + str(id(self)))
+        codigo += self.Recorrer_ins(controlador, ts_local, self.lista_instrucciones)
 
-                                    return retorno
-                #except:
-                #    print("Error en el While")
+        codigo += f'\tgoto {etqWhile};\n'
+        codigo += f'\t{return_exp1.etiquetaF}:\n'
+
+        return codigo
+
+
+    def Recorrer_ins(self,controlador,ts,lista):
+        codigo = ""
+        for instruccion in lista:
+            if isinstance(instruccion,Ifs):
+                instruccion.etqE = self.etqE
+                instruccion.etqS = self.etqS
+
+            if isinstance(instruccion,Break):
+                instruccion.etq = self.etqS
+
+            if isinstance(instruccion, Continue):
+                instruccion.etq = self.etqE
+
+            codigo += instruccion.Ejecutar3D(controlador, ts)
+
+        return codigo
+
 

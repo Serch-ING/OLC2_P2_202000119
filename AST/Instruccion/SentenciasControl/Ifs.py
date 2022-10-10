@@ -3,6 +3,8 @@ from AST.Abstracto.Expresion import Expresion
 from AST.TablaSimbolos.Tipos import tipo,RetornoType
 from AST.TablaSimbolos.TablaSimbolos import TablaDeSimbolos
 from Analizador.Gramatica import E_list
+from AST.Instruccion.SentenciasTranferencia.Break import Break
+from AST.Instruccion.SentenciasTranferencia.Continue import Continue
 
 class Ifs(Intruccion,Expresion):
 
@@ -11,6 +13,8 @@ class Ifs(Intruccion,Expresion):
         self.bloque_if = bloque_if
         self.bloque_else = bloque_else
         self.bloques_elif = bloques_elif
+        self.etqE = ""
+        self.etqS = ""
 
     def Ejecutar3D(self, controlador, ts):
         print("If como  instruccion")
@@ -30,25 +34,18 @@ class Ifs(Intruccion,Expresion):
         codigo += f'\t{return_exp1.etiquetaF}:\n'
 
         if self.bloques_elif != None:
-            contador = 0
             for insElseif in self.bloques_elif:
 
-                insElseif.etiquetaV = controlador.Generador3D.obtenerEtiqueta()
-                insElseif.etiquetaF = controlador.Generador3D.obtenerEtiqueta()
+                insElseif.condicion.etiquetaV = controlador.Generador3D.obtenerEtiqueta()
+                insElseif.condicion.etiquetaF = controlador.Generador3D.obtenerEtiqueta()
+                return_expElif: RetornoType = insElseif.condicion.Obtener3D(controlador, ts)
 
-                ts_localElif = TablaDeSimbolos(ts, "ElIf" + str(id(self)) + str(contador))
-                expElseif = insElseif.Ejecutar3D(controlador,ts_localElif)
-                codigo += expElseif
-                contador += 1
-
-                #codigo += "\n\n"
-                #codigo += expElseif.codigo
-                #codigo += f'\t{expElseif.etiquetaV}:\n'
-                #ts_localElif  = TablaDeSimbolos(ts, "ElIf" + str(id(self)) + str(contador))
-                #codigo += self.Recorrer_ins(controlador, ts_localElif, insElseif.bloque_if)
-                #codigo += f'\tgoto {etqSalida};\n'
-                #codigo += f'\t{expElseif.etiquetaF}:\n'
-                #contador += 1
+                codigo += return_expElif.codigo
+                codigo += f'\t{return_expElif.etiquetaV}:\n'
+                ts_localElif = TablaDeSimbolos(ts, "ElIf" + str(id(insElseif)))
+                codigo += self.Recorrer_ins(controlador, ts_localElif, insElseif.bloque_if)
+                codigo += f'\tgoto {etqSalida};\n'
+                codigo += f'\t{return_expElif.etiquetaF}:\n'
 
         if self.bloque_else!= None:
             ts_localElse = TablaDeSimbolos(ts, "Else" + str(id(self)))
@@ -58,20 +55,21 @@ class Ifs(Intruccion,Expresion):
         return codigo
 
 
-
     def Recorrer_ins(self,controlador,ts,lista):
         codigo = ""
         for instruccion in lista:
-            try:
-                codigo += instruccion.Ejecutar3D(controlador, ts)
+            if isinstance(instruccion, Ifs):
+                instruccion.etqE = self.etqE
+                instruccion.etqS = self.etqS
 
-            except:
-                print("Erro en if")
-                print(codigo)
-                print(instruccion)
+            if isinstance(instruccion, Break):
+                instruccion.etq = self.etqS
+
+            if isinstance(instruccion, Continue):
+                instruccion.etq = self.etqE
+
+            codigo += instruccion.Ejecutar3D(controlador, ts)
         return codigo
-
-
 
     def Obtener3D(self, controlador, ts):
         print("If como  expresion")
@@ -104,7 +102,7 @@ class Ifs(Intruccion,Expresion):
                     return self.Recorrer_exp_val(controlador, ts_local, self.bloque_else)
 
     def Recorrer_exp_val(self,controlador,ts,lista):
-        retorno = None
+        #retorno = ""
         for instruccion in lista:
             try:
                 retorno:RetornoType = instruccion.Obtener3D(controlador, ts)
@@ -114,6 +112,7 @@ class Ifs(Intruccion,Expresion):
                     if isinstance(retorno,RetornoType):
                         return retorno
 
-        return retorno
+        #return retorno
+        return ""
 
 

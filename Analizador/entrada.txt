@@ -1,6 +1,21 @@
 fn main () {
-    let b:i64 = 100;
-    println!(" valor de b: {:?}",b);
-}
+	
+    let mut a: i64 = 0;
+	a = -1;
+    while (a < 5) {
+        a = a + 1;
+        if a == 3 {
+            println!("a");
+            continue;
+        } else if a == 4 {
+            println!("b");
+            break;
+        } 
 
- 
+        println!("El valor de a es: {}, ", a);
+    }
+
+   
+
+
+}
