@@ -13,8 +13,13 @@ class DeclaracionArreglo(Intruccion):
         self.tipo = None
 
     def Ejecutar3D(self, controlador, ts):
+        sizeTabla = ts.size
+        ts.size += 1
+
         print(Fore.BLUE + Style.BRIGHT + "Llegpo a declaracion arreglo" + Style.RESET_ALL)
         Exp_arreglo: RetornoType = self.expresion.Obtener3D(controlador, ts)
+
+
 
         if self.dimensiones is not None:
             self.tipo = self.dimensiones.pop(0)
@@ -48,9 +53,10 @@ class DeclaracionArreglo(Intruccion):
             objetoArreglo = Exp_arreglo.valor
             self.tipo =  objetoArreglo.tipo
             objetoArreglo.identificador = self.identificador
+            objetoArreglo.direccion = sizeTabla
             ts.Agregar_Simbolo(self.identificador, objetoArreglo)
             ts.Print_Table()
-
+            return Exp_arreglo.codigo
 
 
             print("=== Sin valores")

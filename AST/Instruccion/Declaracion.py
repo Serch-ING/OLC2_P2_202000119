@@ -16,9 +16,26 @@ class Declaracion(Intruccion):
 
     def Ejecutar3D(self, controlador, ts):
         print(" ==== Declarar === ",self.expresion)
+        codigo = ""
         if self.expresion is not None:
             return_exp: RetornoType = self.expresion.Obtener3D(controlador, ts)
-            codigo = ""
+
+            try:
+                ValorExpresion = return_exp.valor
+                TipoExpresion = return_exp.tipo
+                if TipoExpresion == tipo.ARRAY:
+                    declaracion_arreglo = DeclaracionArreglo(self.mut, self.identificador.id, None, self.expresion)
+                    return declaracion_arreglo.Ejecutar3D(controlador, ts)
+
+                elif TipoExpresion == tipo.VECTOR:
+                    declaracion_vector = DeclaracionVector(self.identificador.id, self.expresion, self.tipo, self.mut)
+                    return  declaracion_vector.Ejecutar3D(controlador, ts)
+                elif TipoExpresion == tipo.STRUCT:
+                    ts.Agregar_Simbolo(self.identificador.id, return_exp)
+                    return None
+            except:
+                print("Declaracion no se esta recuperando un dato")
+                return None
 
             if self.tipo is not None:
                 sizeTabla = ts.size
@@ -56,35 +73,38 @@ class Declaracion(Intruccion):
         else:
 
             if self.tipo is not None:
-
+                sizeTabla = ts.size
+                newSimbolo = Simbolos()
                 if self.tipo == tipo.ENTERO:
-                    newSimbolo = Simbolos()
-                    newSimbolo.SimboloPremitivo(self.identificador.id, 0, self.tipo, self.mut)
+                    temp1 = controlador.Generador3D.obtenerTemporal()
+                    codigo += "/*Declaracion*/\n"
+                    codigo += f'\t{temp1} = SP + {sizeTabla};\n'
+                    codigo += f'\tStack[(int){temp1}] = 0;\n'
+                    ts.size += 1
+
+                    newSimbolo.SimboloPremitivo(self.identificador.id, 0, self.tipo, self.mut,sizeTabla)
                     ts.Agregar_Simbolo(self.identificador.id, newSimbolo)
+                    return  codigo
 
                 elif self.tipo == tipo.DECIMAL:
-                    newSimbolo = Simbolos()
-                    newSimbolo.SimboloPremitivo(self.identificador.id, 0.0, self.tipo, self.mut)
+                    newSimbolo.SimboloPremitivo(self.identificador.id, 0.0, self.tipo, self.mut,sizeTabla)
                     ts.Agregar_Simbolo(self.identificador.id, newSimbolo)
 
                 elif self.tipo == tipo.CARACTER:
-                    newSimbolo = Simbolos()
-                    newSimbolo.SimboloPremitivo(self.identificador.id, '', self.tipo, self.mut)
+                    newSimbolo.SimboloPremitivo(self.identificador.id, '', self.tipo, self.mut,sizeTabla)
                     ts.Agregar_Simbolo(self.identificador.id, newSimbolo)
 
                 elif self.tipo == tipo.STRING or self.tipo == tipo.DIRSTRING:
-                    newSimbolo = Simbolos()
-                    newSimbolo.SimboloPremitivo(self.identificador.id, "", self.tipo, self.mut)
+                    newSimbolo.SimboloPremitivo(self.identificador.id, "", self.tipo, self.mut,sizeTabla)
                     ts.Agregar_Simbolo(self.identificador.id, newSimbolo)
 
                 elif self.tipo == tipo.BOOLEANO:
-                    newSimbolo = Simbolos()
-                    newSimbolo.SimboloPremitivo(self.identificador.id, False, self.tipo, self.mut)
+                    newSimbolo.SimboloPremitivo(self.identificador.id, False, self.tipo, self.mut,sizeTabla)
                     ts.Agregar_Simbolo(self.identificador.id, newSimbolo)
 
             else:
                 newSimbolo = Simbolos()
-                newSimbolo.SimboloPremitivo(self.identificador.id, None, tipo.UNDEFINED, self.mut)
+                newSimbolo.SimboloPremitivo(self.identificador.id, None, tipo.UNDEFINED, self.mut,sizeTabla)
                 ts.Agregar_Simbolo(self.identificador.id, newSimbolo)
 
        # print("=== SE DECLARO LA VARIABLES === ", self.identificador.id)

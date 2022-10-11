@@ -6,8 +6,8 @@ from AST.TablaSimbolos.InstanciaVector import InstanciaVector
 from AST.Expresion.Identificador import Identificador
 from AST.Expresion.Arreglo.AccesoArreglo import AccesoArreglo
 from AST.Expresion.Struct.AccesoStruct import AccesoStruct
-
-
+from AST.Expresion.Operaciones.Relacional import Relacional
+from AST.Instruccion.Declaracion import  Declaracion
 class Imprimir(Intruccion):
 
     def __init__(self, expresion, tipo, lista):
@@ -33,19 +33,37 @@ class Imprimir(Intruccion):
                         texto_salida += str(formato_nomal[i])
 
                         if i <= len(self.lista) - 1:
-                            try:
+                            #try:
 
                                 if isinstance(self.lista[i], AccesoArreglo):
-                                    array = self.lista[i].ObtenerValor(controlador, ts)
-
-                                    if isinstance(array, RetornoType):
-                                        texto_salida += str(array.valor)
+                                    array = self.lista[i].Obtener3D(controlador, ts)
+                                    codigo += array.codigo
+                                    texto_salida += self.addsimbolos(array.temporal, array.tipo)
 
                                 elif isinstance(self.lista[i], Identificador):
                                     valoid = self.lista[i].Obtener3D(controlador,ts)
                                     codigo += valoid.codigo
                                     texto_salida += self.addsimbolos(valoid.temporal,valoid.tipo)
                                     print("")
+
+                                elif isinstance(self.lista[i], Relacional):
+
+                                    temp = controlador.Generador3D.obtenerTemporal()
+
+                                    etqSalida = controlador.Generador3D.obtenerEtiqueta()
+                                    self.lista[i].etiquetaV = controlador.Generador3D.obtenerEtiqueta()
+                                    self.lista[i].etiquetaF = controlador.Generador3D.obtenerEtiqueta()
+                                    ObtenerRetorno = self.lista[i].Obtener3D(controlador, ts)
+                                    codigo += ObtenerRetorno.codigo
+                                    codigo += f'\t{self.lista[i].etiquetaV }:\n'
+                                    codigo += f'\t{temp} = 1;\n'
+                                    codigo += f'\tgoto {etqSalida};\n'
+                                    codigo += f'\t{temp}  = 0;\n'
+                                    codigo += f'\t{self.lista[i].etiquetaF}:\n'
+                                    codigo += f'\t{etqSalida}:\n'
+
+                                    texto_salida += self.addsimbolos(temp, ObtenerRetorno.tipo)
+
                                 else:
                                     #try:
                                         ObtenerRetorno =  self.lista[i].Obtener3D(controlador,ts)
@@ -55,8 +73,8 @@ class Imprimir(Intruccion):
 
                                     #except:
                                     #    texto_salida += self.addsimbolos(self.lista[i].valor,self.lista[i].tipo.tipo)
-                            except:
-                                print("Fallo en: ", self.lista[i])
+                            #except:
+                            #    print("Fallo en: ", self.lista[i])
 
                     retorno = self.obtenerCadenaUnida(texto_salida, controlador)
                     codigo += self.Codigofinal(retorno,controlador)

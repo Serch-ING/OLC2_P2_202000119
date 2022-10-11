@@ -7,6 +7,23 @@ class Aritmetica(Operacion, Expresion):
     def __init__(self, exp1, signo, exp2, expU=False):
         super().__init__(exp1, signo, exp2, expU)
 
+    def operacionConcatenar(self, controlador, expresionRetorno):
+        codigo = ""
+
+        etiquetaCiclo = controlador.Generador3D.obtenerEtiqueta()
+        etiquetaSalida = controlador.Generador3D.obtenerEtiqueta()
+        CARACTER = controlador.Generador3D.obtenerTemporal()
+
+        codigo += f'{etiquetaCiclo}: \n'
+        codigo += f'{CARACTER} = Heap[(int){expresionRetorno.temporal}];\n'
+        codigo += f'if ( {CARACTER} == 0) goto {etiquetaSalida};\n'
+        codigo += f'     Heap[HP] = {CARACTER};\n'
+        codigo += f'     HP = HP + 1;\n'
+        codigo += f'     {expresionRetorno.temporal} = {expresionRetorno.temporal} + 1;\n'
+        codigo += f'     goto {etiquetaCiclo};\n'
+        codigo += f'{etiquetaSalida}:\n'
+        return codigo
+
     def Obtener3D(self, controlador, ts):
         codigo = "/*ARITMETICA*/\n"
         return_exp1: RetornoType = self.exp1.Obtener3D(controlador, ts)
@@ -21,14 +38,29 @@ class Aritmetica(Operacion, Expresion):
             exp2_temp = return_exp2.temporal
             valor_exp2 = return_exp2.valor
             codigo += return_exp2.codigo + "\n"
+            tipo_exp2 = return_exp2.tipo
 
             if self.operador == operador.SUMA:
+
                 codigo += "/*SUMA*/\n"
-                temp = controlador.Generador3D.obtenerTemporal()
-                codigo += f'\t{temp} = {exp1_temp} + {exp2_temp};\n'
-                retorno = RetornoType(valor_exp1+valor_exp2)
-                retorno.iniciarRetorno(codigo,"",temp,tipo_exp1)
-                return retorno
+                if tipo_exp1 == tipo.STRING and tipo_exp2 == tipo.DIRSTRING:
+                    temp = controlador.Generador3D.obtenerTemporal()
+
+                    codigo += f'{temp} = HP;\n'
+                    codigo += self.operacionConcatenar(controlador, return_exp1)
+                    codigo += self.operacionConcatenar(controlador, return_exp2)
+                    codigo += f'Heap[HP] = 0;\n'
+                    codigo += f'HP = HP + 1;\n'
+                    retorno = RetornoType(valor_exp1+valor_exp2)
+                    retorno.iniciarRetorno(codigo, "", temp, tipo.STRING)
+                    return retorno
+
+                else:
+                    temp = controlador.Generador3D.obtenerTemporal()
+                    codigo += f'\t{temp} = {exp1_temp} + {exp2_temp};\n'
+                    retorno = RetornoType(valor_exp1+valor_exp2)
+                    retorno.iniciarRetorno(codigo,"",temp,tipo_exp1)
+                    return retorno
 
             elif self.operador == operador.RESTA:
                 codigo += "/*RESTA*/\n"

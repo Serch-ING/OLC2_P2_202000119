@@ -49,8 +49,9 @@ class AccesoArreglo(Expresion,Intruccion):
 
             dimensiones = self.compilarDimensiones(controlador, ts)
 
-            valor = arreglo.Obtener3D(dimensiones, 0, arreglo.valores)
-            return RetornoType(valor, arreglo.tipo)
+            valor = arreglo.Obtener3D(dimensiones, 0, arreglo.valores,arreglo.direccion,controlador)
+            valor.tipo = arreglo.tipo
+            return valor
 
         else:
 

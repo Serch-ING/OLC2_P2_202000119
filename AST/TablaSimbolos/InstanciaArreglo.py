@@ -1,5 +1,5 @@
 from AST.TablaSimbolos.Simbolos import Simbolos
-
+from AST.TablaSimbolos.Tipos import RetornoType
 class InstanciaArreglo(Simbolos):
 
     def __init__(self,tipo, dimensiones, valores:[]):
@@ -28,8 +28,8 @@ class InstanciaArreglo(Simbolos):
 
                   valores[indiceDimension] = dato_new
 
-    def ObtenerValor(self, listaDimensiones, index, valores):
-
+    def Obtener3D(self, listaDimensiones, index, valores,direccion,controlador):
+        codigo = ""
         indiceDimension:int = listaDimensiones.pop(0)
         tamanoDimension:int = self.dimensiones[index]
 
@@ -41,11 +41,24 @@ class InstanciaArreglo(Simbolos):
             else:
 
                 subArreglo = valores[indiceDimension]
-                return self.ObtenerValor(listaDimensiones, index+1, subArreglo)
+                #return self.Obtener3D(listaDimensiones, index+1, subArreglo)
+                return ""
 
         else:
             if indiceDimension > (tamanoDimension-1):
                 return None
             else:
-                return valores[indiceDimension]
+                temp1 = controlador.Generador3D.obtenerTemporal()
+                temp2 = controlador.Generador3D.obtenerTemporal()
+                temp3 = controlador.Generador3D.obtenerTemporal()
+                temp4 = controlador.Generador3D.obtenerTemporal()
+
+                codigo += f'\t{temp1} = SP + {direccion};\n'
+                codigo += f'\t{temp2} = Stack[(int){temp1}];\n'
+                codigo += f'\t{temp3} = {temp2} + {indiceDimension+1};\n'
+                codigo += f'\t{temp4} = Heap[(int){temp3}];\n'
+                retorno = RetornoType(valores[indiceDimension])
+                retorno.iniciarRetorno(codigo,"",temp4,"")
+                #return valores[indiceDimension]
+                return retorno
 

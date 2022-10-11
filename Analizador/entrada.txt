@@ -1,18 +1,5 @@
 fn main () {
- let mut a: i64 = 909;
-a = -1;
-    while (a < 5) {
-        a = a + 1;
-        if a == 3 {
-            println!("a");
-            continue;
-        } else if a == 4 {
-            println!("b");
-            break;
-        } 
-
-        println!("El valor de a es: {}, ", a);
-    }
-println!("Se debió imprimir");
-    
+ 	let mut a: i64 = 909;
+    let arr = [1,2,3,4,5,6];
+	println!("{}",arr[4]);
 }

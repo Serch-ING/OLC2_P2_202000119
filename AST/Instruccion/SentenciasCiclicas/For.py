@@ -28,7 +28,47 @@ class For(Intruccion):
 
 
         if tipo_for == 1:
-                pass
+            declaracion = Declaracion(Identificador(self.ID_Iterable), None, tipo.ENTERO, True)
+            codigo += declaracion.Ejecutar3D(controlador, ts)
+
+            array = self.elementos[1].Obtener3D(controlador,ts)
+            codigo += array.codigo
+
+
+            temp1 = controlador.Generador3D.obtenerTemporal()
+            codigo += f'\t{temp1} = 1;\n'
+
+            Condicion = Relacional(Identificador(self.ID_Iterable), '<',Primitivo(array.valor.dimensiones[0], 'ENTERO') , False)
+            Condicion.etiquetaV = controlador.Generador3D.obtenerEtiqueta()
+            Condicion.etiquetaF = controlador.Generador3D.obtenerEtiqueta()
+            CondicionV = Condicion.Obtener3D(controlador, ts)
+
+            etqFor = controlador.Generador3D.obtenerEtiqueta()
+            self.etqE = etqFor
+            self.etqS = Condicion.etiquetaF
+
+            codigo += f'\t{etqFor}:\n'
+            temp2= controlador.Generador3D.obtenerTemporal()
+            codigo += f'\t{temp2} = {temp1} + {array.temporal};\n'
+
+            temp3 = controlador.Generador3D.obtenerTemporal()
+            codigo += f'\t{temp3} = Heap[(int){temp2}];\n'
+
+            temp4 = controlador.Generador3D.obtenerTemporal()
+            existe_id: Simbolos = ts.ObtenerSimbolo(self.ID_Iterable)
+            codigo += f'\t{temp4} = SP + {existe_id.direccion};\n'
+            codigo += f'\tStack[(int){temp4}] = {temp3};\n'
+
+            codigo += CondicionV.codigo
+            codigo += f'\t{Condicion.etiquetaV}:\n'
+
+            codigo += self.Recorrer_ins(controlador, ts, self.lista_instrucciones)
+            codigo += f'\t{temp1} = {temp1} + 1;\n'
+
+            codigo += f'\tgoto {etqFor};\n'
+            codigo += f'\t{self.etqS}:\n'
+
+            return  codigo
         elif tipo_for == 2:
             #parametro1 = self.elementos[1].Obtener3D(controlador, ts)
             parametro2 = self.elementos[2].Obtener3D(controlador, ts)
