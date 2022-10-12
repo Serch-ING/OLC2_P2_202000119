@@ -17,10 +17,17 @@ class Funcion(Intruccion):
         codigo = ""
         for instruccion in self.instrucciones:
             codigo += instruccion.Ejecutar3D(controlador, ts)
-        return codigo
+
+        #return codigo
 
         if self.tipo is not None:
-                print("####Se ejecuto pero esperaba retornar un dato ")
+            codigo += "\n\nSALIR: "
+
+        if self.identificador == "main":
+            controlador.Generador3D.agregarInstruccion(codigo)
+        else:
+
+            controlador.Generador3D.agregarFuncion(codigo, self.identificador)
 
     def agregarFuncion(self, ts: TablaDeSimbolos):
         print("================== Se guardo funcion ================ ", self.identificador)

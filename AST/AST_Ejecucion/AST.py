@@ -41,13 +41,7 @@ class AST(Intruccion):
                     structt.GuardarStruct(ts)
 
             llamar_main = Llamada("main",[])
-            codigomain = llamar_main.Ejecutar3D(controlador, ts)
-            print(codigomain)
-            controlador.Generador3D.agregarInstruccion(codigomain)
-
-
-
-
+            llamar_main.Ejecutar3D(controlador, ts)
 
             print("======Termino=======")
             controlador.consola = controlador.Generador3D.generarMain()
