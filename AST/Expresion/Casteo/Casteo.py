@@ -9,6 +9,7 @@ class Casteo(Expresion):
         self.tipo_destino = tipo_destino
 
     def Obtener3D(self, controlador, ts):
+        codigo = "/*Casteo*/\n"
         return_exp1: RetornoType = self.expresion.Obtener3D(controlador, ts)
         valor_exp1 = return_exp1.valor
         tipo_exp1 = return_exp1.tipo
@@ -18,7 +19,11 @@ class Casteo(Expresion):
                 return RetornoType(valor_exp1, tipo.ENTERO)
 
             elif self.tipo_destino == tipo.DECIMAL:
-                return RetornoType(float(valor_exp1), tipo.DECIMAL)
+                codigo += return_exp1.codigo
+                codigo += f'{return_exp1.temporal} = (float){return_exp1.temporal};\n'
+                retorno = RetornoType()
+                retorno.iniciarRetorno(codigo,"",return_exp1.temporal,tipo.DECIMAL)
+                return retorno
 
             elif self.tipo_destino == tipo.CARACTER:
                 return RetornoType(chr(valor_exp1), tipo.CARACTER)

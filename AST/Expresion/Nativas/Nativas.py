@@ -15,21 +15,32 @@ class Nativas(Expresion):
     def Obtener3D(self, controlador, ts):
         codigo = "/*Nativas*/\n"
         return_exp1: RetornoType = self.expresion.Obtener3D(controlador, ts)
-        valor_exp1 = return_exp1.valor
         tipo_exp1 = return_exp1.tipo
         print("=== exp === ", self.expresion)
-        print("=== exp valor === ",valor_exp1)
         print("=== exp tipo === ", tipo_exp1)
-        print("=== exp tipo py === ", type(valor_exp1))
         print("=== exp tipo py === ", type(2))
 
         if self.funcion == "abs()":
             if tipo_exp1 == tipo.ENTERO or tipo_exp1 == tipo.DECIMAL:
-                return RetornoType(abs(valor_exp1),tipo_exp1)
+                etq1 = controlador.Generador3D.obtenerEtiqueta()
+                etq2 = controlador.Generador3D.obtenerEtiqueta()
+                codigo += return_exp1.codigo
+                codigo += f'\tif ({return_exp1.temporal}<0) goto {etq1};\n'
+                codigo += f'\tgoto {etq2};\n'
+                codigo += f'\t{etq1}:\n'
+                codigo += f'\t{return_exp1.temporal} = {return_exp1.temporal} * -1;\n'
+                codigo += f'\t{etq2}:\n'
+                retorno = RetornoType()
+                retorno.iniciarRetorno(codigo,"",return_exp1.temporal,tipo_exp1)
+                return retorno
 
         elif self.funcion == "sqrt()":
             if tipo_exp1 == tipo.DECIMAL:
-                return RetornoType(math.sqrt(valor_exp1), tipo_exp1)
+                codigo += return_exp1.codigo
+                codigo += f'\t{return_exp1.temporal} = sqrt({return_exp1.temporal}) ;\n'
+                retorno = RetornoType()
+                retorno.iniciarRetorno(codigo, "", return_exp1.temporal, tipo_exp1)
+                return retorno
 
         elif self.funcion == "to_string()" or self.funcion == "to_owned()":
             if tipo_exp1 == tipo.DIRSTRING:
@@ -39,7 +50,7 @@ class Nativas(Expresion):
         elif self.funcion == "clone()":
             if tipo_exp1 == tipo.STRING:
                 tipo_exp1 = tipo.DIRSTRING
-            return RetornoType(copy.deepcopy(valor_exp1), tipo_exp1)
+            #return RetornoType(copy.deepcopy(valor_exp1), tipo_exp1)
 
         elif self.funcion == "len()":
             if isinstance(self.expresion,AccesoArreglo):
@@ -58,8 +69,8 @@ class Nativas(Expresion):
                     codigo += f'\n{temp3} = Heap[(int){temp2}];\n'
                     retorno = RetornoType()
                     retorno.iniciarRetorno(codigo,"",temp3,tipo.ENTERO)
-                    return  retorno
-                    #return RetornoType(len(return_exp1.valores), tipo.ENTERO)
+                    return retorno
+
 
 
 

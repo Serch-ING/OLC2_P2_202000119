@@ -75,8 +75,14 @@ class Logica(Operacion, Expresion):
 
                     codigo += return_exp1.codigo + "\n"
 
-                    retorno = RetornoType(not valor_exp1)
-                    retorno.iniciarRetorno(codigo, "", "", tipo_exp1)
+                    temporal = ""
+                    if return_exp1.temporal != "":
+                        codigo += f'{return_exp1.temporal} = !{return_exp1.temporal};\n'
+                        temporal = return_exp1.temporal
+
+
+                    retorno = RetornoType()
+                    retorno.iniciarRetorno(codigo, "", temporal, tipo_exp1)
                     retorno.etiquetaF = self.etiquetaF
                     retorno.etiquetaV = self.etiquetaV
                     return retorno
