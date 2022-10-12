@@ -10,15 +10,18 @@ class Return(Intruccion):
     def Ejecutar3D(self, controlador, ts):
         print(" Se encontro con un return: ", self.expresion)
         codigo = "/*Return*/\n"
+
         if self.expresion != None:
-            #valor_Exp: RetornoType = self.expresion.Obtener3D(controlador, ts)
-            #codigo += valor_Exp.codigo + "\n"
+            expvalor:RetornoType = self.expresion.Obtener3D(controlador,ts)
+            codigo += expvalor.codigo
+            tstemporal = ts
+            if tstemporal.padre.name != "Main":
+                tstemporal = tstemporal.padre
 
-            declaracion = Declaracion(Identificador("return"), self.expresion ,None,False,False)
-            declarcionFinal = declaracion.Ejecutar3D(controlador,ts)
-            codigo += declarcionFinal
+            temporal = "t" + tstemporal.name
+
+            codigo += f'\tStack[(int){temporal}]= {expvalor.temporal};\n'
             codigo += "goto SALIR;"
-
             return codigo
 
         else:

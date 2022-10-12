@@ -41,20 +41,22 @@ class Llamada(Intruccion, Expresion):
             simbolo_funcion: Funcion = ts.ObtenerSimbolo(self.identificador)
 
             if self.validar_parametros(self.parametos, simbolo_funcion.parametros, controlador, ts, ts_local):
-                if self.identificador != "main" :
-                    codigo += self.codigo
 
-                #codigo += simbolo_funcion.Ejecutar3D(controlador, ts_local)
-                simbolo_funcion.Ejecutar3D(controlador, ts_local)
-                return codigo
-                #if ts.name == "main":
-                #    controlador.Generador3D.agregarInstruccion(codigo)
-                #else:
-                #    controlador.Generador3D.agregarFuncion(codigo)
+                retorno = simbolo_funcion.Ejecutar3D(controlador, ts_local)
+                funcion = ts.ObtenerSimbolo(self.identificador)
 
+                if funcion.tipo is not None:
+                    retorno.codigo = self.codigo
+                    temp1 = controlador.Generador3D.obtenerTemporal()
+                    retorno.codigo += f'\t{temp1} = Stack[(int){retorno.temporal}];\n'
+                    retorno.temporal = temp1
+                else:
+                    retorno = RetornoType()
+                    retorno.iniciarRetorno(self.codigo,"","",None)
 
+                retorno.codigo += f'\tSP = SP - {ts.size};\n'
+                return retorno
 
-                #return codigo
             else:
                 print("Aqui fallo2")
         else:
@@ -78,7 +80,7 @@ class Llamada(Intruccion, Expresion):
                         temp2 = controlador.Generador3D.obtenerTemporal()
 
                         codigo += return_lla.codigo
-                        codigo += f'\t{temp1} = SP + {ts.size};\n'
+                        codigo += f'\n\t{temp1} = SP + {ts.size};\n'
                         codigo += f'\t{temp2} = {temp1} + {ts_local.size};\n'
                         codigo += f'\tStack[(int){temp2}]= {return_lla.temporal};\n'
 
@@ -92,7 +94,6 @@ class Llamada(Intruccion, Expresion):
 
             codigo += f'\tSP = SP + {ts.size};\n'
             codigo += f'\t{self.identificador}();\n'
-            codigo += f'\tSP = SP - {ts.size};\n'
             self.codigo += codigo
             return True
         else:

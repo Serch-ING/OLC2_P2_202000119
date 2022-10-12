@@ -3,6 +3,10 @@ from AST.TablaSimbolos.TablaSimbolos import TablaDeSimbolos
 from AST.TablaSimbolos.Tipos import RetornoType, tipo
 from AST.Expresion.Identificador import Identificador
 from Analizador.Gramatica import E_list
+from AST.Instruccion.Declaracion import Declaracion
+from AST.Expresion.Identificador import Identificador
+from AST.TablaSimbolos.TablaSimbolos import TablaDeSimbolos, Simbolos
+
 
 class Funcion(Intruccion):
 
@@ -15,6 +19,18 @@ class Funcion(Intruccion):
     def Ejecutar3D(self, controlador, ts):
         print("Intrucciones de : ", self.identificador)
         codigo = ""
+        temporal = ""
+        if self.tipo is not None:
+            temporal = "t" + ts.name
+            controlador.Generador3D.agregarReturn(temporal)
+            codigo += f'\t{temporal} = SP + {ts.size};\n'
+            #codigo += f'\tStack[(int){temp1}]= 0;\n'
+
+            simbolo = Simbolos()
+            simbolo.SimboloPremitivo("return", None, self.tipo, True, ts.size)
+            ts.Agregar_Simbolo("return", simbolo)
+            ts.size += 1
+
         for instruccion in self.instrucciones:
             codigo += instruccion.Ejecutar3D(controlador, ts)
 
@@ -23,11 +39,18 @@ class Funcion(Intruccion):
         if self.tipo is not None:
             codigo += "\n\nSALIR: "
 
-        if self.identificador == "main":
-            controlador.Generador3D.agregarInstruccion(codigo)
-        else:
 
+        if self.identificador == "main":
+            retorno = RetornoType()
+            retorno.iniciarRetorno("","","",None)
+            controlador.Generador3D.agregarInstruccion(codigo)
+            return None
+
+        else:
             controlador.Generador3D.agregarFuncion(codigo, self.identificador)
+            retorno = RetornoType()
+            retorno.iniciarRetorno("", "", temporal, self.tipo)
+            return retorno
 
     def agregarFuncion(self, ts: TablaDeSimbolos):
         print("================== Se guardo funcion ================ ", self.identificador)

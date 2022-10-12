@@ -7,6 +7,7 @@ class Generador3D:
         self.main = ""
         self.funciones = ""
         self.listafunciones = []
+        self.listareturn = []
 
     def obtenerTemporal(self):
         #retorna cadena
@@ -15,12 +16,15 @@ class Generador3D:
         return temp
 
     def addIntruccion(self,codigo):
-        self.codigo  += codigo + '\n'
+        self.codigo += codigo + '\n'
 
     def obtenerEtiqueta(self):
         et = "L"+str(self.etiquetas)
         self.etiquetas += 1
         return et
+
+    def agregarReturn(self,nombre):
+        self.listareturn.append(nombre)
 
     def generarEncabezado(self):
         encabezado = ""
@@ -44,6 +48,15 @@ int HP = 0;\n"""
                 encabezado += ","
 
         if self.temporales > 0:
+            encabezado += "; \n\n"
+
+        if len(self.listareturn) > 0:
+            encabezado += "float "
+            for i in range(0, len(self.listareturn)):
+                if i == len(self.listareturn) - 1:
+                    encabezado += self.listareturn[i]
+                else:
+                    encabezado += self.listareturn[i] + ","
             encabezado += "; \n\n"
 
         return encabezado
