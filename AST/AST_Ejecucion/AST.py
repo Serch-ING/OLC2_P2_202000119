@@ -51,7 +51,7 @@ class AST(Intruccion):
 
             print("======Termino=======")
             controlador.consola = controlador.Generador3D.generarMain()
-            controlador.consola +=  """void mostarlista(float arreglo[10000]){
+            controlador.consola +=  """\n\nvoid mostarlista(float arreglo[10000]){
                 int contador = 0;
                 cout << "----------------Division-----------------" << endl;
                 while (contador<1000){

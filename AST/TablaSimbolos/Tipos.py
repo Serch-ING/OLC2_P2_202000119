@@ -31,8 +31,17 @@ class RetornoType():
         self.etiquetaV = ""
         self.etiquetaF = ""
 
+        self.codigotemp= ""
+
     def iniciarRetorno(self,codigo, etiqueta, temporal,tipo):
         self.codigo = codigo
+        self.etiqueta = etiqueta
+        self.temporal = temporal
+        self.tipo = tipo
+
+    def iniciarRetornoArreglo(self,codigo,codigotemp, etiqueta, temporal,tipo):
+        self.codigo = codigo
+        self.codigotemp =codigotemp
         self.etiqueta = etiqueta
         self.temporal = temporal
         self.tipo = tipo

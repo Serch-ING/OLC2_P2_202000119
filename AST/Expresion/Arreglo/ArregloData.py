@@ -11,7 +11,8 @@ class ArregloData(Expresion):
     def Obtener3D(self, controlador, ts):
         print("=== Llego a arreglo data")
         codigo = ""
-        tipo = t.UNDEFINED
+        codigotemp = ""
+        codigotempOtros = ""
         expresionesCompiladas = []
         listatemporales = []
 
@@ -19,18 +20,12 @@ class ArregloData(Expresion):
         for i in range(0, len(self.expresiones)):
             expresion = self.expresiones[i]
             valorExpresion = expresion.Obtener3D(controlador, ts)
-            codigo += valorExpresion.codigo
-            listatemporales.append(valorExpresion.temporal)
-            if i == 0:
-                tipo = valorExpresion.tipo
-                expresionesCompiladas.append(valorExpresion)
-            else:
-                if tipo != valorExpresion.tipo:
-                    print("Error")
-                else:
-                    expresionesCompiladas.append(valorExpresion)
 
-        # ahora creamos la data
+            codigo += valorExpresion.codigo
+            codigotempOtros += valorExpresion.codigotemp
+            listatemporales.append(valorExpresion.temporal)
+            expresionesCompiladas.append(valorExpresion)
+
 
         listaDimensiones = []
         valores = []
@@ -38,11 +33,9 @@ class ArregloData(Expresion):
         tipoFinal = t.UNDEFINED
 
         temp = controlador.Generador3D.obtenerTemporal()
-
-
-        codigo += f'\t{temp} = HP;\n'
-        codigo += f'\tHeap[HP] = {len(expresionesCompiladas)};\n'
-        codigo += f'\tHP = HP +1;\n'
+        codigotemp += f'\t{temp} = HP;\n'
+        codigotemp += f'\tHeap[HP] = {len(expresionesCompiladas)};\n'
+        codigotemp += f'\tHP = HP +1;\n'
 
         for i in range(0, len(expresionesCompiladas)):
             expresionCompilada = expresionesCompiladas[i]
@@ -50,24 +43,28 @@ class ArregloData(Expresion):
             if expresionCompilada.tipo != t.ARRAY:
                 tipoFinal = expresionCompilada.tipo
                 valores.append(expresionCompilada.valor)
-
-                codigo += f'\tHeap[HP] = {listatemporales[i]};\n'
-                codigo += f'\tHP = HP +1;\n'
+                codigotemp += f'\tHeap[HP] = {listatemporales[i]};\n'
+                codigotemp += f'\tHP = HP +1;\n'
                 continue
-
             else:
                 instanciaArray = expresionCompilada.valor
                 if i == 0:
                     tipoFinal = instanciaArray.tipo
                     listaDimensiones.extend(instanciaArray.dimensiones)
-                else:
-                    if instanciaArray.tipo != tipoFinal: return RetornoType()
-
                 valores.insert(i, instanciaArray.valores)
+                codigotemp += f'\tHeap[HP] = {len(listatemporales)*(i+1)-1*(i+1)} + HP;\n'
+
+                codigotemp += f'\tHP = HP +1;\n'
+
+
+
+        if codigotempOtros!= "":
+            codigo = codigo + codigotemp + codigotempOtros
 
         instanciaArrayRetorno = InstanciaArreglo(tipoFinal, listaDimensiones, valores)
         retorno = RetornoType(instanciaArrayRetorno, t.ARRAY)
-        retorno.iniciarRetorno(codigo,"",temp,t.ARRAY)
+        retorno.iniciarRetornoArreglo(codigo,codigotemp,"",temp,t.ARRAY)
+
 
         return retorno
 

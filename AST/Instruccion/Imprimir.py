@@ -17,7 +17,7 @@ class Imprimir(Intruccion):
 
     def Ejecutar3D(self, controlador, ts):
         listarelacionales = []
-        codigo = ""
+        codigo = "/*Acceso imprimir*/\n"
 
         if len(self.lista) > 0:
             texto_salida = ""

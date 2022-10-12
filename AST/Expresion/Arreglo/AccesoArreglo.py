@@ -51,18 +51,9 @@ class AccesoArreglo(Expresion,Intruccion):
 
             dimensiones = self.compilarDimensiones(controlador, ts)
 
-            valor = arreglo.Obtener3D(dimensiones, 0, arreglo.valores,arreglo.direccion,controlador)
-            valor.tipo = arreglo.tipo
+            valor = arreglo.Obtener3D(dimensiones, 0, arreglo.valores,arreglo.direccion,controlador,self.temporales)
             valor.codigo = self.codigo + valor.codigo
-            lattemp = ""
-            for x in self.temporales:
-                temp1 = controlador.Generador3D.obtenerTemporal()
-                valor.codigo += f'\t{temp1} = {valor.temporal} + {x};\n'
-                lattemp = temp1
-            temp2 = controlador.Generador3D.obtenerTemporal()
-            valor.codigo += f'\t{ temp2 } = Heap[(int){lattemp}];\n'
-            valor.temporal = temp2
-
+            valor.tipo = arreglo.tipo
             return valor
 
         else:

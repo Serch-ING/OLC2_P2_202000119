@@ -15,7 +15,7 @@ class DeclaracionArreglo(Intruccion):
         self.expfinal =expfinal
 
     def Ejecutar3D(self, controlador, ts):
-
+        codigo = ""
 
         print(Fore.BLUE + Style.BRIGHT + "Llegpo a declaracion arreglo" + Style.RESET_ALL)
         if self.expfinal is not None:
@@ -27,28 +27,23 @@ class DeclaracionArreglo(Intruccion):
 
         if self.dimensiones is not None:
             self.tipo = self.dimensiones.pop(0)
-            print("dimesiones, ",self.dimensiones)
-            if Exp_arreglo.tipo != tipo.ARRAY:
-                return
 
             objetoArreglo = Exp_arreglo.valor
-
-            if objetoArreglo.tipo != self.tipo:
-                return
-
-
-            i = len(objetoArreglo.dimensiones)-1
             objetoArreglo.identificador = self.identificador
-
-            for x in self.dimensiones:
-                if x.valor != objetoArreglo.dimensiones[i]:
-                    print("ERROR")
-                    return
-                i -= 1
             objetoArreglo.mut = self.mutable
+
+            sizeTabla = ts.size
+            temp1 = controlador.Generador3D.obtenerTemporal()
+            codigo += "/*Declaracion*/\n"
+            codigo += Exp_arreglo.codigo + "\n"
+            codigo += f'\t{temp1} = SP + {sizeTabla};\n'
+            codigo += f'\tStack[(int){temp1}] = {Exp_arreglo.temporal};\n'
+            ts.size += 1
+
+            objetoArreglo.direccion = sizeTabla
             ts.Agregar_Simbolo(self.identificador,objetoArreglo)
             ts.Print_Table()
-
+            return codigo
         else:
 
             if Exp_arreglo.tipo != tipo.ARRAY:
@@ -66,8 +61,5 @@ class DeclaracionArreglo(Intruccion):
             objetoArreglo.direccion = sizeTabla
             ts.Agregar_Simbolo(self.identificador, objetoArreglo)
             ts.Print_Table()
-
-
-
             return Exp_arreglo.codigo
 

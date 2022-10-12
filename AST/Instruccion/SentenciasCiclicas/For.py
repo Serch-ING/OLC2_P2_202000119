@@ -32,6 +32,7 @@ class For(Intruccion):
             codigo += declaracion.Ejecutar3D(controlador, ts)
 
             array = self.elementos[1].Obtener3D(controlador,ts)
+            array.codigo += array.codigotemp
             codigo += array.codigo
 
 
