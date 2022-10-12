@@ -13,12 +13,14 @@ class ArregloData(Expresion):
         codigo = ""
         tipo = t.UNDEFINED
         expresionesCompiladas = []
+        listatemporales = []
 
         # COMPILAR EXPRESIONES, OBTENER TAMAÑO DE CADA DIMENSION Y VALIDAR CONGRUENCIA DE TIPOS
         for i in range(0, len(self.expresiones)):
             expresion = self.expresiones[i]
             valorExpresion = expresion.Obtener3D(controlador, ts)
-
+            codigo += valorExpresion.codigo
+            listatemporales.append(valorExpresion.temporal)
             if i == 0:
                 tipo = valorExpresion.tipo
                 expresionesCompiladas.append(valorExpresion)
@@ -36,6 +38,8 @@ class ArregloData(Expresion):
         tipoFinal = t.UNDEFINED
 
         temp = controlador.Generador3D.obtenerTemporal()
+
+
         codigo += f'\t{temp} = HP;\n'
         codigo += f'\tHeap[HP] = {len(expresionesCompiladas)};\n'
         codigo += f'\tHP = HP +1;\n'
@@ -47,7 +51,7 @@ class ArregloData(Expresion):
                 tipoFinal = expresionCompilada.tipo
                 valores.append(expresionCompilada.valor)
 
-                codigo += f'\tHeap[HP] = {expresionCompilada.valor};\n'
+                codigo += f'\tHeap[HP] = {listatemporales[i]};\n'
                 codigo += f'\tHP = HP +1;\n'
                 continue
 

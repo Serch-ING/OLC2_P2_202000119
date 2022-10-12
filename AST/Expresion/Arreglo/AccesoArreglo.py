@@ -4,12 +4,14 @@ from AST.TablaSimbolos.Tipos import RetornoType,tipo
 from AST.TablaSimbolos.InstanciaArreglo import InstanciaArreglo
 from AST.TablaSimbolos.TablaSimbolos import TablaDeSimbolos
 from AST.TablaSimbolos.InstanciaVector import InstanciaVector
-
+from AST.Expresion.Identificador import Identificador
 class AccesoArreglo(Expresion,Intruccion):
     def __init__(self, idArreglo, listaExpresiones, valor = None):
         self.idArreglo = idArreglo
         self.listaExpresiones = listaExpresiones
         self.valor = valor
+        self.codigo = ""
+        self.temporales = []
 
     def Ejecutar3D(self, controlador, ts):
 
@@ -33,7 +35,7 @@ class AccesoArreglo(Expresion,Intruccion):
 
 
     def Obtener3D(self, controlador, ts:TablaDeSimbolos) -> RetornoType:
-        #print("Llego a accesoL ",self.idArreglo, " lista dimensiones: ",self.listaExpresiones)
+        print("Llego a accesoL ",self.idArreglo, " lista dimensiones: ",self.listaExpresiones)
         #ts.Print_Table()
         #ts.padre.Print_Table()
         if ts.Existe_id(self.idArreglo) is not True:
@@ -51,6 +53,16 @@ class AccesoArreglo(Expresion,Intruccion):
 
             valor = arreglo.Obtener3D(dimensiones, 0, arreglo.valores,arreglo.direccion,controlador)
             valor.tipo = arreglo.tipo
+            valor.codigo = self.codigo + valor.codigo
+            lattemp = ""
+            for x in self.temporales:
+                temp1 = controlador.Generador3D.obtenerTemporal()
+                valor.codigo += f'\t{temp1} = {valor.temporal} + {x};\n'
+                lattemp = temp1
+            temp2 = controlador.Generador3D.obtenerTemporal()
+            valor.codigo += f'\t{ temp2 } = Heap[(int){lattemp}];\n'
+            valor.temporal = temp2
+
             return valor
 
         else:
@@ -65,6 +77,8 @@ class AccesoArreglo(Expresion,Intruccion):
 
         for dim in self.listaExpresiones:
             dimVal = dim.Obtener3D(controlador, ts)
+            self.codigo += dimVal.codigo
+            self.temporales.append(dimVal.temporal)
             # operador ternario      hacer_si_true if condicion else hacer_si_false
             if dimVal.tipo != tipo.ENTERO and dimVal.tipo != tipo.USIZE:
                 return

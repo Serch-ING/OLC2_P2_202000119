@@ -25,6 +25,8 @@ class Generador3D:
         encabezado = ""
         encabezado += """
 #include <iostream>
+using namespace std; // Quitar luego
+void mostarlista(float pDouble[10000]); // Quitar luego
 float Stack[10000];
 float Heap[10000];
 

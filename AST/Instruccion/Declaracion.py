@@ -24,7 +24,7 @@ class Declaracion(Intruccion):
                 ValorExpresion = return_exp.valor
                 TipoExpresion = return_exp.tipo
                 if TipoExpresion == tipo.ARRAY:
-                    declaracion_arreglo = DeclaracionArreglo(self.mut, self.identificador.id, None, self.expresion)
+                    declaracion_arreglo = DeclaracionArreglo(self.mut, self.identificador.id, None, self.expresion,return_exp)
                     return declaracion_arreglo.Ejecutar3D(controlador, ts)
 
                 elif TipoExpresion == tipo.VECTOR:

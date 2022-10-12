@@ -13,7 +13,7 @@ class Nativas(Expresion):
         self.funcion = funcion
 
     def Obtener3D(self, controlador, ts):
-
+        codigo = "/*Nativas*/\n"
         return_exp1: RetornoType = self.expresion.Obtener3D(controlador, ts)
         valor_exp1 = return_exp1.valor
         tipo_exp1 = return_exp1.tipo
@@ -50,7 +50,16 @@ class Nativas(Expresion):
             else:
                 return_exp1 = ts.ObtenerSimbolo(self.expresion.id)
                 if isinstance(return_exp1,InstanciaArreglo) or isinstance(return_exp1,InstanciaVector):
-                    return RetornoType(len(return_exp1.valores), tipo.ENTERO)
+                    temp1 = controlador.Generador3D.obtenerTemporal()
+                    temp2 = controlador.Generador3D.obtenerTemporal()
+                    temp3 = controlador.Generador3D.obtenerTemporal()
+                    codigo += f'\n{temp1} = SP + {return_exp1.direccion};\n'
+                    codigo += f'\n{temp2} = Stack[(int){temp1}];\n'
+                    codigo += f'\n{temp3} = Heap[(int){temp2}];\n'
+                    retorno = RetornoType(len(return_exp1.valores))
+                    retorno.iniciarRetorno(codigo,"",temp3,tipo.ENTERO)
+                    return  retorno
+                    #return RetornoType(len(return_exp1.valores), tipo.ENTERO)
 
 
 

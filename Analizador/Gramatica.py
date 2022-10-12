@@ -415,7 +415,7 @@ def p_asignacion_arreglo(t):
 
 def p_declaracion_arreglo(t):
     '''declaracion_arreglo : LET mutable ID validacion_dimension IGUAL expresiones PYC '''
-    t[0]= DeclaracionArreglo.DeclaracionArreglo(t[2],t[3],t[4],t[6])
+    t[0]= DeclaracionArreglo.DeclaracionArreglo(t[2],t[3],t[4],t[6],None)
 
 def p_validacion_dimension(t):
     '''validacion_dimension : DP dimensiones_def'''

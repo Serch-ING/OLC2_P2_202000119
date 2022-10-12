@@ -16,7 +16,7 @@ class Imprimir(Intruccion):
         self.lista = lista
 
     def Ejecutar3D(self, controlador, ts):
-
+        listarelacionales = []
         codigo = ""
 
         if len(self.lista) > 0:
@@ -61,8 +61,8 @@ class Imprimir(Intruccion):
                                     codigo += f'\t{temp}  = 0;\n'
                                     codigo += f'\t{self.lista[i].etiquetaF}:\n'
                                     codigo += f'\t{etqSalida}:\n'
-
                                     texto_salida += self.addsimbolos(temp, ObtenerRetorno.tipo)
+                                    listarelacionales.append(temp)
 
                                 else:
                                     #try:
@@ -78,6 +78,8 @@ class Imprimir(Intruccion):
 
                     retorno = self.obtenerCadenaUnida(texto_salida, controlador)
                     codigo += self.Codigofinal(retorno,controlador)
+                    for x in listarelacionales:
+                        codigo += f'\t{x}  = 0;\n'
                     print("Print final: ", texto_salida)
                     return  codigo
 

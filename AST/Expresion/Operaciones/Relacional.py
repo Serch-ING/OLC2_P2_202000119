@@ -14,8 +14,8 @@ class Relacional(Operacion, Expresion):
         return_exp1:RetornoType = self.exp1.Obtener3D(controlador, ts)
         return_exp2:RetornoType = self.exp2.Obtener3D(controlador, ts)
 
-        valor_exp1 = return_exp1.valor
-        valor_exp2 = return_exp2.valor
+        #valor_exp1 = return_exp1.valor
+        #valor_exp2 = return_exp2.valor
 
         tipo_exp1 = return_exp1.tipo
         tipo_exp2 = return_exp2.tipo
@@ -28,7 +28,7 @@ class Relacional(Operacion, Expresion):
             codigo += f'\tif ({return_exp1.temporal} >= {return_exp2.temporal}) goto {self.etiquetaV};\n'
             codigo += f'\tgoto {self.etiquetaF};\n'
 
-            retorno = RetornoType(valor_exp1 > valor_exp2)
+            retorno = RetornoType()
             retorno.iniciarRetorno(codigo, "", "", t.BOOLEANO)
             retorno.etiquetaV = self.etiquetaV
             retorno.etiquetaF = self.etiquetaF
@@ -40,7 +40,7 @@ class Relacional(Operacion, Expresion):
             codigo += f'\tif ({return_exp1.temporal} > {return_exp2.temporal}) goto {self.etiquetaV};\n'
             codigo += f'\tgoto {self.etiquetaF};\n'
 
-            retorno = RetornoType(valor_exp1 > valor_exp2)
+            retorno = RetornoType()
             retorno.iniciarRetorno(codigo,"","", t.BOOLEANO)
             retorno.etiquetaV = self.etiquetaV
             retorno.etiquetaF = self.etiquetaF
@@ -52,7 +52,7 @@ class Relacional(Operacion, Expresion):
             codigo += f'\tif ({return_exp1.temporal} <= {return_exp2.temporal}) goto {self.etiquetaV};\n'
             codigo += f'\tgoto {self.etiquetaF};\n'
 
-            retorno = RetornoType(valor_exp1 > valor_exp2)
+            retorno = RetornoType()
             retorno.iniciarRetorno(codigo, "", "", t.BOOLEANO)
             retorno.etiquetaV = self.etiquetaV
             retorno.etiquetaF = self.etiquetaF
@@ -64,7 +64,7 @@ class Relacional(Operacion, Expresion):
             codigo += f'\tif ({return_exp1.temporal} < {return_exp2.temporal}) goto {self.etiquetaV};\n'
             codigo += f'\tgoto {self.etiquetaF};\n'
 
-            retorno = RetornoType(valor_exp1 > valor_exp2)
+            retorno = RetornoType()
             retorno.iniciarRetorno(codigo, "", "", t.BOOLEANO)
             retorno.etiquetaV = self.etiquetaV
             retorno.etiquetaF = self.etiquetaF
@@ -76,7 +76,7 @@ class Relacional(Operacion, Expresion):
             codigo += f'\tif ({return_exp1.temporal} == {return_exp2.temporal}) goto {self.etiquetaV};\n'
             codigo += f'\tgoto {self.etiquetaF};\n'
 
-            retorno = RetornoType(valor_exp1 > valor_exp2)
+            retorno = RetornoType()
             retorno.iniciarRetorno(codigo, "", "", t.BOOLEANO)
             retorno.etiquetaV = self.etiquetaV
             retorno.etiquetaF = self.etiquetaF
@@ -88,7 +88,7 @@ class Relacional(Operacion, Expresion):
             codigo += f'\tif ({return_exp1.temporal} != {return_exp2.temporal}) goto {self.etiquetaV};\n'
             codigo += f'\tgoto {self.etiquetaF};\n'
 
-            retorno = RetornoType(valor_exp1 > valor_exp2)
+            retorno = RetornoType()
             retorno.iniciarRetorno(codigo, "", "", t.BOOLEANO)
             retorno.etiquetaV = self.etiquetaV
             retorno.etiquetaF = self.etiquetaF

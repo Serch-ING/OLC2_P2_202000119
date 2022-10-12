@@ -5,19 +5,23 @@ from colorama import Style
 from AST.TablaSimbolos.Tipos import tipo, RetornoType
 
 class DeclaracionArreglo(Intruccion):
-    def __init__(self, mutable, identificador, dimensiones, expresion):
+    def __init__(self, mutable, identificador, dimensiones, expresion,expfinal):
         self.mutable = mutable
         self.identificador = identificador
         self.dimensiones = dimensiones
         self.expresion = expresion
         self.tipo = None
 
+        self.expfinal =expfinal
+
     def Ejecutar3D(self, controlador, ts):
-        sizeTabla = ts.size
-        ts.size += 1
+
 
         print(Fore.BLUE + Style.BRIGHT + "Llegpo a declaracion arreglo" + Style.RESET_ALL)
-        Exp_arreglo: RetornoType = self.expresion.Obtener3D(controlador, ts)
+        if self.expfinal is not None:
+            Exp_arreglo: RetornoType = self.expfinal
+        else:
+            Exp_arreglo: RetornoType = self.expresion.Obtener3D(controlador, ts)
 
 
 
@@ -50,13 +54,20 @@ class DeclaracionArreglo(Intruccion):
             if Exp_arreglo.tipo != tipo.ARRAY:
                 return
 
+            temp1 = controlador.Generador3D.obtenerTemporal()
+            sizeTabla = ts.size
+            Exp_arreglo.codigo += f'\t{temp1} = SP + {sizeTabla};\n'
+            Exp_arreglo.codigo += f'\tStack[(int){temp1}] = {Exp_arreglo.temporal};\n'
+            ts.size += 1
+
             objetoArreglo = Exp_arreglo.valor
             self.tipo =  objetoArreglo.tipo
             objetoArreglo.identificador = self.identificador
             objetoArreglo.direccion = sizeTabla
             ts.Agregar_Simbolo(self.identificador, objetoArreglo)
             ts.Print_Table()
+
+
+
             return Exp_arreglo.codigo
 
-
-            print("=== Sin valores")

@@ -51,14 +51,14 @@ class InstanciaArreglo(Simbolos):
                 temp1 = controlador.Generador3D.obtenerTemporal()
                 temp2 = controlador.Generador3D.obtenerTemporal()
                 temp3 = controlador.Generador3D.obtenerTemporal()
-                temp4 = controlador.Generador3D.obtenerTemporal()
+
 
                 codigo += f'\t{temp1} = SP + {direccion};\n'
                 codigo += f'\t{temp2} = Stack[(int){temp1}];\n'
-                codigo += f'\t{temp3} = {temp2} + {indiceDimension+1};\n'
-                codigo += f'\t{temp4} = Heap[(int){temp3}];\n'
+                codigo += f'\t{temp2} = {temp2} + 1;\n'
+                codigo += f'\t{temp3} = Heap[(int){temp2}];\n'
                 retorno = RetornoType(valores[indiceDimension])
-                retorno.iniciarRetorno(codigo,"",temp4,"")
-                #return valores[indiceDimension]
+                retorno.iniciarRetorno(codigo,"",temp3,"")
+
                 return retorno
 
