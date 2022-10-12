@@ -51,14 +51,14 @@ class Aritmetica(Operacion, Expresion):
                     codigo += self.operacionConcatenar(controlador, return_exp2)
                     codigo += f'Heap[HP] = 0;\n'
                     codigo += f'HP = HP + 1;\n'
-                    retorno = RetornoType(valor_exp1+valor_exp2)
+                    retorno = RetornoType()
                     retorno.iniciarRetorno(codigo, "", temp, tipo.STRING)
                     return retorno
 
                 else:
                     temp = controlador.Generador3D.obtenerTemporal()
                     codigo += f'\t{temp} = {exp1_temp} + {exp2_temp};\n'
-                    retorno = RetornoType(valor_exp1+valor_exp2)
+                    retorno = RetornoType()
                     retorno.iniciarRetorno(codigo,"",temp,tipo_exp1)
                     return retorno
 
@@ -66,7 +66,7 @@ class Aritmetica(Operacion, Expresion):
                 codigo += "/*RESTA*/\n"
                 temp = controlador.Generador3D.obtenerTemporal()
                 codigo += f'\t{temp} = {exp1_temp} - {exp2_temp};\n'
-                retorno = RetornoType(valor_exp1 - valor_exp2)
+                retorno = RetornoType()
                 retorno.iniciarRetorno(codigo, "", temp, tipo_exp1)
                 return retorno
 
@@ -74,7 +74,7 @@ class Aritmetica(Operacion, Expresion):
                 codigo += "/*MULTIPLICACION*/\n"
                 temp = controlador.Generador3D.obtenerTemporal()
                 codigo += f'\t{temp} = {exp1_temp} * {exp2_temp};\n'
-                retorno = RetornoType(valor_exp1 * valor_exp2)
+                retorno = RetornoType()
                 retorno.iniciarRetorno(codigo, "", temp, tipo_exp1)
                 return retorno
 
@@ -82,7 +82,7 @@ class Aritmetica(Operacion, Expresion):
                 codigo += "/*DIVISION*/\n"
                 temp = controlador.Generador3D.obtenerTemporal()
                 codigo += f'\t{temp} = {exp1_temp} / {exp2_temp};\n'
-                retorno = RetornoType(valor_exp1 / valor_exp2)
+                retorno = RetornoType()
                 retorno.iniciarRetorno(codigo, "", temp, tipo_exp1)
                 return retorno
 
@@ -90,7 +90,7 @@ class Aritmetica(Operacion, Expresion):
                 codigo += "/*MODULO*/\n"
                 temp = controlador.Generador3D.obtenerTemporal()
                 codigo += f'\t{temp} = (int){exp1_temp} % (int){exp2_temp};\n'
-                retorno = RetornoType(valor_exp1 % valor_exp2)
+                retorno = RetornoType()
                 retorno.iniciarRetorno(codigo, "", temp, tipo_exp1)
                 return retorno
 

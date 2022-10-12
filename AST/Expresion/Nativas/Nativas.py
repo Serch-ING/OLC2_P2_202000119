@@ -56,7 +56,7 @@ class Nativas(Expresion):
                     codigo += f'\n{temp1} = SP + {return_exp1.direccion};\n'
                     codigo += f'\n{temp2} = Stack[(int){temp1}];\n'
                     codigo += f'\n{temp3} = Heap[(int){temp2}];\n'
-                    retorno = RetornoType(len(return_exp1.valores))
+                    retorno = RetornoType()
                     retorno.iniciarRetorno(codigo,"",temp3,tipo.ENTERO)
                     return  retorno
                     #return RetornoType(len(return_exp1.valores), tipo.ENTERO)
