@@ -82,8 +82,17 @@ int HP = 0;\n"""
             codigo += f'void {x}();\n'
         return  codigo
 
-    def agregarFuncion(self, codigo,identificador):
+    def FuncionEjecutado(self,identificador):
+        validacion = False
+        for x in self.listafunciones:
+            if x == identificador:
+                validacion = True
+        return validacion
+
+    def agregaridfuncion(self,identificador):
         self.listafunciones.append(identificador)
+
+    def agregarFuncion(self, codigo,identificador):
         self.funciones += f'void {identificador}()'
         self.funciones += "{\n"
         self.funciones += codigo+"\n"

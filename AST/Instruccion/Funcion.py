@@ -6,6 +6,7 @@ from Analizador.Gramatica import E_list
 from AST.Instruccion.Declaracion import Declaracion
 from AST.Expresion.Identificador import Identificador
 from AST.TablaSimbolos.TablaSimbolos import TablaDeSimbolos, Simbolos
+from AST.Expresion.Primitivo import Primitivo
 
 
 class Funcion(Intruccion):
@@ -15,21 +16,29 @@ class Funcion(Intruccion):
         self.tipo = tipo
         self.parametros = parametros
         self.instrucciones = instrucciones
+        self.retorno = None
 
     def Ejecutar3D(self, controlador, ts):
         print("Intrucciones de : ", self.identificador)
         codigo = ""
         temporal = ""
         if self.tipo is not None:
-            temporal = "t" + ts.name
-            controlador.Generador3D.agregarReturn(temporal)
-            codigo += f'\t{temporal} = SP + {ts.size};\n'
+            declaracion = Declaracion(Identificador("return"),None,tipo.ENTERO,True)
+            declaracion = declaracion.Ejecutar3D(controlador,ts)
+            self.retorno = Identificador("return")
+            codigo += declaracion
+            print("llego")
+
+
+            #temporal = "t" + ts.name
+            #controlador.Generador3D.agregarReturn(temporal)
+            #codigo += f'\t{temporal} = SP + {ts.size};\n'
             #codigo += f'\tStack[(int){temp1}]= 0;\n'
 
-            simbolo = Simbolos()
-            simbolo.SimboloPremitivo("return", None, self.tipo, True, ts.size)
-            ts.Agregar_Simbolo("return", simbolo)
-            ts.size += 1
+            #simbolo = Simbolos()
+            #simbolo.SimboloPremitivo("return", None, self.tipo, True, ts.size)
+            #ts.Agregar_Simbolo("return", simbolo)
+            #ts.size += 1
 
         for instruccion in self.instrucciones:
             codigo += instruccion.Ejecutar3D(controlador, ts)
@@ -48,9 +57,9 @@ class Funcion(Intruccion):
 
         else:
             controlador.Generador3D.agregarFuncion(codigo, self.identificador)
-            retorno = RetornoType()
-            retorno.iniciarRetorno("", "", temporal, self.tipo)
-            return retorno
+            identificador = Identificador("return")
+            identificador = identificador.Obtener3D(controlador,ts)
+            return identificador
 
     def agregarFuncion(self, ts: TablaDeSimbolos):
         print("================== Se guardo funcion ================ ", self.identificador)

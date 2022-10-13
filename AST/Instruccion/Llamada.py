@@ -41,20 +41,32 @@ class Llamada(Intruccion, Expresion):
             simbolo_funcion: Funcion = ts.ObtenerSimbolo(self.identificador)
 
             if self.validar_parametros(self.parametos, simbolo_funcion.parametros, controlador, ts, ts_local):
+                retorno = RetornoType()
 
-                retorno = simbolo_funcion.Ejecutar3D(controlador, ts_local)
+
+
+                if not controlador.Generador3D.FuncionEjecutado(self.identificador) :
+                    if self.identificador != "main":
+                        controlador.Generador3D.agregaridfuncion(self.identificador)
+                    retorno = simbolo_funcion.Ejecutar3D(controlador, ts_local)
+                else:
+                    identificador = Identificador("return")
+                    retorno = identificador.Obtener3D(controlador,ts)
                 funcion = ts.ObtenerSimbolo(self.identificador)
 
+
+
                 if funcion.tipo is not None:
-                    retorno.codigo = self.codigo
-                    temp1 = controlador.Generador3D.obtenerTemporal()
-                    retorno.codigo += f'\t{temp1} = Stack[(int){retorno.temporal}];\n'
-                    retorno.temporal = temp1
+                    retorno.codigo = self.codigo + retorno.codigo
                 else:
                     retorno = RetornoType()
                     retorno.iniciarRetorno(self.codigo,"","",None)
 
-                retorno.codigo += f'\tSP = SP - {ts.size};\n'
+                tabla = ts
+                if tabla.name != "Main":
+                    while tabla.padre.name != "Main":
+                        tabla = tabla.padre
+                retorno.codigo += f'\tSP = SP - {tabla.size};\n'
                 return retorno
 
             else:
@@ -65,6 +77,10 @@ class Llamada(Intruccion, Expresion):
 
     def validar_parametros(self, parametros_llamada, parametros_funcion, controlador, ts, ts_local):
         codigo = "/*Llamada*/\n"
+        if ts.name != "Main":
+            while ts.padre.name != "Main":
+                ts = ts.padre
+
         if len(parametros_llamada) == len(parametros_funcion):
 
             for i in range(0, len(parametros_llamada)):

@@ -2,7 +2,7 @@ from AST.Abstracto.Instruccion import Intruccion
 from AST.TablaSimbolos.Tipos import RetornoType,tipo
 from AST.Instruccion.Declaracion import Declaracion
 from AST.Expresion.Identificador import Identificador
-
+from AST.Instruccion.Asignacion import Asignacion
 class Return(Intruccion):
     def __init__(self, expresion):
         self.expresion = expresion
@@ -12,15 +12,19 @@ class Return(Intruccion):
         codigo = "/*Return*/\n"
 
         if self.expresion != None:
-            expvalor:RetornoType = self.expresion.Obtener3D(controlador,ts)
-            codigo += expvalor.codigo
-            tstemporal = ts
-            if tstemporal.padre.name != "Main":
-                tstemporal = tstemporal.padre
+            #expvalor:RetornoType = self.expresion.Obtener3D(controlador,ts)
+            #codigo += expvalor.codigo
 
-            temporal = "t" + tstemporal.name
+            asignacion = Asignacion("return",self.expresion)
+            asignacion = asignacion.Ejecutar3D(controlador,ts)
+            codigo += asignacion
+            #tstemporal = ts
+            #if tstemporal.padre.name != "Main":
+            #    tstemporal = tstemporal.padre
 
-            codigo += f'\tStack[(int){temporal}]= {expvalor.temporal};\n'
+            #temporal = "t" + tstemporal.name
+
+            #codigo += f'\tStack[(int){temporal}]= {expvalor.temporal};\n'
             codigo += "goto SALIR;"
             return codigo
 
