@@ -72,16 +72,13 @@ class Nativas(Expresion):
                         codigo += f'\t{temp2} = Stack[(int){temp1}];\n'
                     else:
                         codigo += f'\t{temp2} = SP + {return_exp1.direccion};\n'
-                        codigo += f'\t{temp1} = Stack[(int){temp2}];\n'
+                        codigo += f'\t{temp2} = Stack[(int){temp2}];\n'
                         while return_exp1.referencia:
-                            codigo += f'\t{temp2} = Stack[(int){temp1}];\n'
-                            aux = temp2
-                            temp2 = temp1
-                            temp1 = aux
+                            codigo += f'\t{temp2} = Stack[(int){temp2}];\n'
                             return_exp1 = return_exp1.tsproviene.ObtenerSimbolo(return_exp1.idproviene)
 
-                    codigo += f'\n{temp1} = SP + {return_exp1.direccion};\n'
-                    codigo += f'\n{temp2} = Stack[(int){temp1}];\n'
+                    #codigo += f'\n{temp1} = SP + {return_exp1.direccion};\n'
+                    #codigo += f'\n{temp2} = Stack[(int){temp1}];\n'
                     codigo += f'\n{temp3} = Heap[(int){temp2}];\n'
                     retorno = RetornoType()
                     retorno.iniciarRetorno(codigo,"",temp3,tipo.ENTERO)

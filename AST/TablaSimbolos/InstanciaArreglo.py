@@ -17,13 +17,11 @@ class InstanciaArreglo(Simbolos):
             codigo += f'\t{temp2} = Stack[(int){temp1}];\n'
         else:
             codigo += f'\t{temp2} = SP + {esreferencia.direccion};\n'
-            codigo += f'\t{temp1} = Stack[(int){temp2}];\n'
+            codigo += f'\t{temp2} = Stack[(int){temp2}];\n'
             while esreferencia.referencia:
-                codigo += f'\t{temp2} = Stack[(int){temp1}];\n'
-                aux = temp2
-                temp2 = temp1
-                temp1 = aux
+                codigo += f'\t{temp2} = Stack[(int){temp2}];\n'
                 esreferencia = esreferencia.tsproviene.ObtenerSimbolo(esreferencia.idproviene)
+
 
         temp3 = ""
 
@@ -64,12 +62,9 @@ class InstanciaArreglo(Simbolos):
             codigo += f'\t{temp2} = Stack[(int){temp1}];\n'
         else:
             codigo += f'\t{temp2} = SP + {esreferencia.direccion};\n'
-            codigo += f'\t{temp1} = Stack[(int){temp2}];\n'
+            codigo += f'\t{temp2} = Stack[(int){temp2}];\n'
             while esreferencia.referencia:
-                codigo += f'\t{temp2} = Stack[(int){temp1}];\n'
-                aux = temp2
-                temp2 = temp1
-                temp1 = aux
+                codigo += f'\t{temp2} = Stack[(int){temp2}];\n'
                 esreferencia = esreferencia.tsproviene.ObtenerSimbolo(esreferencia.idproviene)
 
         temp4=""
@@ -105,12 +100,9 @@ class InstanciaArreglo(Simbolos):
             codigo += f'\t{temp2} = Stack[(int){temp1}];\n'
         else:
             codigo += f'\t{temp2} = SP + {esreferencia.direccion};\n'
-            codigo += f'\t{temp1} = Stack[(int){temp2}];\n'
+            codigo += f'\t{temp2} = Stack[(int){temp2}];\n'
             while esreferencia.referencia:
-                codigo += f'\t{temp2} = Stack[(int){temp1}];\n'
-                aux = temp2
-                temp2 = temp1
-                temp1 = aux
+                codigo += f'\t{temp2} = Stack[(int){temp2}];\n'
                 esreferencia = esreferencia.tsproviene.ObtenerSimbolo(esreferencia.idproviene)
 
         temp4=""
