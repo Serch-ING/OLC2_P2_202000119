@@ -112,7 +112,7 @@ class Aritmetica(Operacion, Expresion):
                 codigo += f'\t{temp2} = {temp2} + {1};\n'
                 codigo += f'\tgoto {etq3};\n'
                 codigo += f'\t{etq2}:\n'
-                retorno = RetornoType(valor_exp1 ** valor_exp2)
+                retorno = RetornoType()
                 retorno.iniciarRetorno(codigo, "", temp1, tipo_exp1)
                 return retorno
 
@@ -134,7 +134,7 @@ class Aritmetica(Operacion, Expresion):
                 codigo += f'\t{temp2} = {temp2} + {1};\n'
                 codigo += f'\tgoto {etq3};\n'
                 codigo += f'\t{etq2}:\n'
-                retorno = RetornoType(valor_exp1 ** valor_exp2)
+                retorno = RetornoType()
                 retorno.iniciarRetorno(codigo, "", temp1, tipo_exp1)
                 return retorno
 

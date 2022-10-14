@@ -16,7 +16,11 @@ class Casteo(Expresion):
 
         if tipo_exp1 == tipo.ENTERO:
             if self.tipo_destino == tipo.ENTERO:
-                return RetornoType(valor_exp1, tipo.ENTERO)
+                codigo += return_exp1.codigo
+                codigo += f'{return_exp1.temporal} = (int){return_exp1.temporal};\n'
+                retorno = RetornoType()
+                retorno.iniciarRetorno(codigo, "", return_exp1.temporal, tipo.DECIMAL)
+                return retorno
 
             elif self.tipo_destino == tipo.DECIMAL:
                 codigo += return_exp1.codigo
@@ -26,31 +30,62 @@ class Casteo(Expresion):
                 return retorno
 
             elif self.tipo_destino == tipo.CARACTER:
-                return RetornoType(chr(valor_exp1), tipo.CARACTER)
+                codigo += return_exp1.codigo
+                codigo += f'{return_exp1.temporal} = (char){return_exp1.temporal};\n'
+                retorno = RetornoType()
+                retorno.iniciarRetorno(codigo, "", return_exp1.temporal, tipo.DECIMAL)
+                return retorno
 
             elif self.tipo_destino == tipo.USIZE:
-                return RetornoType(int(valor_exp1), tipo.USIZE)
+                codigo += return_exp1.codigo
+                codigo += f'{return_exp1.temporal} = (int){return_exp1.temporal};\n'
+                retorno = RetornoType()
+                retorno.iniciarRetorno(codigo, "", return_exp1.temporal, tipo.DECIMAL)
+                return retorno
 
         elif tipo_exp1 == tipo.DECIMAL:
             if self.tipo_destino == tipo.ENTERO:
-                return RetornoType(int(valor_exp1), tipo.ENTERO)
+                codigo += return_exp1.codigo
+                codigo += f'{return_exp1.temporal} = (int){return_exp1.temporal};\n'
+                retorno = RetornoType()
+                retorno.iniciarRetorno(codigo, "", return_exp1.temporal, tipo.DECIMAL)
+                return retorno
 
             elif self.tipo_destino == tipo.DECIMAL:
-                return RetornoType(valor_exp1, tipo.DECIMAL)
+                codigo += return_exp1.codigo
+                codigo += f'{return_exp1.temporal} = (float){return_exp1.temporal};\n'
+                retorno = RetornoType()
+                retorno.iniciarRetorno(codigo, "", return_exp1.temporal, tipo.DECIMAL)
+                return retorno
 
             elif self.tipo_destino == tipo.USIZE:
-                return RetornoType(int(valor_exp1), tipo.USIZE)
+                codigo += return_exp1.codigo
+                codigo += f'{return_exp1.temporal} = (int){return_exp1.temporal};\n'
+                retorno = RetornoType()
+                retorno.iniciarRetorno(codigo, "", return_exp1.temporal, tipo.DECIMAL)
+                return retorno
 
         elif tipo_exp1 == tipo.BOOLEANO:
 
             if self.tipo_destino == tipo.ENTERO:
                 if valor_exp1:
-                    return RetornoType(1, tipo.ENTERO)
+                    codigo += return_exp1.codigo
+                    codigo += f'{return_exp1.temporal} = 1;\n'
+                    retorno = RetornoType()
+                    retorno.iniciarRetorno(codigo, "", return_exp1.temporal, tipo.DECIMAL)
+                    return retorno
                 else:
-                    return RetornoType(0, tipo.ENTERO)
+                    codigo += return_exp1.codigo
+                    codigo += f'{return_exp1.temporal} = 0;\n'
+                    retorno = RetornoType()
+                    retorno.iniciarRetorno(codigo, "", return_exp1.temporal, tipo.DECIMAL)
+                    return retorno
 
             elif self.tipo_destino == tipo.BOOLEANO:
-                return RetornoType(valor_exp1, tipo.BOOLEANO)
+                codigo += return_exp1.codigo
+                retorno = RetornoType()
+                retorno.iniciarRetorno(codigo, "", return_exp1.temporal, tipo.DECIMAL)
+                return retorno
 
             elif self.tipo_destino == tipo.USIZE:
                 if valor_exp1:

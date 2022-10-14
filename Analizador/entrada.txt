@@ -1,4 +1,11 @@
-
+fn llenarMat(a: &mut [[i64; 3]; 3], b: &mut [[i64; 3]; 3]) {
+    for i in 0..a.len() {
+        for j in 0..a.len() {
+            a[i][j] = (j as i64) * 3 + (i as i64);
+            b[i][j] = i64::pow((i as i64), 3) - i64::pow((j as i64), 2);
+        }
+    }
+}
 
 fn printMat(r: &mut [[i64; 3]; 3]) {
     for i in 0..r.len() {
@@ -8,26 +15,16 @@ fn printMat(r: &mut [[i64; 3]; 3]) {
 
 fn main () {
     let mut matA: [[i64; 3]; 3] = [[1,2,3],[4,5,6],[7,8,9]];
-    println!("{:?}", matA[1]);
-    //let mut matB: [[i64; 3]; 3] = [[0,0,0],[0,0,0],[0,0,0]];
+    let mut matB: [[i64; 3]; 3] = [[0,0,0],[0,0,0],[0,0,0]];
     //let mut matR: [[i64; 3]; 3] = [[0,0,0],[0,0,0],[0,0,0]];
 
     // llenar matriz 
-    //llenarMat(&mut matA, &mut matB);
+    llenarMat(&mut matA, &mut matB);
 
-    //println!("Matriz A");
-    
-    //printMat(&mut matA);
-    
-    
-    //println!("");
-    //println!("Matriz B");
-    //printMat(&mut matB);
-    //println!("");
-    //println!("Matriz R");
-    //printMat(&mut matR);
-    //println!("");
-
+    println!("Matriz A");
+    printMat(&mut matA);
+    println!("Matriz B");
+    printMat(&mut matB);
 
 }
 
