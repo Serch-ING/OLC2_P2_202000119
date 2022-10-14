@@ -25,6 +25,10 @@ class Simbolos() :
         #simbolo arreglo
         self.withcapacity = 0
 
+        #referencia
+        self.tsproviene = None
+        self.idproviene = ""
+
     def SimboloPremitivo(self,id,valor,tipo,mut,direccion):
         self.id = id
         self.valor = valor

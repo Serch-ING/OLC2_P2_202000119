@@ -15,25 +15,39 @@ class AccesoArreglo(Expresion,Intruccion):
         self.opcion = False
 
     def Ejecutar3D(self, controlador, ts):
-
+        codigo = "/*Asignacion Arreglo*/"
         ts.Print_Table()
         if ts.Existe_id(self.idArreglo) is not True:
             return RetornoType()
 
         arreglo = ts.ObtenerSimbolo(self.idArreglo)
-        if isinstance(arreglo, InstanciaArreglo) is not True:
-            return RetornoType()
 
-        if len(self.listaExpresiones) != len(arreglo.dimensiones):
-            return RetornoType()
+        while arreglo.referencia:
+            arreglo = arreglo.tsproviene.ObtenerSimbolo(arreglo.idproviene)
 
-        dimensiones = self.compilarDimensiones(controlador, ts)
+
+        #if isinstance(arreglo, InstanciaArreglo) is not True:
+        #    return RetornoType()
+
+        #if len(self.listaExpresiones) != len(arreglo.dimensiones):
+        #    return RetornoType()
+
+
         Expression = self.valor.Obtener3D(controlador, ts)
-        ValorExpresion = Expression.valor
+        codigo += Expression.codigo
 
+        for x in self.listaExpresiones:
+            valor = x.Obtener3D(controlador,ts)
+            self.temporales.append(valor.temporal)
+            codigo += valor.codigo
+
+        retronoA = None
         if arreglo.mut:
-            arreglo.SetValor(dimensiones, 0, arreglo.valores, ValorExpresion)
+            retronoA = arreglo.SetValor(arreglo.direccion,controlador,self.temporales)
+            codigo += retronoA.codigo
 
+        codigo += f'\tHeap[(int){retronoA.temporal}] = {Expression.temporal};\n'
+        return codigo
 
     def Obtener3D(self, controlador, ts:TablaDeSimbolos) -> RetornoType:
         print("Llego a accesoL ",self.idArreglo, " lista dimensiones: ",self.listaExpresiones)

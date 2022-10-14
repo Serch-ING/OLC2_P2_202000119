@@ -13,9 +13,12 @@ class Identificador(Expresion):
 
     def Obtener3D(self, controlador, ts):
         existe_id: Simbolos = ts.ObtenerSimbolo(self.id)
+
         codigo = ""
 
         if existe_id is not None:
+            while existe_id.referencia:
+                existe_id = existe_id.tsproviene.ObtenerSimbolo(existe_id.idproviene)
             print("!!=== tratando de recuperar dato : ", existe_id, " id buscado: ", self.id)
             print("Tabla donde se busca el valor : ", ts.name)
 

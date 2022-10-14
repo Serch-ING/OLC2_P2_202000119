@@ -156,6 +156,9 @@ class Imprimir(Intruccion):
                                 elif isinstance(self.lista[i], Identificador):
                                     simbolo: Simbolos = ts.ObtenerSimbolo(self.lista[i].id)
 
+                                    while simbolo.referencia:
+                                        simbolo = simbolo.tsproviene.ObtenerSimbolo(simbolo.idproviene)
+
                                     valoid = self.lista[i].Obtener3D(controlador, ts)
                                     codigo += valoid.codigo
                                     tempAcceso = controlador.Generador3D.obtenerTemporal()

@@ -110,7 +110,30 @@ class Llamada(Intruccion, Expresion):
                         ts_local.size += 1
 
                 else:
-                   pass
+                    return_lla = ts.ObtenerSimbolo(aux_lla.id)
+                    #return_lla: RetornoType = aux_lla.Obtener3D(controlador, ts)
+
+                    if (isinstance(aux_fun.tipo, list)):
+                        if len(aux_fun.tipo) != 1:
+                            pass
+                        else:
+                            aux_fun.tipo = aux_fun.tipo[0]
+                            if return_lla.tipo == aux_fun.tipo:
+                                temp1 = controlador.Generador3D.obtenerTemporal()
+                                temp2 = controlador.Generador3D.obtenerTemporal()
+
+
+                                codigo += f'\n\t{temp1} = SP + {ts.size};\n'
+                                codigo += f'\t{temp2} = {temp1} + {ts_local.size};\n'
+                                codigo += f'\tStack[(int){temp2}]= {return_lla.direccion};\n'
+
+                                simbolo = Simbolos()
+                                simbolo.SimboloPremitivo(aux_fun.identificador.id, None, aux_fun.tipo, aux_fun.mut,ts_local.size)
+                                simbolo.referencia = True
+                                simbolo.idproviene = aux_lla.id
+                                simbolo.tsproviene = ts
+                                ts_local.Agregar_Simbolo(aux_fun.identificador.id, simbolo)
+                                ts_local.size += 1
 
             codigo += f'\tSP = SP + {ts.size};\n'
             codigo += f'\t{self.identificador}();\n'

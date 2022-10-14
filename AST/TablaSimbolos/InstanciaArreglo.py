@@ -6,27 +6,35 @@ class InstanciaArreglo(Simbolos):
         super().__init__()
         super().iniciarSimboloArreglo(tipo,dimensiones, valores)
 
-    def SetValor(self, listaDimensiones, index, valores, dato_new):
+    def SetValor(self,direccion,controlador,listatemporales):
+        codigo = ""
 
-        indiceDimension:int = listaDimensiones.pop(0)
-        tamanoDimension:int = self.dimensiones[index]
+        temp1 = controlador.Generador3D.obtenerTemporal()
+        temp2 = controlador.Generador3D.obtenerTemporal()
 
-        if len(listaDimensiones) > 0:
+        codigo += f'\t{temp1} = SP + {direccion};\n'
+        codigo += f'\t{temp2} = Stack[(int){temp1}];\n'
 
-            if indiceDimension > (tamanoDimension-1):
-                return
+        temp3 = ""
 
-            else:
-                subArreglo = valores[indiceDimension]
-                self.SetValor(listaDimensiones, index+1, subArreglo, dato_new)
 
-        else:
-            if indiceDimension > (tamanoDimension-1):
-                return
-            else:
-              if type( valores[indiceDimension]) == type(dato_new):
+        while self.peek_stack(listatemporales) is not None:
+            temp3 = controlador.Generador3D.obtenerTemporal()
+            codigo += f'\t{temp3} = {temp2} + {listatemporales[0]};\n'
+            codigo += f'\t{temp3} = {temp3} +  1;\n'
+            listatemporales.remove(listatemporales[0])
 
-                  valores[indiceDimension] = dato_new
+            if self.peek_stack(listatemporales) is not None:
+                temp4 = controlador.Generador3D.obtenerTemporal()
+                codigo += f'\t{temp4} = Heap[(int){temp3}];\n'
+                codigo += f'\t{temp2} = {temp3} + {temp4};\n'
+
+        retorno = RetornoType()
+        retorno.iniciarRetorno(codigo, "", temp3, "")
+
+        # valor = self.ciclo(listaDimensiones, index, valores, direccion, controlador)
+        return retorno
+
 
     def peek_stack(self,stack):
         if stack:
