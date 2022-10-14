@@ -1,19 +1,29 @@
-fn intercambiar(a: &mut [i64]) {
-    a[0] = 99;
-    println!("b{:?}a",a);
+fn ordInsercion(arr: &mut [i64]) {
+    let mut i: usize = 0;
+    let mut j: usize = 0;
+    let mut aux: i64 = 0;
+
+    i = 1;
+    while (i < (arr.len())) {
+        j = i;
+        aux = arr[i];
+
+        while j > 0 && aux < arr[j-1] {
+            arr[j] = arr[j - 1];
+            j = j - 1;
+        }
+        
+        arr[j] = aux;
+        i = i + 1;
+    }
 }
 
+
+
 fn main () {
-let bo1: bool = false;
-let mut arr1: [i64; 4] = [1, 2, 3, 4];
-
-//arr1[0] = 99;
-println!("a{:?}b",arr1);
-intercambiar(&mut arr1);
-
-
-//let mut matA: [[i64; 3]; 3] = [[1,2,3],[4,5,6],[7,8,9]];
-//matA[0][1] = 99;
-//println!("a{:?}b",matA[0]);
-
+let mut arr3: [i64; 6] = [90, 3, 40, 10, 8, 5];
+    ordInsercion(&mut arr3);
+    println!("{:?}", arr3);
+  
+    
 }

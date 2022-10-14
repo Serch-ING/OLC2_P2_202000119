@@ -1,0 +1,12 @@
+fn intercambiar(x: i64, a: &mut [i64]) {
+    a[2] = x;
+    println!("b{:?}a",a);
+}
+
+fn main () {
+let mut x: i64 = 99;
+let mut arr1: [i64; 4] = [1, 2, 3, 4];
+
+intercambiar(x,&mut arr1);
+
+}

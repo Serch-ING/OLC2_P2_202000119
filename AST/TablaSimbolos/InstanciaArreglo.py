@@ -6,14 +6,24 @@ class InstanciaArreglo(Simbolos):
         super().__init__()
         super().iniciarSimboloArreglo(tipo,dimensiones, valores)
 
-    def SetValor(self,direccion,controlador,listatemporales):
+    def SetValor(self,direccion,controlador,listatemporales,esreferencia):
         codigo = ""
 
         temp1 = controlador.Generador3D.obtenerTemporal()
         temp2 = controlador.Generador3D.obtenerTemporal()
 
-        codigo += f'\t{temp1} = SP + {direccion};\n'
-        codigo += f'\t{temp2} = Stack[(int){temp1}];\n'
+        if not esreferencia.referencia:
+            codigo += f'\t{temp1} = SP + {direccion};\n'
+            codigo += f'\t{temp2} = Stack[(int){temp1}];\n'
+        else:
+            codigo += f'\t{temp2} = SP + {esreferencia.direccion};\n'
+            codigo += f'\t{temp1} = Stack[(int){temp2}];\n'
+            while esreferencia.referencia:
+                codigo += f'\t{temp2} = Stack[(int){temp1}];\n'
+                aux = temp2
+                temp2 = temp1
+                temp1 = aux
+                esreferencia = esreferencia.tsproviene.ObtenerSimbolo(esreferencia.idproviene)
 
         temp3 = ""
 
@@ -42,15 +52,25 @@ class InstanciaArreglo(Simbolos):
         else:
             return None
 
-    def Obtener3D(self, listaDimensiones, index, valores,direccion,controlador,listatemporales):
+    def Obtener3D(self, direccion,controlador,listatemporales,esreferencia):
 
         codigo = ""
 
         temp1 = controlador.Generador3D.obtenerTemporal()
         temp2 = controlador.Generador3D.obtenerTemporal()
 
-        codigo += f'\t{temp1} = SP + {direccion};\n'
-        codigo += f'\t{temp2} = Stack[(int){temp1}];\n'
+        if not esreferencia.referencia:
+            codigo += f'\t{temp1} = SP + {direccion};\n'
+            codigo += f'\t{temp2} = Stack[(int){temp1}];\n'
+        else:
+            codigo += f'\t{temp2} = SP + {esreferencia.direccion};\n'
+            codigo += f'\t{temp1} = Stack[(int){temp2}];\n'
+            while esreferencia.referencia:
+                codigo += f'\t{temp2} = Stack[(int){temp1}];\n'
+                aux = temp2
+                temp2 = temp1
+                temp1 = aux
+                esreferencia = esreferencia.tsproviene.ObtenerSimbolo(esreferencia.idproviene)
 
         temp4=""
 
@@ -73,15 +93,25 @@ class InstanciaArreglo(Simbolos):
         #valor = self.ciclo(listaDimensiones, index, valores, direccion, controlador)
         return retorno
 
-    def Obtener3DV2(self, listaDimensiones, index, valores,direccion,controlador,listatemporales):
+    def Obtener3DV2(self,direccion,controlador,listatemporales,esreferencia):
 
         codigo = ""
 
         temp1 = controlador.Generador3D.obtenerTemporal()
         temp2 = controlador.Generador3D.obtenerTemporal()
 
-        codigo += f'\t{temp1} = SP + {direccion};\n'
-        codigo += f'\t{temp2} = Stack[(int){temp1}];\n'
+        if not esreferencia.referencia:
+            codigo += f'\t{temp1} = SP + {direccion};\n'
+            codigo += f'\t{temp2} = Stack[(int){temp1}];\n'
+        else:
+            codigo += f'\t{temp2} = SP + {esreferencia.direccion};\n'
+            codigo += f'\t{temp1} = Stack[(int){temp2}];\n'
+            while esreferencia.referencia:
+                codigo += f'\t{temp2} = Stack[(int){temp1}];\n'
+                aux = temp2
+                temp2 = temp1
+                temp1 = aux
+                esreferencia = esreferencia.tsproviene.ObtenerSimbolo(esreferencia.idproviene)
 
         temp4=""
 

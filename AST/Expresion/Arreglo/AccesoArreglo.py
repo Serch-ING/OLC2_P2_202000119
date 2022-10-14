@@ -20,10 +20,13 @@ class AccesoArreglo(Expresion,Intruccion):
         if ts.Existe_id(self.idArreglo) is not True:
             return RetornoType()
 
+
+        insArreglo = InstanciaArreglo(None,None,None)
+
         arreglo = ts.ObtenerSimbolo(self.idArreglo)
 
-        while arreglo.referencia:
-            arreglo = arreglo.tsproviene.ObtenerSimbolo(arreglo.idproviene)
+       # while arreglo.referencia:
+       #     arreglo = arreglo.tsproviene.ObtenerSimbolo(arreglo.idproviene)
 
 
         #if isinstance(arreglo, InstanciaArreglo) is not True:
@@ -42,8 +45,9 @@ class AccesoArreglo(Expresion,Intruccion):
             codigo += valor.codigo
 
         retronoA = None
+
         if arreglo.mut:
-            retronoA = arreglo.SetValor(arreglo.direccion,controlador,self.temporales)
+            retronoA = insArreglo.SetValor(arreglo.direccion,controlador,self.temporales,arreglo)
             codigo += retronoA.codigo
 
         codigo += f'\tHeap[(int){retronoA.temporal}] = {Expression.temporal};\n'
@@ -56,19 +60,24 @@ class AccesoArreglo(Expresion,Intruccion):
         if ts.Existe_id(self.idArreglo) is not True:
             return RetornoType()
 
+        insArreglo = InstanciaArreglo(None, None, None)
         arreglo = ts.ObtenerSimbolo(self.idArreglo)
-        if not (isinstance(arreglo, InstanciaArreglo) or isinstance(arreglo, InstanciaVector)) :
-            return RetornoType()
+
+        #while arreglo.referencia:
+        #    arreglo = arreglo.tsproviene.ObtenerSimbolo(arreglo.idproviene)
+
+        #if not (isinstance(arreglo, InstanciaArreglo) or isinstance(arreglo, InstanciaVector)) :
+         #   return RetornoType()
 
         if not isinstance(arreglo, InstanciaVector):
-            if len(self.listaExpresiones) > len(arreglo.dimensiones):
-                return RetornoType()
+            #if len(self.listaExpresiones) > len(arreglo.dimensiones):
+            #    return RetornoType()
 
             dimensiones = self.compilarDimensiones(controlador, ts)
             if not self.opcion:
-                valor = arreglo.Obtener3D(dimensiones, 0, arreglo.valores,arreglo.direccion,controlador,self.temporales)
+                valor = insArreglo.Obtener3D(arreglo.direccion,controlador,self.temporales,arreglo)
             else:
-                valor = arreglo.Obtener3DV2(dimensiones, 0, arreglo.valores, arreglo.direccion, controlador,self.temporales)
+                valor = insArreglo.Obtener3DV2(arreglo.direccion, controlador,self.temporales,arreglo)
             valor.codigo = self.codigo + valor.codigo
             valor.tipo = arreglo.tipo
             return valor

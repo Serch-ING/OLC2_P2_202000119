@@ -1,0 +1,17 @@
+
+fn ordSeleccion(arr: &mut [i64]) {
+    let mut j: usize = 0;
+    while j < (arr.len()) {
+        j = j + 1;
+	    println!("{}",j);
+   }
+}
+
+
+fn main () {
+    
+    let mut arr1: [i64; 4] = [8, 4, 6, 2];
+    ordSeleccion(&mut arr1);
+  
+    
+}

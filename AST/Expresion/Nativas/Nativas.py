@@ -14,7 +14,7 @@ class Nativas(Expresion):
 
     def Obtener3D(self, controlador, ts):
         codigo = "/*Nativas*/\n"
-        return_exp1: RetornoType = self.expresion.Obtener3D(controlador, ts)
+        return_exp1 = self.expresion.Obtener3D(controlador, ts)
         tipo_exp1 = return_exp1.tipo
         print("=== exp === ", self.expresion)
         print("=== exp tipo === ", tipo_exp1)
@@ -54,16 +54,32 @@ class Nativas(Expresion):
 
         elif self.funcion == "len()":
             if isinstance(self.expresion,AccesoArreglo):
-                return_exp1: RetornoType = self.expresion.Obtener3D(controlador, ts)
-                if isinstance(return_exp1,RetornoType):
-                    return RetornoType(len(return_exp1.valor), tipo.ENTERO)
-                print(return_exp1)
+               pass
             else:
                 return_exp1 = ts.ObtenerSimbolo(self.expresion.id)
-                if isinstance(return_exp1,InstanciaArreglo) or isinstance(return_exp1,InstanciaVector):
+
+                simbolo = return_exp1
+                while simbolo.referencia:
+                    simbolo = simbolo.tsproviene.ObtenerSimbolo(simbolo.idproviene)
+
+                if isinstance(simbolo,InstanciaArreglo) or isinstance(simbolo,InstanciaVector):
                     temp1 = controlador.Generador3D.obtenerTemporal()
                     temp2 = controlador.Generador3D.obtenerTemporal()
                     temp3 = controlador.Generador3D.obtenerTemporal()
+
+                    if not return_exp1.referencia:
+                        codigo += f'\t{temp1} = SP + {return_exp1.direccion};\n'
+                        codigo += f'\t{temp2} = Stack[(int){temp1}];\n'
+                    else:
+                        codigo += f'\t{temp2} = SP + {return_exp1.direccion};\n'
+                        codigo += f'\t{temp1} = Stack[(int){temp2}];\n'
+                        while return_exp1.referencia:
+                            codigo += f'\t{temp2} = Stack[(int){temp1}];\n'
+                            aux = temp2
+                            temp2 = temp1
+                            temp1 = aux
+                            return_exp1 = return_exp1.tsproviene.ObtenerSimbolo(return_exp1.idproviene)
+
                     codigo += f'\n{temp1} = SP + {return_exp1.direccion};\n'
                     codigo += f'\n{temp2} = Stack[(int){temp1}];\n'
                     codigo += f'\n{temp3} = Heap[(int){temp2}];\n'

@@ -18,6 +18,8 @@ class Declaracion(Intruccion):
         print(" ==== Declarar === ",self.expresion)
         codigo = ""
         if self.expresion is not None:
+
+
             return_exp: RetornoType = self.expresion.Obtener3D(controlador, ts)
 
             try:

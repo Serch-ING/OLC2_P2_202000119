@@ -1,0 +1,11 @@
+
+fn main () {
+    
+    let mut j: usize = 0;
+    let mut arr: [i64; 4] = [8, 4, 6, 2];
+  
+    while j < (arr.len()) {
+        j = j + 1;
+	println!("{}",j);
+   }
+}

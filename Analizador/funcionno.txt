@@ -1,0 +1,19 @@
+fn intercambiar(a: &mut [i64], i: usize, j: usize) {
+    let aux: i64 = a[i];
+    a[i] = a[j];
+    a[j] = aux;
+}
+
+fn variado(a: &mut [i64]) {
+    let aux: i64 = a[i];
+    a[i] = a[j];
+    a[j] = aux;
+}
+
+fn main () {
+
+let mut arr1: [i64; 4] = [1, 2, 3, 4];
+intercambiar(&mut arr1,1,2);
+println!("b{:?}a",arr1);
+
+}

@@ -280,7 +280,7 @@ class Imprimir(Intruccion):
 
     def addsimbolos(self, valor, tipo):
         txt = ""
-        if t.ENTERO == tipo:
+        if t.ENTERO == tipo or t.USIZE == tipo:
             txt += "¥"
             txt += str(valor)
             txt += "¥"
