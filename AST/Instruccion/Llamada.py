@@ -17,7 +17,7 @@ class Llamada(Intruccion, Expresion):
     def Ejecutar3D(self, controlador, ts: TablaDeSimbolos):
         print("====Funcion=== como intruccion")
         self.intruccion = True
-        return self.Obtener3D(controlador, ts)
+        return self.Obtener3D(controlador, ts).codigo
 
 
     def Obtener3D(self, controlador, ts: TablaDeSimbolos):
@@ -42,7 +42,10 @@ class Llamada(Intruccion, Expresion):
 
             if self.validar_parametros(self.parametos, simbolo_funcion.parametros, controlador, ts, ts_local):
                 retorno = RetornoType()
-
+                tabla = ts
+                if tabla.name != "Main":
+                    while tabla.padre.name != "Main":
+                        tabla = tabla.padre
 
 
                 if not controlador.Generador3D.FuncionEjecutado(self.identificador) :
@@ -50,10 +53,14 @@ class Llamada(Intruccion, Expresion):
                         controlador.Generador3D.agregaridfuncion(self.identificador)
                     retorno = simbolo_funcion.Ejecutar3D(controlador, ts_local)
                 else:
+                    tablapadre = tabla.padre
+                    tsbusqueda = ""
+                    for x in tablapadre.siguiente:
+                        if self.identificador == x.name:
+                            tsbusqueda = x
                     identificador = Identificador("return")
-                    retorno = identificador.Obtener3D(controlador,ts)
+                    retorno = identificador.Obtener3D(controlador,tsbusqueda)
                 funcion = ts.ObtenerSimbolo(self.identificador)
-
 
 
                 if funcion.tipo is not None:
@@ -62,10 +69,7 @@ class Llamada(Intruccion, Expresion):
                     retorno = RetornoType()
                     retorno.iniciarRetorno(self.codigo,"","",None)
 
-                tabla = ts
-                if tabla.name != "Main":
-                    while tabla.padre.name != "Main":
-                        tabla = tabla.padre
+
                 retorno.codigo += f'\tSP = SP - {tabla.size};\n'
                 return retorno
 

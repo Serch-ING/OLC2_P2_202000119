@@ -46,17 +46,6 @@ class InstanciaArreglo(Simbolos):
 
         temp4=""
 
-        """        while self.peek_stack(listaDimensiones) is not None:
-            temp3 = controlador.Generador3D.obtenerTemporal()
-            codigo += f'\t{temp3} = {temp2} + {listaDimensiones[0] + 1};\n'
-            listaDimensiones.remove(listaDimensiones[0])
-
-            temp4 = controlador.Generador3D.obtenerTemporal()
-            codigo += f'\t{temp4} = Heap[(int){temp3}];\n'
-
-            if self.peek_stack(listaDimensiones) is not None:
-                codigo += f'\t{temp2} = {temp3} + {temp4};\n'"""
-
         while self.peek_stack(listatemporales) is not None:
             temp3 = controlador.Generador3D.obtenerTemporal()
             codigo += f'\t{temp3} = {temp2} + {listatemporales[0]};\n'
@@ -75,6 +64,39 @@ class InstanciaArreglo(Simbolos):
 
         #valor = self.ciclo(listaDimensiones, index, valores, direccion, controlador)
         return retorno
+
+    def Obtener3DV2(self, listaDimensiones, index, valores,direccion,controlador,listatemporales):
+
+        codigo = ""
+
+        temp1 = controlador.Generador3D.obtenerTemporal()
+        temp2 = controlador.Generador3D.obtenerTemporal()
+
+        codigo += f'\t{temp1} = SP + {direccion};\n'
+        codigo += f'\t{temp2} = Stack[(int){temp1}];\n'
+
+        temp4=""
+
+        while self.peek_stack(listatemporales) is not None:
+            temp3 = controlador.Generador3D.obtenerTemporal()
+            codigo += f'\t{temp3} = {temp2} + {listatemporales[0]};\n'
+            codigo += f'\t{temp3} = {temp3} +  1;\n'
+            listatemporales.remove(listatemporales[0])
+
+            temp4 = controlador.Generador3D.obtenerTemporal()
+            codigo += f'\t{temp4} = Heap[(int){temp3}];\n'
+
+            codigo += f'\t{temp2} = {temp3} + {temp4};\n'
+
+        codigo += f'\t{temp4} = Heap[(int){temp2}];\n'
+
+
+        retorno = RetornoType()
+        retorno.iniciarRetorno(codigo,"",temp4,"")
+
+        #valor = self.ciclo(listaDimensiones, index, valores, direccion, controlador)
+        return retorno
+
 
     def ciclo(self,listaDimensiones, index, valores,direccion,controlador):
         codigo = ""

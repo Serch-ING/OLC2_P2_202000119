@@ -12,6 +12,7 @@ class AccesoArreglo(Expresion,Intruccion):
         self.valor = valor
         self.codigo = ""
         self.temporales = []
+        self.opcion = False
 
     def Ejecutar3D(self, controlador, ts):
 
@@ -50,16 +51,16 @@ class AccesoArreglo(Expresion,Intruccion):
                 return RetornoType()
 
             dimensiones = self.compilarDimensiones(controlador, ts)
-
-            valor = arreglo.Obtener3D(dimensiones, 0, arreglo.valores,arreglo.direccion,controlador,self.temporales)
+            if not self.opcion:
+                valor = arreglo.Obtener3D(dimensiones, 0, arreglo.valores,arreglo.direccion,controlador,self.temporales)
+            else:
+                valor = arreglo.Obtener3DV2(dimensiones, 0, arreglo.valores, arreglo.direccion, controlador,self.temporales)
             valor.codigo = self.codigo + valor.codigo
             valor.tipo = arreglo.tipo
             return valor
 
         else:
-
             dimensiones = self.compilarDimensiones(controlador, ts)
-
             valor = arreglo.ObtenerValor(dimensiones, 0, arreglo.valores)
             return RetornoType(valor, arreglo.tipo)
 

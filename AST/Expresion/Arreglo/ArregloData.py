@@ -58,13 +58,11 @@ class ArregloData(Expresion):
 
 
 
-        if codigotempOtros!= "":
-            codigo = codigo + codigotemp + codigotempOtros
+        #if codigotempOtros!= "":
+        #    codigo = codigo + codigotemp + codigotempOtros
 
         instanciaArrayRetorno = InstanciaArreglo(tipoFinal, listaDimensiones, valores)
         retorno = RetornoType(instanciaArrayRetorno, t.ARRAY)
-        retorno.iniciarRetornoArreglo(codigo,codigotemp,"",temp,t.ARRAY)
-
-
+        retorno.iniciarRetornoArreglo(codigo,codigotemp,"",temp,t.ARRAY,codigotempOtros)
         return retorno
 

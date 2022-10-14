@@ -12,20 +12,12 @@ class Return(Intruccion):
         codigo = "/*Return*/\n"
 
         if self.expresion != None:
-            #expvalor:RetornoType = self.expresion.Obtener3D(controlador,ts)
-            #codigo += expvalor.codigo
 
             asignacion = Asignacion("return",self.expresion)
             asignacion = asignacion.Ejecutar3D(controlador,ts)
             codigo += asignacion
-            #tstemporal = ts
-            #if tstemporal.padre.name != "Main":
-            #    tstemporal = tstemporal.padre
 
-            #temporal = "t" + tstemporal.name
-
-            #codigo += f'\tStack[(int){temporal}]= {expvalor.temporal};\n'
-            codigo += "goto SALIR;"
+            codigo += "goto SALIR;\n"
             return codigo
 
         else:
