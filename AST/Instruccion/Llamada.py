@@ -116,7 +116,26 @@ class Llamada(Intruccion, Expresion):
 
                     if (isinstance(aux_fun.tipo, list)):
                         if len(aux_fun.tipo) != 1:
-                            pass
+                            aux_fun.tipo = aux_fun.tipo[0]
+
+                            if return_lla.tipo == aux_fun.tipo:
+                                tempReferencia = controlador.Generador3D.obtenerTemporal()
+                                temp1 = controlador.Generador3D.obtenerTemporal()
+                                temp2 = controlador.Generador3D.obtenerTemporal()
+
+                                codigo += f'\n\t{tempReferencia} = SP + {return_lla.direccion};\n'
+                                codigo += f'\t{temp1} = SP + {ts.size};\n'
+                                codigo += f'\t{temp2} = {temp1} + {ts_local.size};/*P simulado*/\n'
+                                codigo += f'\tStack[(int){temp2}]= {tempReferencia};\n'
+
+                                simbolo = Simbolos()
+                                simbolo.SimboloPremitivo(aux_fun.identificador.id, None, aux_fun.tipo, aux_fun.mut,
+                                                         ts_local.size)
+                                simbolo.referencia = True
+                                simbolo.idproviene = aux_lla.id
+                                simbolo.tsproviene = ts
+                                ts_local.Agregar_Simbolo(aux_fun.identificador.id, simbolo)
+                                ts_local.size += 1
                         else:
                             aux_fun.tipo = aux_fun.tipo[0]
 

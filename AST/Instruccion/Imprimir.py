@@ -123,14 +123,16 @@ class Imprimir(Intruccion):
                                         codigo += f'\tHP = HP +1;\n'
 
                                         codigo += f'\t{temp1} = {array.temporal} + 1;\n'
+                                        codigo += f'\t{array.temporal} = Heap[(int){array.temporal}];\n'
                                         codigo += f'\t{etq1}:\n'
                                         codigo += f'\tif ({array.temporal} >0 ) goto {etq2};\n'
                                         codigo += f'\tgoto {etq3};\n'
 
                                         codigo += f'\t{etq2}:\n'
                                         codigo += f'\t{array.temporal} = {array.temporal} - 1;\n'
-                                        codigo += f'\t{temp1} = {temp1} + 1;\n'
+
                                         codigo += f'\t{temp2} = Heap[(int){temp1}] ;\n'
+                                        codigo += f'\t{temp1} = {temp1} + 1;\n'
 
                                         if array.tipo == t.ENTERO:
                                             codigo += f'\tHeap[HP] = {ord("¥")};\n'

@@ -118,11 +118,11 @@ class InstanciaArreglo(Simbolos):
 
             codigo += f'\t{temp2} = {temp3} + {temp4};\n'
 
-        codigo += f'\t{temp4} = Heap[(int){temp2}];\n'
+        #codigo += f'\t{temp4} = Heap[(int){temp2}];\n'
 
 
         retorno = RetornoType()
-        retorno.iniciarRetorno(codigo,"",temp4,"")
+        retorno.iniciarRetorno(codigo,"",temp2,"")
 
         #valor = self.ciclo(listaDimensiones, index, valores, direccion, controlador)
         return retorno
