@@ -1,8 +1,5 @@
 fn main () {
- let bo1: bool = false;
-//let mut matA: [[i64; 3]; 3] = [[1,2,3],[4,5,6],[7,8,9]];
-//println!(" {} ", matA[0][0]);
-//println!("a{:?}b", matA[0]);
-let ponderacion: [i64; 5] = [0, 1, 2, 3, 4];
-println!("a{:?}b", ponderacion);
+let bo1: bool = false;
+let mut cursos: [&str; 3] = ["Arqui1", "Archivos", "Compi2"];
+println!("a{:?}b",cursos);
 }
