@@ -78,6 +78,7 @@ class ArregloData(Expresion):
 
         if codigotempOtros!= "" and self.llamadoOtro:
             codigo = codigo + codigotemp + codigotempOtros
+            codigotempOtros = ""
 
         instanciaArrayRetorno = InstanciaArreglo(tipoFinal, listaDimensiones, valores)
         retorno = RetornoType(instanciaArrayRetorno, t.ARRAY)
