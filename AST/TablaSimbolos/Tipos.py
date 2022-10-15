@@ -33,6 +33,7 @@ class RetornoType():
 
         self.codigotemp= ""
         self.codigotempOtros = ""
+        self.dimensiones = []
 
     def iniciarRetorno(self,codigo, etiqueta, temporal,tipo):
         self.codigo = codigo
@@ -40,13 +41,15 @@ class RetornoType():
         self.temporal = temporal
         self.tipo = tipo
 
-    def iniciarRetornoArreglo(self,codigo,codigotemp, etiqueta, temporal,tipo, codigotempOtros):
+    def iniciarRetornoArreglo(self,codigo,codigotemp, etiqueta, temporal,tipo, codigotempOtros,dimensiones):
         self.codigo = codigo
         self.codigotemp =codigotemp
         self.etiqueta = etiqueta
         self.temporal = temporal
         self.tipo = tipo
         self.codigotempOtros = codigotempOtros
+        self.dimensiones = dimensiones
+
 
 
 class Tipos():

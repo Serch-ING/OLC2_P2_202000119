@@ -1,87 +1,21 @@
-fn llenarMat(a: &mut [[i64; 3]; 3], b: &mut [[i64; 3]; 3]) {
-    for i in 0..a.len() {
-        for j in 0..a.len() {
-            a[i][j] = (j as i64) * 3 + (i as i64);
-            b[i][j] = i64::pow((i as i64), 3) - i64::pow((j as i64), 2);
+// imprime los puntos por curso de cada estudiante 
+fn imprimir_punteo( notas: &mut [[[i64;5];3];4]) {
+    for i in 0..4 {
+        for j in 0..3{
+            println!("{:?}", notas[i][j]);
         }
-    }
-}
-
-fn sumarMat(a: &mut [[i64; 3]; 3], b: &mut [[i64; 3]; 3], r: &mut [[i64; 3]; 3]) {
-    for i in 0..3 {
-        for j in 0..3 {
-            r[i][j] = a[i][j] + b[i][j];
-        }
-    }
-}
-
-fn restarMat(a: &mut [[i64; 3]; 3], b: &mut [[i64; 3]; 3], r: &mut [[i64; 3]; 3]) {
-    for i in 0..3 {
-        for j in 0..3 {
-            r[i][j] = a[i][j] - b[i][j];
-        }
-    }
-}
-
-fn multMat(a: &mut [[i64; 3]; 3], b: &mut [[i64; 3]; 3], r: &mut [[i64; 3]; 3]) {
-    for i in 0..3 {
-        for j in 0..3 {
-            for k in 0..3 {
-                r[i][j] = r[i][j] + a[i][k] * b[k][j];
-            }
-        }
-    }
-}
-
-fn limpiarMat(a: &mut [[i64; 3]; 3]) {
-    for i in 0..3 {
-        for j in 0..3 {
-            a[i][j] = 0;
-        }
-    }
-}
-
-fn printMat(r: &mut [[i64; 3]; 3]) {
-    for i in 0..r.len() {
-        println!("{:?}", r[i]);
+        println!("");
     }
 }
 
 fn main () {
-    let mut matA: [[i64; 3]; 3] = [[0,0,0],[0,0,0],[0,0,0]];
-    let mut matB: [[i64; 3]; 3] = [[0,0,0],[0,0,0],[0,0,0]];
-    let mut matR: [[i64; 3]; 3] = [[0,0,0],[0,0,0],[0,0,0]];
 
-    // llenar matriz 
-    llenarMat(&mut matA, &mut matB);
+    let mut notas: [[[i64;5];3];4] = [
+        [[37,49,61,29,44],[56,60,51,68,70],[47,15,39,17,74]],
+        [[69,74,52,34,36],[24,44,50,18,76],[74,60,32,63,78]],
+        [[78,14,23,52,33],[28,79,77,55,24],[23,79,47,62,44]],
+        [[73,53,11,49,52],[29,16,65,34,12],[72,69,30,44,37]]
+    ];
 
-    println!("Matriz A");
-    printMat(&mut matA);
-    println!("");
-    println!("Matriz B");
-    printMat(&mut matB);
-    println!("");
-    println!("Matriz R");
-    printMat(&mut matR);
-    println!("");
-
-    // sumar matriz 
-    sumarMat(&mut matA, &mut matB, &mut matR);
-    println!("R = A + B");
-    printMat(&mut matR);
-    println!("");
-
-    // restar matriz 
-    limpiarMat(&mut matR);
-    restarMat(&mut matA, &mut matB, &mut matR);
-    println!("R = A - B");
-    printMat(&mut matR);
-    println!("");
-
-    // multiplicar matriz 
-    limpiarMat(&mut matR);
-    multMat(&mut matA, &mut matB, &mut matR);
-    println!("R = A * B");
-    printMat(&mut matR);
-    println!("");
+    imprimir_punteo( &mut notas);
 }

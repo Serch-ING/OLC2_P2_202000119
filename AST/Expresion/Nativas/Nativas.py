@@ -44,7 +44,7 @@ class Nativas(Expresion):
 
         elif self.funcion == "to_string()" or self.funcion == "to_owned()":
             if tipo_exp1 == tipo.DIRSTRING:
-                return_exp1.tipo = tipo.DIRSTRING
+                return_exp1.tipo = tipo.STRING
                 return return_exp1
 
         elif self.funcion == "clone()":

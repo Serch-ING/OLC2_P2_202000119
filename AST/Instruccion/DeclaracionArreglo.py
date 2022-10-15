@@ -23,7 +23,11 @@ class DeclaracionArreglo(Intruccion):
         else:
             Exp_arreglo: RetornoType = self.expresion.Obtener3D(controlador, ts)
 
-        Exp_arreglo.codigo = Exp_arreglo.codigo + Exp_arreglo.codigotemp + Exp_arreglo.codigotempOtros
+
+        if len(Exp_arreglo.dimensiones) == 1:
+            Exp_arreglo.codigo = Exp_arreglo.codigo + Exp_arreglo.codigotemp + Exp_arreglo.codigotempOtros
+        else:
+            Exp_arreglo.codigo = Exp_arreglo.codigotemp + Exp_arreglo.codigo
 
         if self.dimensiones is not None:
             self.tipo = self.dimensiones.pop(0)
