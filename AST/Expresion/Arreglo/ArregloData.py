@@ -52,7 +52,7 @@ class ArregloData(Expresion):
                     tipoFinal = instanciaArray.tipo
                     listaDimensiones.extend(instanciaArray.dimensiones)
                 valores.insert(i, instanciaArray.valores)
-                codigotemp += f'\tHeap[HP] = {len(listatemporales)*(i+1)-1*(i+1)} + HP;\n'
+                codigotemp += f'\tHeap[HP] = {len(listatemporales)*(i+1)-1*(i+1)} + {i+1};\n'
 
                 codigotemp += f'\tHP = HP +1;\n'
 
