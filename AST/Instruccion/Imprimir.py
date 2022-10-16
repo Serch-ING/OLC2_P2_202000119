@@ -439,6 +439,18 @@ class Imprimir(Intruccion):
         codigo += f'\t{temp} = HP;\n'
 
         for caracter in texto:
+            estado = 0
+            if caracter == '\\' and estado == 0:
+                estado = 1
+                continue
+
+            if estado == 1:
+                if caracter == 'n':
+                    codigo += f'\tHeap[HP] = 10;\n'
+                    codigo += f'\tHP = HP +1;\n'
+                    estado = 0
+                    continue
+
             if (caracter == "¥" or caracter == "¢" or caracter == "×") and not validacion1:
                 codigo += f'\tHeap[HP] = {ord(caracter)};\n'
                 codigo += f'\tHP = HP +1;\n'
@@ -471,7 +483,20 @@ class Imprimir(Intruccion):
         temp = controlador.Generador3D.obtenerTemporal()
         codigo += f'\t{temp} = HP;\n'
 
+        estado = 0
         for caracter in texto:
+
+            if caracter == '\\' and estado == 0:
+                estado = 1
+                continue
+
+            if estado == 1:
+                if caracter == 'n':
+                    codigo += f'\tHeap[HP] = 10;\n'
+                    codigo += f'\tHP = HP +1;\n'
+                    estado = 0
+                    continue
+
             if (caracter == "¥" or caracter == "¢" or caracter == "×") and not validacion1:
                 codigo += f'\tHeap[HP] = {ord(caracter)};\n'
                 codigo += f'\tHP = HP +1;\n'

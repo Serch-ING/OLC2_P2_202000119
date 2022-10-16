@@ -20,24 +20,27 @@ class DeclaracionVector(Intruccion):
 
 
     def Ejecutar3D(self, controlador, ts):
-        print(Fore.BLUE + Style.BRIGHT + "Llegpo a declaracion arreglo" + Style.RESET_ALL)
-        print("Llego bien a declarar vector jdsjdasfjkdfsa")
-        if  not isinstance(self.expresion,list):
+
+        codigo= "/*Declaracion vector*/\n"
+        if not isinstance(self.expresion,list):
             Exp_arreglo: RetornoType = self.expresion.Obtener3D(controlador, ts)
             objetoVector = Exp_arreglo.valor
-
-            if self.tipo != None:
-                if self.tipo != objetoVector.tipo:
-                    return None
-            else:
-                self.tipo = objetoVector.tipo
 
             objetoVector.identificador = self.identificador
             objetoVector.mut = self.mut
             objetoVector.withcapacity = len(objetoVector.valores)
+
+            temp1 = controlador.Generador3D.obtenerTemporal()
+            codigo += Exp_arreglo.codigo
+
+            codigo += f'\t{temp1} = SP + {ts.size};\n'
+            codigo += f'\tStack[(int){temp1}] = {Exp_arreglo.temporal};\n'
+
             ts.Agregar_Simbolo(self.identificador, objetoVector)
-            ts.Print_Table()
-            print("Hola: ",objetoVector)
+            ts.size += 1
+
+            return codigo
+
         else:
             if len( self.expresion) ==0:
                 print("Llego solo con decalracion normal" )
@@ -45,7 +48,7 @@ class DeclaracionVector(Intruccion):
                     self.tipo = ts.ObtenerSimbolo(self.tipo.id).tipo
 
                 new_vector = InstanciaVector(self.tipo, 1, [])
-                new_vector.withcapacity = self.capacidad
+                new_vector.withcapacity = 0
                 new_vector.tipo = self.tipo
                 new_vector.mut = self.mut
 
@@ -53,18 +56,36 @@ class DeclaracionVector(Intruccion):
             else:
                 print("Llego solo con decalracion capacity")
 
-                self.capacidad= self.expresion.pop(0).Obtener3D(controlador, ts).valor
+                self.capacidad = self.expresion.pop(0).Obtener3D(controlador, ts)
 
                 new_vector = InstanciaVector(self.tipo, 1, [])
-                new_vector.withcapacity = self.capacidad
+                new_vector.withcapacity = 0
 
                 if isinstance(self.tipo, Identificador):
                     self.tipo = ts.ObtenerSimbolo(self.tipo.id).tipo
+
                 new_vector.tipo = self.tipo
                 new_vector.mut = self.mut
 
+                temp1 = controlador.Generador3D.obtenerTemporal()
+                temp2 = controlador.Generador3D.obtenerTemporal()
+
+                codigo += self.capacidad.codigo
+                codigo += f'\t{temp2} = HP;\n'
+                codigo += f'\tHeap[(int)HP] = 0;\n'
+                codigo += f'\tHP = HP + 1; \n'
+                codigo += f'\tHeap[(int)HP] = {self.capacidad.temporal};\n'
+                codigo += f'\tHP = HP + 1; \n'
+                codigo += f'\tHP = HP + {self.capacidad.temporal}; \n'
+
+                codigo += f'\t{temp1} = SP + {ts.size};\n'
+                codigo += f'\tStack[(int){temp1}] = {temp2};\n'
+
 
                 ts.Agregar_Simbolo(self.identificador, new_vector)
+                ts.size += 1
 
                 return_exp = ts.ObtenerSimbolo(self.identificador)
                 print("Llego solo con decalracion capacity")
+
+                return codigo
