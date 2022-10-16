@@ -72,47 +72,77 @@ class Ifs(Intruccion,Expresion):
         return codigo
 
     def Obtener3D(self, controlador, ts):
-        print("If como  expresion")
-        return_exp: RetornoType = self.condicion.Obtener3D(controlador, ts)
-        valor_Exp = return_exp.valor
-        tipo_Exp = return_exp.tipo
+        tempresultado = controlador.Generador3D.obtenerTemporal()
 
-        if tipo_Exp == tipo.BOOLEANO:
+        codigo = "/* IF expresion */\n"
+        etqSalida = controlador.Generador3D.obtenerEtiqueta()
 
-            if valor_Exp:
+        self.condicion.etiquetaV = controlador.Generador3D.obtenerEtiqueta()
+        self.condicion.etiquetaF = controlador.Generador3D.obtenerEtiqueta()
+        return_exp1: RetornoType = self.condicion.Obtener3D(controlador, ts)
 
-                ts_local = TablaDeSimbolos(ts, "If" + str(id(self)))
-                return self.Recorrer_exp_val(controlador, ts_local, self.bloque_if)
+        codigo += return_exp1.codigo
+        codigo += f'\t{return_exp1.etiquetaV}:\n'
+        ts_local = TablaDeSimbolos(ts, "If" + str(id(self)))
+        rtemp = self.Recorrer_exp(controlador, ts_local, self.bloque_if,tempresultado)
+        codigo += rtemp.codigo
+        codigo += f'\tgoto {etqSalida};\n'
+        codigo += f'\t{return_exp1.etiquetaF}:\n'
 
-            else:
+        if self.bloques_elif != None:
+            for insElseif in self.bloques_elif:
+                insElseif.condicion.etiquetaV = controlador.Generador3D.obtenerEtiqueta()
+                insElseif.condicion.etiquetaF = controlador.Generador3D.obtenerEtiqueta()
+                return_expElif: RetornoType = insElseif.condicion.Obtener3D(controlador, ts)
 
-                if self.bloques_elif is not None:
+                codigo += return_expElif.codigo
+                codigo += f'\t{return_expElif.etiquetaV}:\n'
+                ts_localElif = TablaDeSimbolos(ts, "ElIf" + str(id(insElseif)))
+                rtemp = self.Recorrer_exp(controlador, ts_localElif, insElseif.bloque_if,tempresultado)
+                codigo += rtemp.codigo
+                codigo += f'\tgoto {etqSalida};\n'
+                codigo += f'\t{return_expElif.etiquetaF}:\n'
 
-                    for list_if in self.bloques_elif:
-                        return_if: RetornoType = list_if.condicion.Obtener3D(controlador, ts)
-                        valor_if = return_if.valor
-                        tipo_if = return_if.tipo
+        if self.bloque_else != None:
+            ts_localElse = TablaDeSimbolos(ts, "Else" + str(id(self)))
+            rtemp = self.Recorrer_exp(controlador, ts_localElse, self.bloque_else,tempresultado)
+            codigo += rtemp.codigo
 
-                        if tipo_if == tipo.BOOLEANO:
-                            if valor_if:
-                                return self.Recorrer_exp_val(controlador, ts, self.bloques_elif)
+        codigo += f'\t{etqSalida}: \n'
 
-                if self.bloque_else is not None:
-                    ts_local = TablaDeSimbolos(ts, "Else" + str(id(self)))
-                    return self.Recorrer_exp_val(controlador, ts_local, self.bloque_else)
+        retornoFinal = RetornoType()
+        retornoFinal.iniciarRetorno(codigo,"",tempresultado,rtemp.tipo)
+        return retornoFinal
 
-    def Recorrer_exp_val(self,controlador,ts,lista):
-        #retorno = ""
+    def Recorrer_exp(self, controlador, ts, lista,tempresultado):
+        codigo = "\n"
+        retorno = None
+
         for instruccion in lista:
             try:
-                retorno:RetornoType = instruccion.Obtener3D(controlador, ts)
+                retorno: RetornoType = instruccion.Obtener3D(controlador, ts)
+                codigo += retorno.codigo
             except:
-                retorno = instruccion.Ejecutar3D(controlador, ts)
-                if retorno is not None:
-                    if isinstance(retorno,RetornoType):
-                        return retorno
 
-        #return retorno
-        return ""
+                if isinstance(instruccion, Ifs):
+                    instruccion.etqE = self.etqE
+                    instruccion.etqS = self.etqS
+
+                if isinstance(instruccion, Break):
+                    instruccion.etq = self.etqS
+
+                if isinstance(instruccion, Continue):
+                    instruccion.etq = self.etqE
+
+                codigo += instruccion.Ejecutar3D(controlador, ts)
+
+
+        codigo += f'\t{tempresultado} = {retorno.temporal};\n'
+
+        retornoFinal = RetornoType()
+        retornoFinal.iniciarRetorno(codigo,"",tempresultado,retorno.tipo)
+        return retornoFinal
+
+
 
 

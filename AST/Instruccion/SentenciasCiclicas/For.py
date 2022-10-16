@@ -78,11 +78,11 @@ class For(Intruccion):
             return codigo
         elif tipo_for == 2:
             #parametro1 = self.elementos[1].Obtener3D(controlador, ts)
-            parametro2 = self.elementos[2].Obtener3D(controlador, ts)
+            #parametro2 = self.elementos[2].Obtener3D(controlador, ts)
 
             declaracion = Declaracion(Identificador(self.ID_Iterable),self.elementos[1],tipo.ENTERO,True)
             codigo += declaracion.Ejecutar3D(controlador, ts)
-            codigo += parametro2.codigo + '\n'
+            #codigo += parametro2.codigo + '\n'
 
             Condicion = Relacional(Identificador(self.ID_Iterable), '<', self.elementos[2], False)
             Condicion.etiquetaV = controlador.Generador3D.obtenerEtiqueta()

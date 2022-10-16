@@ -23,6 +23,7 @@ class Imprimir(Intruccion):
         listarelacionales = []
         codigo = "/*Acceso imprimir*/\n"
 
+
         if len(self.lista) > 0:
             texto_salida = ""
 
@@ -258,6 +259,7 @@ class Imprimir(Intruccion):
         else:
 
             valorexp = self.expresion.Obtener3D(controlador, ts)
+
             if self.tipo:
                 self.expresion.valor += "\n"
                 valorexp = self.expresion.Obtener3D(controlador, ts)

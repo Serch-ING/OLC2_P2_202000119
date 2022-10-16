@@ -45,7 +45,19 @@ class Primitivo(Expresion):
             temp = controlador.Generador3D.obtenerTemporal()
             codigo += f'\t{temp} = HP;\n'
 
+            estado = 0
             for caracter in self.valor:
+
+                if caracter == '\\' and estado == 0:
+                    estado = 1
+                    continue
+
+                if estado == 1:
+                    if caracter == 'n':
+                        codigo += f'\tHeap[HP] = 10;\n'
+                        codigo += f'\tHP = HP +1;\n'
+                        estado = 0
+                        continue
 
                 codigo += f'\tHeap[HP] = {ord(caracter)};\n'
                 codigo += f'\tHP = HP +1;\n'

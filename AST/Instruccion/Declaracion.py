@@ -33,6 +33,7 @@ class Declaracion(Intruccion):
                 elif TipoExpresion == tipo.VECTOR:
                     declaracion_vector = DeclaracionVector(self.identificador.id, self.expresion, self.tipo, self.mut)
                     return  declaracion_vector.Ejecutar3D(controlador, ts)
+                
                 elif TipoExpresion == tipo.STRUCT:
                     ts.Agregar_Simbolo(self.identificador.id, return_exp)
                     return None

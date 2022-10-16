@@ -14,13 +14,12 @@ class Nativas(Expresion):
 
     def Obtener3D(self, controlador, ts):
         codigo = "/*Nativas*/\n"
-        return_exp1 = self.expresion.Obtener3D(controlador, ts)
-        tipo_exp1 = return_exp1.tipo
-        print("=== exp === ", self.expresion)
-        print("=== exp tipo === ", tipo_exp1)
-        print("=== exp tipo py === ", type(2))
+
 
         if self.funcion == "abs()":
+            return_exp1 = self.expresion.Obtener3D(controlador, ts)
+            tipo_exp1 = return_exp1.tipo
+
             if tipo_exp1 == tipo.ENTERO or tipo_exp1 == tipo.DECIMAL:
                 etq1 = controlador.Generador3D.obtenerEtiqueta()
                 etq2 = controlador.Generador3D.obtenerEtiqueta()
@@ -35,6 +34,9 @@ class Nativas(Expresion):
                 return retorno
 
         elif self.funcion == "sqrt()":
+            return_exp1 = self.expresion.Obtener3D(controlador, ts)
+            tipo_exp1 = return_exp1.tipo
+
             if tipo_exp1 == tipo.DECIMAL:
                 codigo += return_exp1.codigo
                 codigo += f'\t{return_exp1.temporal} = sqrt({return_exp1.temporal}) ;\n'
@@ -43,18 +45,68 @@ class Nativas(Expresion):
                 return retorno
 
         elif self.funcion == "to_string()" or self.funcion == "to_owned()":
+            return_exp1 = self.expresion.Obtener3D(controlador, ts)
+            tipo_exp1 = return_exp1.tipo
+
             if tipo_exp1 == tipo.DIRSTRING:
                 return_exp1.tipo = tipo.STRING
                 return return_exp1
 
         elif self.funcion == "clone()":
-            if tipo_exp1 == tipo.STRING:
-                tipo_exp1 = tipo.DIRSTRING
-            #return RetornoType(copy.deepcopy(valor_exp1), tipo_exp1)
+
+            return_exp1 = None
+            tipo_exp1 = None
+
+            if isinstance(self.expresion, AccesoArreglo):
+
+                return_exp1 = self.expresion.Obtener3D(controlador, ts)
+                tipo_exp1 = return_exp1.tipo
+                codigo += "/*Clonacion*/\n"
+                codigo += return_exp1.codigo
+
+                if tipo_exp1 == tipo.STRING:
+                    tipo_exp1 = tipo.DIRSTRING
+
+                    temp1 = controlador.Generador3D.obtenerTemporal()
+                    etq1 = controlador.Generador3D.obtenerEtiqueta()
+                    etq2 = controlador.Generador3D.obtenerEtiqueta()
+                    etq3 = controlador.Generador3D.obtenerEtiqueta()
+                    temp2 = controlador.Generador3D.obtenerTemporal()
+
+                    array = return_exp1
+                    codigo += f'\t{temp2} = HP;\n'
+
+                    codigo += f'\t{etq1}:\n'
+                    codigo += f'\t{temp1} = Heap[(int){array.temporal}];\n'
+                    codigo += f'\tif ({temp1} != 0 ) goto {etq2};\n'
+                    codigo += f'\tgoto {etq3};\n'
+
+                    codigo += f'\t{etq2}:\n'
+                    codigo += f'\tHeap[HP] = {temp1};\n'
+                    codigo += f'\tHP = HP +1;\n'
+                    codigo += f'\t{array.temporal} = {array.temporal} + 1;\n'
+                    codigo += f'\tgoto {etq1};\n'
+
+                    codigo += f'\t{etq3}:\n'
+                    codigo += f'\tHeap[HP] = 0;\n'
+                    codigo += f'\tHP = HP +1;\n'
+
+                    retorno = RetornoType()
+                    retorno.iniciarRetorno(codigo, "", temp2, tipo_exp1)
+                    return retorno
 
         elif self.funcion == "len()":
             if isinstance(self.expresion,AccesoArreglo):
-               pass
+                self.expresion.opcion = True
+                return_exp1 = self.expresion.Obtener3D(controlador, ts)
+                codigo += return_exp1.codigo
+
+                codigo += f'\t{return_exp1.temporal} = Heap[(int){return_exp1.temporal}];\n'
+
+                retorno = RetornoType()
+                retorno.iniciarRetorno(codigo, "",return_exp1.temporal , return_exp1.tipo)
+                return retorno
+
             else:
                 return_exp1 = ts.ObtenerSimbolo(self.expresion.id)
 
