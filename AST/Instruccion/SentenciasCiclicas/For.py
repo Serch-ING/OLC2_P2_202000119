@@ -64,8 +64,11 @@ class For(Intruccion):
             codigo += f'\tStack[(int){temp5}] = {temp4};\n'
 
             tempTamanio = controlador.Generador3D.obtenerTemporal()
-            codigo += f'\t{tempTamanio} = Stack[(int){array.temporal}];\n'
-            codigo += f'\t{tempTamanio} = Heap[(int){tempTamanio}];\n'
+            if isinstance(self.elementos[1],Identificador):
+                codigo += f'\t{tempTamanio} = Heap[(int){array.temporal}];\n'
+            else:
+                codigo += f'\t{tempTamanio} = Stack[(int){array.temporal}];\n'
+                codigo += f'\t{tempTamanio} = Heap[(int){tempTamanio}];\n'
 
             codigo += f'\tif ({temp1} < {tempTamanio}) goto {etiquetaV};\n'
             codigo += f'\tgoto {etiquetaF};\n'

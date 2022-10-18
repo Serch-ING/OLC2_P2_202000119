@@ -144,7 +144,7 @@ class Llamada(Intruccion, Expresion):
                                 temp1 = controlador.Generador3D.obtenerTemporal()
                                 temp2 = controlador.Generador3D.obtenerTemporal()
 
-                                codigo += f'\n\t{tempReferencia} = SP + {return_lla.direccion};\n'
+                                codigo += f'\n\t{tempReferencia} = SP + {return_lla.direccion}/*Referencia*/;\n'
                                 codigo += f'\t{temp1} = SP + {ts.size};\n'
                                 codigo += f'\t{temp2} = {temp1} + {ts_local.size};/*P simulado*/\n'
                                 codigo += f'\tStack[(int){temp2}]= {tempReferencia};\n'

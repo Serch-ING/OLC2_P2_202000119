@@ -17,7 +17,7 @@ class Primitivo(Expresion):
         codigo = ""
         retorno = RetornoType(self.valor)
 
-        if self.tipo.tipo == ttipo.ENTERO or  self.tipo.tipo == ttipo.DECIMAL:
+        if self.tipo.tipo == ttipo.ENTERO or self.tipo.tipo == ttipo.USIZE or  self.tipo.tipo == ttipo.DECIMAL:
             temp = controlador.Generador3D.obtenerTemporal()
             codigo = f'\t{temp} = {self.valor};'
 
