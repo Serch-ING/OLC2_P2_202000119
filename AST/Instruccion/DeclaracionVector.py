@@ -85,7 +85,7 @@ class DeclaracionVector(Intruccion):
                 ts.Agregar_Simbolo(self.identificador, new_vector)
                 ts.size += 1
 
-                return_exp = ts.ObtenerSimbolo(self.identificador)
-                print("Llego solo con decalracion capacity")
+                #return_exp = ts.ObtenerSimbolo(self.identificador)
+                #print("Llego solo con decalracion capacity")
 
                 return codigo

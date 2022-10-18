@@ -1,0 +1,15 @@
+fn main () {
+    let mut pila: Vec<i64> = Vec::with_capacity(10);
+    pila.push(1);
+    pila.push(2);
+    println!("{:?}",pila);
+    println!("{}",pila.len());
+    println!("{}\n",pila.capacity());
+    //pila.insert(0, 55);
+    //pila.insert(1, 56);
+    pila.insert(2, 57);
+    
+    println!("{:?}",pila);
+    println!("{}",pila.len());
+    println!("{}\n",pila.capacity());
+}

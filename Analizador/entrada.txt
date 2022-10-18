@@ -1,9 +1,6 @@
 fn main () {
-    let mut pila: Vec<i64> = Vec::with_capacity(10);
-    pila.push(1);
-    //println!("{}",pila.len());
-    //println!("{}\n",pila.capacity());
-    //let mut cola: Vec<i64> = vec![1,2,3,4,5];
-    //println!("{}",cola.len());
-    //println!("{}\n",cola.capacity());
+ let datos: [i64; 5] = [11,22,33,44,55];
+ for dato in datos: g{
+        println!("{}",dato);
+    }
 }

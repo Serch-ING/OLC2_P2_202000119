@@ -177,7 +177,8 @@ class Imprimir(Intruccion):
 
                                         codigo += f'\tHeap[HP] = {ord("[")};\n'
                                         codigo += f'\tHP = HP +1;\n'
-
+                                        if isinstance(simbolo, InstanciaVector):
+                                            codigo += f'\t{valoid.temporal} = {valoid.temporal} + 1;\n'
                                         codigo += f'\t{temp1} = {valoid.temporal};\n'
                                         codigo += f'\t{etq1}:\n'
                                         codigo += f'\tif ({tempAcceso} >0 ) goto {etq2};\n'
@@ -185,6 +186,8 @@ class Imprimir(Intruccion):
 
                                         codigo += f'\t{etq2}:\n'
                                         codigo += f'\t{tempAcceso} = {tempAcceso} - 1;\n'
+
+
                                         codigo += f'\t{temp1} = {temp1} + 1;\n'
                                         codigo += f'\t{temp2} = Heap[(int){temp1}] ;\n'
 

@@ -13,6 +13,7 @@ from AST.Instruccion.SentenciasTranferencia.Break import Break
 from AST.Instruccion.SentenciasTranferencia.Continue import Continue
 from AST.Instruccion.SentenciasControl.Ifs import Ifs
 from AST.Expresion.Operaciones.Relacional import Relacional
+from AST.Expresion.Identificador import Identificador
 class For(Intruccion):
     def __init__(self,ID_Iterable,elementos,lista_instrucciones):
         self.ID_Iterable = ID_Iterable
@@ -28,13 +29,14 @@ class For(Intruccion):
 
 
         if tipo_for == 1:
+
+
             declaracion = Declaracion(Identificador(self.ID_Iterable), None, tipo.ENTERO, True)
             codigo += declaracion.Ejecutar3D(controlador, ts)
 
-            array = self.elementos[1].Obtener3D(controlador,ts)
+            array = self.elementos[1].Obtener3D(controlador, ts)
             array.codigo += array.codigotemp
             codigo += array.codigo
-
 
             temp1 = controlador.Generador3D.obtenerTemporal()
             codigo += f'\t{temp1} = 0;\n'
@@ -47,7 +49,7 @@ class For(Intruccion):
             self.etqS = etiquetaF
 
             codigo += f'\t{etqFor}:\n'
-            temp2= controlador.Generador3D.obtenerTemporal()
+            temp2 = controlador.Generador3D.obtenerTemporal()
             codigo += f'\t{temp2} = {temp1} + {array.temporal};\n'
 
             temp3 = controlador.Generador3D.obtenerTemporal()
@@ -61,10 +63,11 @@ class For(Intruccion):
             codigo += f'\t{temp5} = SP + {existe_id.direccion};\n'
             codigo += f'\tStack[(int){temp5}] = {temp4};\n'
 
-            primitivo = Primitivo(array.valor.dimensiones[0], 'ENTERO')
-            primitivo = primitivo.Obtener3D(controlador, ts)
-            codigo += primitivo.codigo + "\n"
-            codigo += f'\tif ({temp1} < {primitivo.temporal}) goto {etiquetaV};\n'
+            tempTamanio = controlador.Generador3D.obtenerTemporal()
+            codigo += f'\t{tempTamanio} = Stack[(int){array.temporal}];\n'
+            codigo += f'\t{tempTamanio} = Heap[(int){tempTamanio}];\n'
+
+            codigo += f'\tif ({temp1} < {tempTamanio}) goto {etiquetaV};\n'
             codigo += f'\tgoto {etiquetaF};\n'
 
             codigo += f'\t{etiquetaV}:\n'
@@ -76,6 +79,8 @@ class For(Intruccion):
             codigo += f'\t{self.etqS}:\n'
 
             return codigo
+
+
         elif tipo_for == 2:
             #parametro1 = self.elementos[1].Obtener3D(controlador, ts)
             #parametro2 = self.elementos[2].Obtener3D(controlador, ts)
