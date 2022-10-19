@@ -71,19 +71,23 @@ class Logica(Operacion, Expresion):
                 tipo_exp1 = return_exp1.tipo
                 valor_exp1 = return_exp1.valor
 
-                if tipo_exp1 == tipo.BOOLEANO:
+                #if tipo_exp1 == tipo.BOOLEANO:
 
-                    codigo += return_exp1.codigo + "\n"
+                codigo += return_exp1.codigo + "\n"
 
-                    temporal = ""
-                    if return_exp1.temporal != "":
-                        codigo += f'{return_exp1.temporal} = !{return_exp1.temporal};\n'
-                        temporal = return_exp1.temporal
+                temporal = ""
+                if return_exp1.temporal != "":
+                    codigo += f'{return_exp1.temporal} = !{return_exp1.temporal};\n'
+                    temporal = return_exp1.temporal
+
+                    if return_exp1.etiqueta == "a":
+                        codigo += f'\tif ({return_exp1.temporal}) goto {self.etiquetaV};\n'
+                        codigo += f'\tgoto {self.etiquetaF};\n'
 
 
-                    retorno = RetornoType()
-                    retorno.iniciarRetorno(codigo, "", temporal, tipo_exp1)
-                    retorno.etiquetaF = self.etiquetaF
-                    retorno.etiquetaV = self.etiquetaV
-                    return retorno
+                retorno = RetornoType()
+                retorno.iniciarRetorno(codigo, "", temporal, tipo_exp1)
+                retorno.etiquetaF = self.etiquetaF
+                retorno.etiquetaV = self.etiquetaV
+                return retorno
 

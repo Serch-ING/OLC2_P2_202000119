@@ -10,7 +10,8 @@ import copy
 class NativasVectores(Expresion,Intruccion):
 
     def Ejecutar3D(self, controlador, ts):
-        return self.Obtener3D(controlador, ts)
+        retorno = self.Obtener3D(controlador, ts)
+        return retorno.codigo
 
     def __init__(self, expresion1, funcion, expresion2 = None):
         self.exp1 = expresion1
@@ -74,6 +75,9 @@ class NativasVectores(Expresion,Intruccion):
                     codigo += f'\tHeap[(int){temp4}] = 0;\n'
                     codigo += f'\t{temp4} = {temp4} - 1;\n'
 
+                    tempExp = controlador.Generador3D.obtenerTemporal()
+                    codigo += f'\t{tempExp} = {temp6};\n'
+
                     codigo += f'\t{etq1}:\n'
                     codigo += f'\t if ({temp5} > {exp1.temporal}) goto {etq2};\n'
                     codigo += f'\tgoto {etq3};\n'
@@ -84,6 +88,7 @@ class NativasVectores(Expresion,Intruccion):
                     codigo += f'\t{temp7} = Heap[(int){temp4}];\n'
                     codigo += f'\tHeap[(int){temp4}] = {temp6};\n'
                     codigo += f'\t{temp6} = {temp7};\n'
+                    codigo += f'\t{tempExp} = {temp7};\n'
 
                     codigo += f'\t{temp4} = {temp4} - 1;\n'
                     codigo += f'\t{temp5} = {temp5} - 1;\n'
@@ -94,8 +99,9 @@ class NativasVectores(Expresion,Intruccion):
 
                     codigo += f'\tHeap[(int){tempF}] = {temp3} - 1;\n'
 
-
-                    return codigo
+                    retorno = RetornoType()
+                    retorno.iniciarRetorno(codigo,"",tempExp,return_exp.tipo)
+                    return retorno
 
 
 
@@ -142,7 +148,9 @@ class NativasVectores(Expresion,Intruccion):
                     elif len(valor_expresion) > return_exp.withcapacity:
                         return_exp.withcapacity *= 2
 
-                    return codigo
+                    retorno = RetornoType()
+                    retorno.iniciarRetorno(codigo, "", "", return_exp.tipo)
+                    return retorno
 
 
 
@@ -242,8 +250,9 @@ class NativasVectores(Expresion,Intruccion):
                 temp9 = controlador.Generador3D.obtenerTemporal()
                 codigo += f'\t{temp9} = {tempF} + 1;\n'
 
-
-                return codigo
+                retorno = RetornoType()
+                retorno.iniciarRetorno(codigo, "", "", return_exp.tipo)
+                return retorno
 
         else:
             if self.funcion == "capacity()":

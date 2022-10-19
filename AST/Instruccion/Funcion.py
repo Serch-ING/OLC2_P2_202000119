@@ -23,7 +23,7 @@ class Funcion(Intruccion):
         codigo = ""
         temporal = ""
         if self.tipo is not None:
-            declaracion = Declaracion(Identificador("return"),None,tipo.ENTERO,True)
+            declaracion = Declaracion(Identificador("return"),None,self.tipo,True)
             declaracion = declaracion.Ejecutar3D(controlador,ts)
             self.retorno = Identificador("return")
             codigo += declaracion
@@ -41,6 +41,7 @@ class Funcion(Intruccion):
             #ts.size += 1
 
         for instruccion in self.instrucciones:
+
             codigo += instruccion.Ejecutar3D(controlador, ts)
 
         #return codigo

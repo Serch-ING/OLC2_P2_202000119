@@ -103,8 +103,15 @@ class Declaracion(Intruccion):
                     ts.Agregar_Simbolo(self.identificador.id, newSimbolo)
 
                 elif self.tipo == tipo.BOOLEANO:
-                    newSimbolo.SimboloPremitivo(self.identificador.id, False, self.tipo, self.mut,sizeTabla)
+                    temp1 = controlador.Generador3D.obtenerTemporal()
+                    codigo += "/*Declaracion*/\n"
+                    codigo += f'\t{temp1} = SP + {sizeTabla};\n'
+                    codigo += f'\tStack[(int){temp1}] = 0;\n'
+                    ts.size += 1
+
+                    newSimbolo.SimboloPremitivo(self.identificador.id, False, self.tipo, self.mut, sizeTabla)
                     ts.Agregar_Simbolo(self.identificador.id, newSimbolo)
+                    return codigo
 
             else:
                 newSimbolo = Simbolos()

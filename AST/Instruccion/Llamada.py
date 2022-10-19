@@ -6,6 +6,7 @@ from AST.TablaSimbolos.Tipos import RetornoType
 from AST.Expresion.Identificador import Identificador
 from Analizador.Gramatica import E_list
 from AST.TablaSimbolos.InstanciaArreglo import InstanciaArreglo
+from AST.TablaSimbolos.Tipos import tipo as t
 class Llamada(Intruccion, Expresion):
 
     def __init__(self, identificador, parametos):
@@ -65,6 +66,11 @@ class Llamada(Intruccion, Expresion):
 
                 if funcion.tipo is not None:
                     retorno.codigo = self.codigo + retorno.codigo
+
+                    if funcion.tipo == t.BOOLEANO:
+                        retorno.etiqueta = "a"
+
+
                 else:
                     retorno = RetornoType()
                     retorno.iniciarRetorno(self.codigo,"","",None)

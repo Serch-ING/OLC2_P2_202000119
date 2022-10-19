@@ -27,6 +27,8 @@ class Ifs(Intruccion,Expresion):
 
 
         codigo += return_exp1.codigo
+        #if return_exp1.temporal != "":
+
         codigo += f'\t{return_exp1.etiquetaV}:\n'
         ts_local = TablaDeSimbolos(ts, "If" + str(id(self)))
         codigo += self.Recorrer_ins(controlador,ts_local,self.bloque_if)

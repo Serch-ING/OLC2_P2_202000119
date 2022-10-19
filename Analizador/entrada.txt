@@ -1,20 +1,19 @@
-fn main () {
-    let capacidad: usize = 10;
-    let mut pila: Vec<i64> = Vec::with_capacity(capacidad - 2);
-    pila.insert(pila.len(), 0);
-    pila.insert(pila.len(), 1);
-    pila.insert(pila.len(), 2);
-    pila.insert(pila.len(), 3);
-    pila.insert(pila.len(), 4);
-    pila.insert(pila.len(), 5);
-    pila.insert(pila.len(), 6);
-    pila.insert(pila.len(), 7);
-    pila.insert(pila.len(), 8);
-
+// PILA
+fn pila_vacia () -> bool {
+    if 1 == 0 {
+        return true;
+    }else{
+        return false;
+    }
     
- pila.remove(2);
-    println!("{:?}",pila);
-    println!("{}",pila.len());
-    println!("{}\n",pila.capacity());
+}
 
+fn main () {
+   // let bo1: bool = false;
+//pila_vacia ()
+    if ! pila_vacia () {
+        println!("uno");
+    } else {
+        println!("dos");
+    }
 }
