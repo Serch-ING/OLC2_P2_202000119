@@ -1,26 +1,20 @@
-fn apilar(capacidad: usize, vec: &mut Vec<i64>, value: i64) {
-    if vec.len() < capacidad {
-        vec.insert(vec.len(), value);
-    } else {
-        println!("La pila ha llegado a su maxima capacidad");
-    }
-}
-
 fn main () {
     let capacidad: usize = 10;
     let mut pila: Vec<i64> = Vec::with_capacity(capacidad - 2);
-    let mut cola: Vec<i64> = vec![1,2,3,4,5];
+    pila.insert(pila.len(), 0);
+    pila.insert(pila.len(), 1);
+    pila.insert(pila.len(), 2);
+    pila.insert(pila.len(), 3);
+    pila.insert(pila.len(), 4);
+    pila.insert(pila.len(), 5);
+    pila.insert(pila.len(), 6);
+    pila.insert(pila.len(), 7);
+    pila.insert(pila.len(), 8);
 
-    let datos: [i64; 5] = [10,20,30,40,50];
+    
+ pila.remove(2);
+    println!("{:?}",pila);
+    println!("{}",pila.len());
+    println!("{}\n",pila.capacity());
 
-    for dato in datos {
-        apilar(capacidad, &mut pila, dato);
-    }
-    
-    for a in [100,200,300,400,500,600] {
-        apilar(capacidad, &mut pila, a);
-        println!("{:?}", pila);
-    }
-    
-    
 }
