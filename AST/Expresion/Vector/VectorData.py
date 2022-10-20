@@ -72,8 +72,8 @@ class VectorData(Expresion):
                     codigo += f'\tHP = HP +1;\n'
 
             instanciaArrayRetorno = InstanciaVector(tipoFinal, listaDimensiones, valores)
-            retorno = RetornoType(instanciaArrayRetorno, t.ARRAY)
-            retorno.iniciarRetornoArreglo(codigo, "", "", temp, t.ARRAY, "", listaDimensiones)
+            retorno = RetornoType(instanciaArrayRetorno, t.VECTOR)
+            retorno.iniciarRetornoArreglo(codigo, "", "", temp, t.VECTOR, "", listaDimensiones)
             return retorno
 
         else:
