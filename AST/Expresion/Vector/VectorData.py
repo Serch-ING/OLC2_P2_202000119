@@ -77,11 +77,44 @@ class VectorData(Expresion):
             return retorno
 
         else:
+            exp = self.expresiones.Obtener3D(controlador,ts)
+            iteracion = self.exp2.Obtener3D(controlador, ts)
             valor= []
-            for i in range (0,self.exp2.valor):
-                valor.append(self.expresiones)
+            codigo = "/*Vector de vector*/\n"
+            codigo+= exp.codigo
+            codigo += iteracion.codigo
+            temp1 = controlador.Generador3D.obtenerTemporal()
+            codigo += f'\t{temp1} = 0;\n'
 
-            vectorData = VectorData(valor)
-            retunr_var = vectorData.Obtener3D(controlador, ts)
-            return retunr_var
+            tempF = controlador.Generador3D.obtenerTemporal()
+            codigo += f'\t{tempF} = HP;\n'
+
+            etq1 = controlador.Generador3D.obtenerEtiqueta()
+            etq2 = controlador.Generador3D.obtenerEtiqueta()
+            etq3 = controlador.Generador3D.obtenerEtiqueta()
+
+            codigo += f'\tHeap[HP] = {iteracion.temporal};\n'
+            codigo += f'HP = HP +1 ;\n'
+
+            codigo += f'\tHeap[HP] = {iteracion.temporal};\n'
+            codigo += f'HP = HP +1 ;\n'
+
+            codigo += f'\t{etq1}:\n'
+            codigo += f'if ({temp1} < {iteracion.temporal}) goto {etq2};\n'
+            codigo += f'goto {etq3};\n'
+
+            codigo += f'\t{etq2}:\n'
+            codigo += f'\tHeap[HP] = {exp.temporal};\n'
+            codigo += f'HP = HP +1 ;\n'
+            codigo += f'\t{temp1} = {temp1} + 1;\n'
+            codigo += f'goto {etq1};\n'
+
+            codigo += f'\t{etq3}: /* termino vector de vector*/\n'
+
+            #vectorData = VectorData(valor)
+            #retunr_var = vectorData.Obtener3D(controlador, ts)
+
+            retorno = RetornoType()
+            retorno.iniciarRetorno(codigo,"",tempF,t.VECTOR)
+            return retorno
 

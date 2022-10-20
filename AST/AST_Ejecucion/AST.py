@@ -45,15 +45,6 @@ class AST(Intruccion):
 
             print("======Termino=======")
             controlador.consola = controlador.Generador3D.generarMain()
-            controlador.consola +=  """\n\nvoid mostarlista(float arreglo[10000]){
-                int contador = 0;
-                cout << "----------------Division-----------------" << endl;
-                while (contador<1000){
-                    cout << arreglo[contador] << endl;
-                    //printf("%f",arreglo[contador] );
-                    contador = contador +1;
-                }
-            }"""
             print(controlador.consola)
 
             self.Reporte_Tabla_simbolos(ts)

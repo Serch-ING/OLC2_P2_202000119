@@ -17,7 +17,6 @@ def ventanas():
         ventana.title('Proyecto 1')
         ventana.geometry("1500x900")
 
-
         def cerrar():
             exit()
 
@@ -87,18 +86,10 @@ def ventanas():
             webbrowser.open('file://' + os.path.realpath(filename))
 
         Button(pes1, text="Tabla de errores", command=Open_TablaErrores).place(x=10, y=160)
-
-
         Button(pes1, text="Tabla de base de datos", command=Run_code).place(x=10, y=200)
-
-
-
-
         # Terminar ------------------------------------------------------------------------------------
 
         ventana.mainloop()
-
-
 
 if __name__ == "__main__":
 

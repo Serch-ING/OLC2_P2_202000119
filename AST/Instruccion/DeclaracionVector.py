@@ -36,7 +36,9 @@ class DeclaracionVector(Intruccion):
             codigo += f'\t{temp1} = SP + {ts.size};\n'
             codigo += f'\tStack[(int){temp1}] = {Exp_arreglo.temporal};\n'
 
+            objetoVector.direccion = ts.size
             ts.Agregar_Simbolo(self.identificador, objetoVector)
+
             ts.size += 1
 
             return codigo
@@ -52,9 +54,17 @@ class DeclaracionVector(Intruccion):
                 new_vector.tipo = self.tipo
                 new_vector.mut = self.mut
 
+                temp1 = controlador.Generador3D.obtenerTemporal()
+
+                codigo += f'\t{temp1} = SP + {ts.size};\n'
+                codigo += f'\tStack[(int){temp1}] = HP;\n'
+                codigo += f'\tHP= HP + 2;\n'
+
                 new_vector.direccion = ts.size
                 ts.Agregar_Simbolo(self.identificador, new_vector)
                 ts.size += 1
+
+                return  codigo
             else:
                 print("Llego solo con decalracion capacity")
 

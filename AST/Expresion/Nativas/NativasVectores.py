@@ -94,7 +94,6 @@ class NativasVectores(Expresion,Intruccion):
                     codigo += f'\t{temp5} = {temp5} - 1;\n'
                     codigo += f'\tgoto {etq1};\n'
 
-
                     codigo += f'\t{etq3}:\n'
 
                     codigo += f'\tHeap[(int){tempF}] = {temp3} - 1;\n'
@@ -114,10 +113,10 @@ class NativasVectores(Expresion,Intruccion):
                 bandera = False
 
                 if valor_tipo == tipo.VECTOR:
-                    if exp1.valor.tipo == tipo_expresion:
+
                         bandera = True
 
-                if tipo_expresion == valor_tipo or bandera:
+                if tipo_expresion == valor_tipo or  bandera:
 
                     codigo += exp1.codigo
 
@@ -131,17 +130,30 @@ class NativasVectores(Expresion,Intruccion):
                         codigo += f'\t{temp2} = SP + {return_exp.direccion};\n'
                         codigo += f'\t{temp2} = Stack[(int){temp2}];\n'
                         while return_exp.referencia:
+                            codigo += f'\t{temp1} = {temp2};\n'
                             codigo += f'\t{temp2} = Stack[(int){temp2}];\n'
                             return_exp = return_exp.tsproviene.ObtenerSimbolo(return_exp.idproviene)
 
                     codigo += self.generarAddSpacio(temp2, valor_expresion, controlador, temp1)
                     valor_expresion.append(valor_exp1)
-                    direccionA = len(valor_expresion) - 1
 
-                    codigo += f'\tHeap[(int){temp2}] = {len(valor_expresion)};\n'
+                    direccionA = len(valor_expresion)
 
-                    codigo += f'\t{temp2} = {temp2} + {direccionA+2};\n'
+                    tempF = controlador.Generador3D.obtenerTemporal()  # guardar posicion de longitud
+                    codigo += f'\t{tempF} = {temp2};/*temporal longitud*/\n'
+
+                    templong = controlador.Generador3D.obtenerTemporal()  # Obtener longitud
+                    codigo += f'\t{templong} = Heap[(int){temp2}];/*obtener longitud*/\n'
+
+                    codigo += f'\tHeap[(int){temp2}] = {templong};\n'
+
+                    codigo += f'\t{temp2} = {temp2} + 2;\n'
+
+                    codigo += f'\t{temp2} = {temp2} + {templong};\n'
+
                     codigo += f'\tHeap[(int){temp2}] = {exp1.temporal};\n'
+
+                    codigo += f'\tHeap[(int){tempF}] = {templong} + 1;\n'
 
                     if return_exp.withcapacity == 0:
                         return_exp.withcapacity = 4
@@ -273,6 +285,7 @@ class NativasVectores(Expresion,Intruccion):
                     codigo += f'\t{temp2} = SP + {return_exp1.direccion};\n'
                     codigo += f'\t{temp2} = Stack[(int){temp2}];\n'
                     while return_exp1.referencia:
+                        codigo += f'\t{temp1} = {temp2};\n'
                         codigo += f'\t{temp2} = Stack[(int){temp2}];\n'
                         return_exp1 = return_exp1.tsproviene.ObtenerSimbolo(return_exp1.idproviene)
 
@@ -283,6 +296,8 @@ class NativasVectores(Expresion,Intruccion):
                 retorno = RetornoType()
                 retorno.iniciarRetorno(codigo, "", temp3, tipo.ENTERO)
                 return retorno
+
+
 
     def generarAddSpacio(self,inical,valor_expresion,controlador,vaStack):
         codigo = "/*Validar mover vector*/\n"
@@ -304,6 +319,18 @@ class NativasVectores(Expresion,Intruccion):
         codigo += f'\t{etq4}:\n'
 
         Capacidad = controlador.Generador3D.obtenerTemporal()
+
+        etqv = controlador.Generador3D.obtenerEtiqueta()
+        etqf = controlador.Generador3D.obtenerEtiqueta()
+        codigo += f'\tif( {temp2} == 0) goto {etqv};\n'
+        codigo += f'\tgoto {etqf};\n'
+
+        codigo += f'\t{etqv}:\n'
+        codigo += f'\t{temp2} = 2;\n'
+
+        codigo += f'\t{etqf}:\n'
+
+
         codigo += f'\t{Capacidad} = {temp2} * 2;\n'
 
         indeceinical = controlador.Generador3D.obtenerTemporal()

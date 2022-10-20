@@ -41,7 +41,6 @@ class Funcion(Intruccion):
             #ts.size += 1
 
         for instruccion in self.instrucciones:
-
             codigo += instruccion.Ejecutar3D(controlador, ts)
 
         #return codigo

@@ -1,19 +1,13 @@
-// PILA
-fn pila_vacia () -> bool {
-    if 1 == 0 {
-        return true;
-    }else{
-        return false;
-    }
-    
-}
 
 fn main () {
-   // let bo1: bool = false;
-//pila_vacia ()
-    if ! pila_vacia () {
-        println!("uno");
-    } else {
-        println!("dos");
-    }
+let mut lista: Vec<Vec<i64>> = Vec::new();
+    lista.push(vec![0; 10]);
+
+
+    lista.push(vec![3; 10]);
+    //lista.push(vec![75,23,10,29,30,12,49,10,93]);
 }
+
+
+
+
