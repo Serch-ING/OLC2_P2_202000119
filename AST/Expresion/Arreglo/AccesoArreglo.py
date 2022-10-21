@@ -13,6 +13,7 @@ class AccesoArreglo(Expresion,Intruccion):
         self.codigo = ""
         self.temporales = []
         self.opcion = False
+        self.EsVector = True
 
     def Ejecutar3D(self, controlador, ts):
         codigo = "/*Asignacion Arreglo*/"
@@ -22,19 +23,7 @@ class AccesoArreglo(Expresion,Intruccion):
 
 
         insArreglo = InstanciaArreglo(None,None,None)
-
         arreglo = ts.ObtenerSimbolo(self.idArreglo)
-
-       # while arreglo.referencia:
-       #     arreglo = arreglo.tsproviene.ObtenerSimbolo(arreglo.idproviene)
-
-
-        #if isinstance(arreglo, InstanciaArreglo) is not True:
-        #    return RetornoType()
-
-        #if len(self.listaExpresiones) != len(arreglo.dimensiones):
-        #    return RetornoType()
-
 
         Expression = self.valor.Obtener3D(controlador, ts)
         codigo += Expression.codigo
@@ -55,19 +44,14 @@ class AccesoArreglo(Expresion,Intruccion):
 
     def Obtener3D(self, controlador, ts:TablaDeSimbolos) -> RetornoType:
         print("Llego a accesoL ",self.idArreglo, " lista dimensiones: ",self.listaExpresiones)
-        #ts.Print_Table()
-        #ts.padre.Print_Table()
+
         if ts.Existe_id(self.idArreglo) is not True:
             return RetornoType()
 
         insArreglo = InstanciaArreglo(None, None, None)
         arreglo = ts.ObtenerSimbolo(self.idArreglo)
 
-        #while arreglo.referencia:
-        #    arreglo = arreglo.tsproviene.ObtenerSimbolo(arreglo.idproviene)
 
-        #if not (isinstance(arreglo, InstanciaArreglo) or isinstance(arreglo, InstanciaVector)) :
-         #   return RetornoType()
 
         if not isinstance(arreglo, InstanciaVector):
             #if len(self.listaExpresiones) > len(arreglo.dimensiones):
@@ -83,9 +67,11 @@ class AccesoArreglo(Expresion,Intruccion):
             return valor
 
         else:
-            dimensiones = self.compilarDimensiones(controlador, ts)
-            valor = arreglo.ObtenerValor(dimensiones, 0, arreglo.valores)
-            return RetornoType(valor, arreglo.tipo)
+            #dimensiones = self.compilarDimensiones(controlador, ts)
+            valor = arreglo.ObtenerValor(arreglo.direccion,controlador,self.temporales,arreglo)
+            valor.codigo = self.codigo + valor.codigo
+            valor.tipo = arreglo.tipo
+            return valor
 
     def compilarDimensiones(self,controlador, ts ):
         listaDimensiones = []
@@ -101,3 +87,5 @@ class AccesoArreglo(Expresion,Intruccion):
                 listaDimensiones.append(dimVal.valor)
 
         return listaDimensiones
+
+

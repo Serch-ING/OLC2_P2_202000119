@@ -1,4 +1,5 @@
 from AST.TablaSimbolos.Simbolos import Simbolos
+from AST.TablaSimbolos.Tipos import RetornoType
 
 class InstanciaVector(Simbolos):
 
@@ -28,21 +29,49 @@ class InstanciaVector(Simbolos):
 
                   valores[indiceDimension] = dato_new
 
-    def ObtenerValor(self, listaDimensiones, index, valores):
-
-        indiceDimension:int = listaDimensiones.pop(0)
-        tamanoDimension:int = self.dimensiones
-
-        if len(listaDimensiones) > 0:
-
-
-
-            subArreglo = valores[indiceDimension]
-            return self.ObtenerValor(listaDimensiones, index+1, subArreglo)
-
+    def peek_stack(self, stack):
+        if stack:
+            return stack[-1]  # this will get the last element of stack
         else:
-            if isinstance(valores,InstanciaVector):
-                return valores.valores[indiceDimension]
+            return None
 
-            return valores[indiceDimension]
+
+    def ObtenerValor(self, direccion, controlador, listatemporales, esreferencia):
+
+            codigo = ""
+
+            temp1 = controlador.Generador3D.obtenerTemporal()
+            temp2 = controlador.Generador3D.obtenerTemporal()
+
+            if not esreferencia.referencia:
+                codigo += f'\t{temp1} = SP + {direccion};\n'
+                codigo += f'\t{temp2} = Stack[(int){temp1}];\n'
+            else:
+                codigo += f'\t{temp2} = SP + {esreferencia.direccion};\n'
+                codigo += f'\t{temp2} = Stack[(int){temp2}];\n'
+                while esreferencia.referencia:
+                    codigo += f'\t{temp2} = Stack[(int){temp2}];\n'
+                    esreferencia = esreferencia.tsproviene.ObtenerSimbolo(esreferencia.idproviene)
+
+            temp4 = ""
+
+            while self.peek_stack(listatemporales) is not None:
+                temp3 = controlador.Generador3D.obtenerTemporal()
+                codigo += f'\t{temp3} = {temp2} + {listatemporales[0]};\n'
+                codigo += f'\t{temp3} = {temp3} +  1;\n'
+                listatemporales.remove(listatemporales[0])
+
+                temp4 = controlador.Generador3D.obtenerTemporal()
+                codigo += f'\t{temp4} = Heap[(int){temp3}];\n'
+
+                codigo += f'\t{temp2} = {temp3} + {temp4};\n'
+
+            # codigo += f'\t{temp4} = Heap[(int){temp2}];\n'
+
+            retorno = RetornoType()
+            retorno.iniciarRetorno(codigo, "", temp2, "")
+
+            # valor = self.ciclo(listaDimensiones, index, valores, direccion, controlador)
+            return retorno
+
 

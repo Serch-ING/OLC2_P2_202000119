@@ -1,13 +1,5 @@
-
 fn main () {
 let mut lista: Vec<Vec<i64>> = Vec::new();
-    //lista.push(vec![0; 10]);
-
-
-    //lista.push(vec![3; 10]);
     lista.push(vec![75,23,10,29,30,12,49,10,93]);
+    println!("{:?}",lista[0]);
 }
-
-
-
-
