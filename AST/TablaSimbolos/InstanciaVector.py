@@ -1,5 +1,6 @@
 from AST.TablaSimbolos.Simbolos import Simbolos
 from AST.TablaSimbolos.Tipos import RetornoType
+from AST.TablaSimbolos.Tipos import tipo
 
 class InstanciaVector(Simbolos):
 
@@ -38,40 +39,42 @@ class InstanciaVector(Simbolos):
 
     def ObtenerValor(self, direccion, controlador, listatemporales, esreferencia):
 
-            codigo = ""
+        codigo = ""
 
-            temp1 = controlador.Generador3D.obtenerTemporal()
-            temp2 = controlador.Generador3D.obtenerTemporal()
+        temp1 = controlador.Generador3D.obtenerTemporal()
+        temp2 = controlador.Generador3D.obtenerTemporal()
 
-            if not esreferencia.referencia:
-                codigo += f'\t{temp1} = SP + {direccion};\n'
-                codigo += f'\t{temp2} = Stack[(int){temp1}];\n'
-            else:
-                codigo += f'\t{temp2} = SP + {esreferencia.direccion};\n'
+        if not esreferencia.referencia:
+            codigo += f'\t{temp1} = SP + {direccion};\n'
+            codigo += f'\t{temp2} = Stack[(int){temp1}];\n'
+        else:
+            codigo += f'\t{temp2} = SP + {esreferencia.direccion};\n'
+            codigo += f'\t{temp2} = Stack[(int){temp2}];\n'
+            while esreferencia.referencia:
                 codigo += f'\t{temp2} = Stack[(int){temp2}];\n'
-                while esreferencia.referencia:
-                    codigo += f'\t{temp2} = Stack[(int){temp2}];\n'
-                    esreferencia = esreferencia.tsproviene.ObtenerSimbolo(esreferencia.idproviene)
+                esreferencia = esreferencia.tsproviene.ObtenerSimbolo(esreferencia.idproviene)
 
-            temp4 = ""
+        temp4 = ""
 
-            while self.peek_stack(listatemporales) is not None:
-                temp3 = controlador.Generador3D.obtenerTemporal()
-                codigo += f'\t{temp3} = {temp2} + {listatemporales[0]};\n'
-                codigo += f'\t{temp3} = {temp3} +  1;\n'
-                listatemporales.remove(listatemporales[0])
+        while self.peek_stack(listatemporales) is not None:
+            temp3 = controlador.Generador3D.obtenerTemporal()
+            codigo += f'\t{temp3} = {temp2} + {listatemporales[0]};\n'
+            codigo += f'\t{temp3} = {temp3} +  2;\n'
 
-                temp4 = controlador.Generador3D.obtenerTemporal()
-                codigo += f'\t{temp4} = Heap[(int){temp3}];\n'
+            listatemporales.remove(listatemporales[0])
 
-                codigo += f'\t{temp2} = {temp3} + {temp4};\n'
+            temp4 = controlador.Generador3D.obtenerTemporal()
+            codigo += f'\t{temp4} = Heap[(int){temp3}];\n'
 
-            # codigo += f'\t{temp4} = Heap[(int){temp2}];\n'
+            codigo += f'\t{temp2} = {temp4};\n'
+            #codigo += f'\t{temp2} = {temp3} + {temp4};\n'
 
-            retorno = RetornoType()
-            retorno.iniciarRetorno(codigo, "", temp2, "")
+        # codigo += f'\t{temp4} = Heap[(int){temp2}];\n'
 
-            # valor = self.ciclo(listaDimensiones, index, valores, direccion, controlador)
-            return retorno
+        retorno = RetornoType()
+        retorno.iniciarRetorno(codigo, "", temp2,"")
+
+        # valor = self.ciclo(listaDimensiones, index, valores, direccion, controlador)
+        return retorno
 
 

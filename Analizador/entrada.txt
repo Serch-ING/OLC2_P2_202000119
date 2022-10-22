@@ -1,5 +1,7 @@
 fn main () {
+let bo1: bool = true;
 let mut lista: Vec<Vec<i64>> = Vec::new();
+let bo2: bool = true;
     lista.push(vec![75,23,10,29,30,12,49,10,93]);
     println!("{:?}",lista[0]);
 }

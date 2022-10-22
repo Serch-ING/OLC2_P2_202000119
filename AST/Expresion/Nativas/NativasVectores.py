@@ -107,14 +107,13 @@ class NativasVectores(Expresion,Intruccion):
             elif self.funcion == "push":
                 return_exp = ts.ObtenerSimbolo(self.expresion.id)
 
-                exp1 =  self.exp1.Obtener3D(controlador, ts)
+                exp1 = self.exp1.Obtener3D(controlador, ts)
                 valor_exp1 = exp1.valor
                 valor_tipo = exp1.tipo
                 bandera = False
 
                 if valor_tipo == tipo.VECTOR:
-
-                        bandera = True
+                    bandera = True
 
                 if tipo_expresion == valor_tipo or  bandera:
 

@@ -54,8 +54,6 @@ class AccesoArreglo(Expresion,Intruccion):
 
 
         if not isinstance(arreglo, InstanciaVector):
-            #if len(self.listaExpresiones) > len(arreglo.dimensiones):
-            #    return RetornoType()
 
             dimensiones = self.compilarDimensiones(controlador, ts)
             if not self.opcion:
@@ -67,10 +65,12 @@ class AccesoArreglo(Expresion,Intruccion):
             return valor
 
         else:
-            #dimensiones = self.compilarDimensiones(controlador, ts)
+
+            dimensiones = self.compilarDimensiones(controlador, ts)
             valor = arreglo.ObtenerValor(arreglo.direccion,controlador,self.temporales,arreglo)
             valor.codigo = self.codigo + valor.codigo
             valor.tipo = arreglo.tipo
+            valor.etiqueta = "ETIQUETA"
             return valor
 
     def compilarDimensiones(self,controlador, ts ):
@@ -80,7 +80,7 @@ class AccesoArreglo(Expresion,Intruccion):
             dimVal = dim.Obtener3D(controlador, ts)
             self.codigo += dimVal.codigo
             self.temporales.append(dimVal.temporal)
-            # operador ternario      hacer_si_true if condicion else hacer_si_false
+
             if dimVal.tipo != tipo.ENTERO and dimVal.tipo != tipo.USIZE:
                 return
             else:
