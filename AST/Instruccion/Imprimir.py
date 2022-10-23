@@ -172,7 +172,7 @@ class Imprimir(Intruccion):
                                     tempAcceso = controlador.Generador3D.obtenerTemporal()
                                     codigo += f'\t{tempAcceso} = Heap[(int){valoid.temporal}];\n'
 
-                                    if isinstance(simbolo, InstanciaArreglo) or isinstance(simbolo, InstanciaVector):
+                                    if isinstance(simbolo, InstanciaArreglo) :
                                         temp1 = controlador.Generador3D.obtenerTemporal()
                                         etq1 = controlador.Generador3D.obtenerEtiqueta()
                                         etq2 = controlador.Generador3D.obtenerEtiqueta()
@@ -241,6 +241,51 @@ class Imprimir(Intruccion):
 
                                         codigo += f'\tHeap[HP] = {ord("]")};\n'
                                         codigo += f'\tHP = HP +1;\n'
+
+                                    elif isinstance(simbolo, InstanciaVector):
+                                        temp1 = controlador.Generador3D.obtenerTemporal()
+                                        etq1 = controlador.Generador3D.obtenerEtiqueta()
+                                        etq2 = controlador.Generador3D.obtenerEtiqueta()
+                                        etq3 = controlador.Generador3D.obtenerEtiqueta()
+                                        temp2 = controlador.Generador3D.obtenerTemporal()
+                                        etq4 = controlador.Generador3D.obtenerEtiqueta()
+
+                                        codigo += f'\tHeap[HP] = {ord("[")};\n'
+                                        codigo += f'\tHP = HP +1;\n'
+                                        # si es vector
+                                        codigo += f'\t{valoid.temporal} = {valoid.temporal} + 1;\n'
+                                        codigo += f'\t{temp1} = {valoid.temporal};\n'
+                                        codigo += f'\t{etq1}:\n'
+                                        codigo += f'\tif ({tempAcceso} >0 ) goto {etq2};\n'
+                                        codigo += f'\tgoto {etq3};\n'
+
+                                        codigo += f'\t{etq2}:\n'
+                                        codigo += f'\t{tempAcceso} = {tempAcceso} - 1;\n'
+
+                                        codigo += f'\t{temp1} = {temp1} + 1;\n'
+                                        codigo += f'\t{temp2} = Heap[(int){temp1}] ;\n'
+
+                                        temp3 = controlador.Generador3D.obtenerTemporal()
+                                        codigo += f'\t{temp3} = Heap[(int){temp2}] ;\n' #obtine tamaio
+
+                                        temp4 = controlador.Generador3D.obtenerTemporal()
+                                        codigo += f'\t{temp4} = {temp2} ;\n'
+
+                                        codigo += self.printvect(controlador, temp3, temp4, valoid.tipo)
+
+                                        codigo += f'\tif ({tempAcceso} == 0 ) goto {etq4};\n'
+                                        codigo += f'\tHeap[HP] = {ord(",")};\n'
+                                        codigo += f'\tHP = HP +1;\n'
+                                        codigo += f'\t{etq4}:\n'
+
+                                        codigo += f'\tgoto {etq1};\n'
+                                        codigo += f'\t{etq3}:\n'
+
+                                        codigo += f'\tHeap[HP] = {ord("]")};\n'
+                                        codigo += f'\tHP = HP +1;\n'
+
+
+
                                     else:
                                         texto_salida += self.addsimbolos(valoid.temporal, valoid.tipo)
 
@@ -289,6 +334,77 @@ class Imprimir(Intruccion):
                       f'\t{etq2}:\n'
         return codigo
         # controlador.Generador3D.agregarInstruccion(codigo)
+
+    def printvect(self,controlador,tempAcceso,temporal,tipoV):
+        codigo = ""
+        temp1 = controlador.Generador3D.obtenerTemporal()
+        etq1 = controlador.Generador3D.obtenerEtiqueta()
+        etq2 = controlador.Generador3D.obtenerEtiqueta()
+        etq3 = controlador.Generador3D.obtenerEtiqueta()
+        temp2 = controlador.Generador3D.obtenerTemporal()
+        etq4 = controlador.Generador3D.obtenerEtiqueta()
+        codigo += "/*Parte fun*/\n"
+        codigo += f'\tHeap[HP] = {ord("[")};\n'
+        codigo += f'\tHP = HP +1;\n'
+        #si es vector
+        codigo += f'\t{temporal} = {temporal} + 1;\n'
+        codigo += f'\t{temp1} = {temporal};\n'
+        codigo += f'\t{etq1}:\n'
+        codigo += f'\tif ({tempAcceso} >0 ) goto {etq2};\n'
+        codigo += f'\tgoto {etq3};\n'
+
+        codigo += f'\t{etq2}:\n'
+        codigo += f'\t{tempAcceso} = {tempAcceso} - 1;\n'
+
+        codigo += f'\t{temp1} = {temp1} + 1;\n'
+        codigo += f'\t{temp2} = Heap[(int){temp1}] ;\n'
+
+        if tipoV == t.ENTERO:
+            codigo += f'\tHeap[HP] = {ord("¥")};\n'
+            codigo += f'\tHP = HP +1;\n'
+        elif tipoV == t.DECIMAL:
+            codigo += f'\tHeap[HP] = {ord("¢")};\n'
+            codigo += f'\tHP = HP +1;\n'
+        elif tipoV == t.DIRSTRING or tipoV == t.STRING:
+            temp3 = controlador.Generador3D.obtenerTemporal()
+            temp4 = controlador.Generador3D.obtenerTemporal()
+            etq5 = controlador.Generador3D.obtenerEtiqueta()
+            etq6 = controlador.Generador3D.obtenerEtiqueta()
+            etq7 = controlador.Generador3D.obtenerEtiqueta()
+            codigo += "/*parte strint*/\n"
+            codigo += f'\t{temp3} = {temp2};\n'
+            # codigo += f'\t{temp3} = {temp2} - 1;\n'
+
+            codigo += f'\t{etq7}:\n'
+            # codigo += f'\t{temp3} = {temp2} + 1;\n'
+            codigo += f'\t{temp4} = Heap[(int){temp3}] ;\n'
+
+            codigo += f'\tif ({temp4} != 0 ) goto {etq5};\n'
+            codigo += f'\tgoto {etq6};\n'
+
+            codigo += f'\t{etq5}:\n'
+            codigo += f'\tHeap[HP] = {temp4};\n'
+            codigo += f'\tHP = HP +1;\n'
+
+            codigo += f'\t{temp3} = {temp3} + 1;\n'
+            codigo += f'\tgoto {etq7};\n'
+            codigo += f'\t{etq6}:\n'
+        if tipoV == t.ENTERO or tipoV == t.DECIMAL:
+            codigo += f'\tHeap[HP] = {temp2};\n'
+            codigo += f'\tHP = HP +1;\n'
+
+        codigo += f'\tif ({tempAcceso} == 0 ) goto {etq4};\n'
+        codigo += f'\tHeap[HP] = {ord(",")};\n'
+        codigo += f'\tHP = HP +1;\n'
+        codigo += f'\t{etq4}:\n'
+
+        codigo += f'\tgoto {etq1};\n'
+        codigo += f'\t{etq3}:\n'
+
+        codigo += f'\tHeap[HP] = {ord("]")};\n'
+        codigo += f'\tHP = HP +1;\n'
+        codigo += "/*Termina fun*/\n"
+        return codigo
 
     def addsimbolos(self, valor, tipo):
         txt = ""
