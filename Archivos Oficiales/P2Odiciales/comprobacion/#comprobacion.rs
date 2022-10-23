@@ -1,4 +1,4 @@
-fn main() {
+fn main () {
     let a: i64 = 25 - 25;
     let b: i64 = (((1 + 1) / 2) * 10) / a;
     println!("{}", b);

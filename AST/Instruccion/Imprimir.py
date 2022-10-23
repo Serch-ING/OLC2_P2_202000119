@@ -12,6 +12,9 @@ from AST.TablaSimbolos.Simbolos import Simbolos
 from AST.Expresion.Operaciones.Logica import Logica
 from AST.Expresion.Nativas.NativasVectores import NativasVectores
 
+
+from AST.TablaSimbolos.Tipos import Tipos
+from AST.Expresion.Primitivo import Primitivo
 class Imprimir(Intruccion):
 
     def __init__(self, expresion, tipo, lista):
@@ -42,6 +45,12 @@ class Imprimir(Intruccion):
                             # try:
 
                             if isinstance(self.lista[i], AccesoArreglo):
+                                primitivo = Primitivo("Se intento acceder a posicion fuera del array", Tipos('STRING'))
+                                imprimir = Imprimir(primitivo, True, [])
+                                #exp = imprimir.Ejecutar3D(controlador, ts)
+
+                                self.lista[i].varprint = imprimir
+
                                 self.lista[i].VecordeVector = False
                                 array = self.lista[i].Obtener3D(controlador, ts)
                                 codigo += array.codigo

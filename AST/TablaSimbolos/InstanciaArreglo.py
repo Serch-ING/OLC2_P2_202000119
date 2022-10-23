@@ -1,10 +1,15 @@
 from AST.TablaSimbolos.Simbolos import Simbolos
 from AST.TablaSimbolos.Tipos import RetornoType
+
+
+
+
 class InstanciaArreglo(Simbolos):
 
     def __init__(self,tipo, dimensiones, valores:[]):
         super().__init__()
         super().iniciarSimboloArreglo(tipo,dimensiones, valores)
+        self.varImprimir = None
 
     def SetValor(self,direccion,controlador,listatemporales,esreferencia):
         codigo = ""
@@ -50,7 +55,7 @@ class InstanciaArreglo(Simbolos):
         else:
             return None
 
-    def Obtener3D(self, direccion,controlador,listatemporales,esreferencia):
+    def Obtener3D(self, direccion,controlador,listatemporales,esreferencia,ts):
 
         codigo = ""
 
@@ -69,18 +74,40 @@ class InstanciaArreglo(Simbolos):
 
         temp4=""
 
+        size = controlador.Generador3D.obtenerTemporal()
+        codigo += f'\t{size} = Heap[(int){temp2}];\n'
+
+        primeravex= True
+        etq1 = controlador.Generador3D.obtenerEtiqueta()
+        etq2 = controlador.Generador3D.obtenerEtiqueta()
+        etq3 = controlador.Generador3D.obtenerEtiqueta()
+
+
         while self.peek_stack(listatemporales) is not None:
             temp3 = controlador.Generador3D.obtenerTemporal()
             codigo += f'\t{temp3} = {temp2} + {listatemporales[0]};\n'
             codigo += f'\t{temp3} = {temp3} +  1;\n'
             listatemporales.remove(listatemporales[0])
 
+            if primeravex and self.varImprimir is not None:
+                primeravex = False
+                codigo += f'\tif({temp3} < {size}) goto {etq1};\n'
+                codigo += f'\tgoto {etq2};\n'
+
+                codigo += f'\t{etq1}:\n'
+                codigo += f'\tif({temp3} < 0) goto {etq2};\n'
+
             temp4 = controlador.Generador3D.obtenerTemporal()
             codigo += f'\t{temp4} = Heap[(int){temp3}];\n'
 
             if self.peek_stack(listatemporales) is not None:
                 codigo += f'\t{temp2} = {temp3} + {temp4};\n'
-
+        if self.varImprimir is not None:
+            codigo += f'\tgoto {etq3};\n'
+            codigo += f'\t{etq2}:\n'
+            exp = self.varImprimir.Ejecutar3D(controlador, ts)
+            codigo += exp
+            codigo += f'\t{etq3}:\n'
 
         retorno = RetornoType()
         retorno.iniciarRetorno(codigo,"",temp4,"")

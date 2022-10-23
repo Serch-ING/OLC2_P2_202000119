@@ -5,6 +5,8 @@ from AST.TablaSimbolos.InstanciaArreglo import InstanciaArreglo
 from AST.TablaSimbolos.TablaSimbolos import TablaDeSimbolos
 from AST.TablaSimbolos.InstanciaVector import InstanciaVector
 from AST.Expresion.Identificador import Identificador
+
+
 class AccesoArreglo(Expresion,Intruccion):
     def __init__(self, idArreglo, listaExpresiones, valor = None):
         self.idArreglo = idArreglo
@@ -17,6 +19,8 @@ class AccesoArreglo(Expresion,Intruccion):
 
 
         self.VecordeVector = True
+
+        self.varprint = None
 
     def Ejecutar3D(self, controlador, ts):
         codigo = "/*Asignacion Arreglo*/"
@@ -53,6 +57,7 @@ class AccesoArreglo(Expresion,Intruccion):
 
 
 
+
         insArreglo = InstanciaArreglo(None, None, None)
         arreglo = ts.ObtenerSimbolo(self.idArreglo)
 
@@ -64,7 +69,9 @@ class AccesoArreglo(Expresion,Intruccion):
 
             dimensiones = self.compilarDimensiones(controlador, ts)
             if not self.opcion:
-                valor = insArreglo.Obtener3D(arreglo.direccion,controlador,self.temporales,arreglo)
+
+                insArreglo.varImprimir = self.varprint
+                valor = insArreglo.Obtener3D(arreglo.direccion,controlador,self.temporales,arreglo,ts)
             else:
                 valor = insArreglo.Obtener3DV2(arreglo.direccion, controlador,self.temporales,arreglo)
             valor.codigo = self.codigo + valor.codigo

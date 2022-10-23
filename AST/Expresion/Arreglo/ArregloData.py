@@ -22,6 +22,11 @@ class ArregloData(Expresion):
         for i in range(0, len(self.expresiones)):
             expresion = self.expresiones[i]
             if isinstance(expresion,ArregloData):
+
+                # imprimir = Imprimir(primitivo, True, [])
+                # exp = imprimir.Ejecutar3D(controlador, ts)
+                # codigo += exp
+
                 expresion.llamadoOtro = True
                 self.requiereOtro = True
 
