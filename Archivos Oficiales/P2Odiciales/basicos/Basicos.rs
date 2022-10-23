@@ -65,12 +65,12 @@ fn main () {
     if (a > b || b < c ){
         println!(">>>>>> Esto no debería de imprimirse");
     }else{
-        println!(">>>>>> Esto debería de imprimirse")
+        println!(">>>>>> Esto debería de imprimirse");
     }
     
     
     if (a == b && j == k || 14 != c) {
-        println!(">>>>>> Esto debería de imprimirse")
+        println!(">>>>>> Esto debería de imprimirse");
     }else{
         println!(">>>>>> Esto no debería de imprimirse");
     }
@@ -97,7 +97,7 @@ fn main () {
 
     println!("");
     println!("*************PRUEBA DE NATIVAS");
-    println!(" valor de b: {:?}",b);
+    println!(" valor de b: {}",b);
     
     println!(" valor absoluto1: {}",abs1.abs());
     println!(" valor absoluto2: {}",abs2.abs());

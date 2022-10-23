@@ -30,8 +30,6 @@ class Generador3D:
         encabezado = ""
         encabezado += """
 #include <iostream>
-#include <cmath>
-using namespace std; // Quitar luego
 float Stack[10000];
 float Heap[10000];
 

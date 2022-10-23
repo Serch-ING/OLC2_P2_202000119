@@ -39,9 +39,35 @@ class Nativas(Expresion):
 
             if tipo_exp1 == tipo.DECIMAL:
                 codigo += return_exp1.codigo
-                codigo += f'\t{return_exp1.temporal} = sqrt({return_exp1.temporal}) ;\n'
+
+                tempraiz = controlador.Generador3D.obtenerTemporal()
+                codigo += f'\t{tempraiz} = {return_exp1.temporal} / 2;\n'
+
+                temp = controlador.Generador3D.obtenerTemporal()
+
+                etq1 = controlador.Generador3D.obtenerEtiqueta()
+                etq2 = controlador.Generador3D.obtenerEtiqueta()
+                etq3 = controlador.Generador3D.obtenerEtiqueta()
+
+                codigo += f'\t{etq1}:\n'
+                codigo += f'if({tempraiz} != {temp}) goto {etq2};'
+                codigo += f'\tgoto {etq3};\n'
+
+                codigo += f'\t{etq2}:\n'
+                codigo += f'\t{temp} = {tempraiz};\n'
+                codigo += f'\t{tempraiz} = {return_exp1.temporal} / {temp};\n'
+                codigo += f'\t{tempraiz} = {tempraiz} + {temp};\n'
+                codigo += f'\t{tempraiz} = {tempraiz} / 2;\n'
+                codigo += f'\tgoto {etq1};\n'
+
+                codigo += f'\t{etq3}:\n'
+
+                #codigo += f'\t{return_exp1.temporal} = sqrt({return_exp1.temporal}) ;\n'
+
+
                 retorno = RetornoType()
-                retorno.iniciarRetorno(codigo, "", return_exp1.temporal, tipo_exp1)
+                #retorno.iniciarRetorno(codigo, "", return_exp1.temporal, tipo_exp1)
+                retorno.iniciarRetorno(codigo, "", tempraiz, tipo_exp1)
                 return retorno
 
         elif self.funcion == "to_string()" or self.funcion == "to_owned()":

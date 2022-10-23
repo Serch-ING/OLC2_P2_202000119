@@ -82,3 +82,114 @@ fn main () {
     println!("\nImprimir nota final actualizada por curso y estudiantes\n");
     imprimir_nota_final(&mut estudiantes, &mut cursos, &mut notas);
 }
+
+/*
+Imprimir notas por curso y estudiantes
+
+["1er parcial", "2do parcial", "3er parcial", "Lab", "Examen final"]
+
+Estudinte: 
+Lorenza
+Curso: Arqui1
+[37, 49, 61, 29, 44]
+Curso: Archivos
+[56, 60, 51, 68, 70]
+Curso: Compi2
+[47, 15, 39, 17, 74]
+
+Estudinte: 
+Rosendo
+Curso: Arqui1
+[69, 74, 52, 34, 36]
+Curso: Archivos
+[24, 44, 50, 18, 76]
+Curso: Compi2
+[74, 60, 32, 63, 78]
+
+Estudinte: 
+Fermina
+Curso: Arqui1
+[78, 14, 23, 52, 33]
+Curso: Archivos
+[28, 79, 77, 55, 24]
+Curso: Compi2
+[23, 79, 47, 62, 44]
+
+Estudinte: 
+Markel
+Curso: Arqui1
+[73, 53, 11, 49, 52]
+Curso: Archivos
+[29, 16, 65, 34, 12]
+Curso: Compi2
+[72, 69, 30, 44, 37]
+
+
+Imprimir nota final por curso y estudiantes
+
+Lorenza -> Curso: Arqui1
+41.35
+Lorenza -> Curso: Archivos
+63.19666666666667
+Lorenza -> Curso: Compi2
+38.41666666666667
+
+Rosendo -> Curso: Arqui1
+47.830000000000005
+Rosendo -> Curso: Archivos
+41.67333333333333
+Rosendo -> Curso: Compi2
+63.45333333333333
+
+Fermina -> Curso: Arqui1
+41.373333333333335
+Fermina -> Curso: Archivos
+49.973333333333336
+Fermina -> Curso: Compi2
+52.19666666666667
+
+Markel -> Curso: Arqui1
+48.31666666666667
+Markel -> Curso: Archivos
+29.64666666666667
+Markel -> Curso: Compi2
+47.84
+
+
+Mejorar notas de todos los cursos
+
+
+Imprimir nota final actualizada por curso y estudiantes
+
+Lorenza -> Curso: Arqui1
+81.05666666666667
+Lorenza -> Curso: Archivos
+71.78
+Lorenza -> Curso: Compi2
+84.27333333333334
+
+Rosendo -> Curso: Arqui1
+81.05666666666667
+Rosendo -> Curso: Archivos
+71.78
+Rosendo -> Curso: Compi2
+84.27333333333334
+
+Fermina -> Curso: Arqui1
+81.05666666666667
+Fermina -> Curso: Archivos
+71.78
+Fermina -> Curso: Compi2
+84.27333333333334
+
+Markel -> Curso: Arqui1
+81.05666666666667
+Markel -> Curso: Archivos
+71.78
+Markel -> Curso: Compi2
+84.27333333333334
+
+
+
+
+*/
