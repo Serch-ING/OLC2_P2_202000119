@@ -19,6 +19,10 @@ class NativasVectores(Expresion,Intruccion):
         self.funcion = funcion
         self.expresion = None
 
+        self.provienePrint = False
+        self.etiquetaV = ""
+        self.etiquetaF = ""
+
     def Obtener3D(self, controlador, ts):
         codigo = "/*Nativa vector*/\n"
         if self.exp1 is not None:
@@ -166,9 +170,122 @@ class NativasVectores(Expresion,Intruccion):
 
 
             elif self.funcion == "contains" :
-                if self.exp1.valor in valor_expresion:
-                    return RetornoType(True, tipo.BOOLEANO)
-                return RetornoType(False, tipo.BOOLEANO)
+                exp1 = self.exp1.Obtener3D(controlador, ts)
+                print(return_exp)
+                tempvalidacion = controlador.Generador3D.obtenerTemporal()
+                codigo += f'\t{tempvalidacion} = 0;\n'
+
+                codigo += "/*agregar codigo exp*/\n"
+                codigo += exp1.codigo
+
+                temp1 = controlador.Generador3D.obtenerTemporal()
+                temp2 = controlador.Generador3D.obtenerTemporal()
+
+                if not return_exp.referencia:
+                    codigo += f'\t{temp1} = SP + {return_exp.direccion};\n'
+                    codigo += f'\t{temp2} = Stack[(int){temp1}];\n'
+                else:
+                    codigo += f'\t{temp2} = SP + {return_exp.direccion};\n'
+                    codigo += f'\t{temp2} = Stack[(int){temp2}];\n'
+                    while return_exp.referencia:
+                        codigo += f'\t{temp1} = {temp2};\n'
+                        codigo += f'\t{temp2} = Stack[(int){temp2}];\n'
+                        return_exp = return_exp.tsproviene.ObtenerSimbolo(return_exp.idproviene)
+
+                etq1 = controlador.Generador3D.obtenerEtiqueta()
+                etq2 = controlador.Generador3D.obtenerEtiqueta()
+                etq3 = controlador.Generador3D.obtenerEtiqueta()
+
+                etq4 = controlador.Generador3D.obtenerEtiqueta()
+
+                #codigo += return_exp.codigo
+                tempAcceso = controlador.Generador3D.obtenerTemporal()
+
+                codigo += f'\t{tempAcceso} = Heap[(int){temp2}];\n'
+                codigo += f'\t{temp2} = {temp2} + 1;\n'
+                codigo += f'\t{temp1} = {temp2};\n'
+
+                codigo += f'\t{etq1}:\n'
+                codigo += f'\tif ({tempAcceso} >0 ) goto {etq2};\n'
+                codigo += f'\tgoto {etq3};\n'
+
+                codigo += f'\t{etq2}:\n'
+                codigo += f'\t{tempAcceso} = {tempAcceso} - 1;\n'
+
+                codigo += f'\t{temp1} = {temp1} + 1;\n'
+                codigo += f'\t{temp2} = Heap[(int){temp1}] ;\n'
+
+                if return_exp.tipo == tipo.DIRSTRING or return_exp.tipo == tipo.STRING:
+                    temp3 = controlador.Generador3D.obtenerTemporal()
+                    temp4 = controlador.Generador3D.obtenerTemporal()
+                    etq5 = controlador.Generador3D.obtenerEtiqueta()
+                    etq6 = controlador.Generador3D.obtenerEtiqueta()
+                    etq7 = controlador.Generador3D.obtenerEtiqueta()
+
+                    codigo += "/*parte strint*/\n"
+                    codigo += f'\t{temp3} = {temp2};\n'
+
+                    #parte para la frase a buscar ---------------
+                    temp3_t = controlador.Generador3D.obtenerTemporal()
+                    temp4_t = controlador.Generador3D.obtenerTemporal()
+                    etq5_t = controlador.Generador3D.obtenerEtiqueta()
+                    etq6_t = controlador.Generador3D.obtenerEtiqueta()
+                    etq7_t = controlador.Generador3D.obtenerEtiqueta()
+
+                    codigo += f'\t{temp3_t} = {exp1.temporal};\n'
+                    codigo += f'\t{tempvalidacion} = 1;\n'
+                    #termina parte para la frase a buscar -----------
+
+                    codigo += f'\t{etq7}:\n'
+
+                    codigo += f'\t{temp4} = Heap[(int){temp3}] ;\n'
+                    codigo += f'\t{temp4_t} = Heap[(int){temp3_t}] ;\n'
+
+                    codigo += f'\tif ({temp4} != 0 ) goto {etq5};\n'
+                    codigo += f'\tgoto {etq6};\n'
+
+                    codigo += f'\t{etq5}:\n' #aqio se recprre los caracteres
+
+                    codigo += f'if({temp4} == {temp4_t}) goto {etq5_t};\n'
+                    codigo += f'\tgoto {etq6_t};\n'
+
+                    codigo += f'\t{etq5_t}:\n'
+                    codigo += f'\tgoto {etq7_t};\n'
+
+                    codigo += f'\t{etq6_t}:\n'
+                    codigo += f'\t{tempvalidacion} = 0;\n'
+                    codigo += f'\tgoto {etq6};\n'
+
+                    codigo += f'\t{etq7_t}:\n'
+
+                    codigo += f'\t{temp3} = {temp3} + 1;\n'#aunenta los contadores para validacion
+                    codigo += f'\t{temp3_t} = {temp3_t} + 1;\n'
+
+                    codigo += f'\tgoto {etq7};\n'
+                    codigo += f'\t{etq6}:\n'
+
+                    codigo += f'if({tempvalidacion} == 1) goto {etq3};\n'
+
+                #codigo += f'\tif ({tempAcceso} == 0 ) goto {etq4};\n'
+                #codigo += f'\tHeap[HP] = {ord(",")};\n'
+                #codigo += f'\tHP = HP +1;\n'
+                #codigo += f'\t{etq4}:\n'
+
+                codigo += f'\tgoto {etq1};\n'
+                codigo += f'\t{etq3}:\n'
+
+
+                if not self.provienePrint:
+                    codigo += f'\tif ({tempvalidacion} == 1) goto {self.etiquetaV};\n'
+                    codigo += f'\tgoto {self.etiquetaF};\n'
+
+                # parte del recorrido termina de la varibles ------------------------------------------------------
+
+                retorno = RetornoType()
+                retorno.iniciarRetorno(codigo, "", tempvalidacion, tipo.BOOLEANO)
+                retorno.etiquetaV = self.etiquetaV
+                retorno.etiquetaF = self.etiquetaF
+                return retorno
 
             elif self.funcion == "insert":
 

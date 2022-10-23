@@ -9,7 +9,8 @@ from AST.Expresion.Struct.AccesoStruct import AccesoStruct
 from AST.Expresion.Operaciones.Relacional import Relacional
 from AST.Instruccion.Declaracion import Declaracion
 from AST.TablaSimbolos.Simbolos import Simbolos
-
+from AST.Expresion.Operaciones.Logica import Logica
+from AST.Expresion.Nativas.NativasVectores import NativasVectores
 
 class Imprimir(Intruccion):
 
@@ -69,6 +70,34 @@ class Imprimir(Intruccion):
                                 codigo += f'\t{etqSalida}:\n'
                                 texto_salida += self.addsimbolos(temp, ObtenerRetorno.tipo)
                                 listarelacionales.append(temp)
+
+                            elif isinstance(self.lista[i], Logica):
+
+                                self.lista[i].etiquetaV = controlador.Generador3D.obtenerEtiqueta()
+                                self.lista[i].etiquetaF = controlador.Generador3D.obtenerEtiqueta()
+                                etqFuera = controlador.Generador3D.obtenerEtiqueta()
+                                return_exp1 = self.lista[i].Obtener3D(controlador, ts)
+                                temp1 = controlador.Generador3D.obtenerTemporal()
+
+                                codigo += return_exp1.codigo
+
+                                codigo += f'\t{return_exp1.etiquetaV}:\n'
+                                codigo += f'\t{temp1} = 1;\n'
+                                codigo += f'\tgoto {etqFuera};\n'
+
+                                codigo += f'\t{return_exp1.etiquetaF}:\n'
+                                codigo += f'\t{temp1} = 0;\n'
+
+                                codigo += f'\t{etqFuera}:\n'
+
+                                texto_salida += self.addsimbolos(temp1, t.ENTERO)
+
+                            elif isinstance(self.lista[i],NativasVectores):
+                                self.lista[i].provienePrint = True
+                                ObtenerRetorno = self.lista[i].Obtener3D(controlador, ts)
+                                codigo += ObtenerRetorno.codigo
+                                # controlador.Generador3D.agregarInstruccion(ObtenerRetorno.codigo)
+                                texto_salida += self.addsimbolos(ObtenerRetorno.temporal, ObtenerRetorno.tipo)
 
                             else:
                                 # try:

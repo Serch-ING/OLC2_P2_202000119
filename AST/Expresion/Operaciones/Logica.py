@@ -1,7 +1,7 @@
 from AST.Abstracto.Expresion import Expresion
 from AST.Expresion.Operaciones.Operacion import Operacion, operador
 from AST.TablaSimbolos.Tipos import tipo,RetornoType
-
+from AST.Expresion.Nativas.NativasVectores import NativasVectores
 
 class Logica(Operacion, Expresion):
     def __init__(self, exp1, signo, exp2, expU=False):
@@ -44,6 +44,8 @@ class Logica(Operacion, Expresion):
             elif self.operador == operador.OR:
                 self.exp1.etiquetaV = self.etiquetaV
                 self.exp1.etiquetaF =  controlador.Generador3D.obtenerEtiqueta()
+
+
                 return_exp1: RetornoType = self.exp1.Obtener3D(controlador, ts)
                 valor_exp1 = return_exp1.valor
 
