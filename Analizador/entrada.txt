@@ -1,84 +1,123 @@
-// imprime los puntos por curso de cada estudiante 
-fn imprimir_punteo(ests: &mut [String; 4], cursos: &mut [&str; 3], notas: &mut [[[i64;5];3];4]) {
-    let ponderacion: [&str; 5] = ["1er parcial", "2do parcial", "3er parcial", "Lab", "Examen final"];
-    println!("{:?}", ponderacion);
-    println!("");
-    for i in 0..ests.len() {
-        println!("Estudinte: ");
-        println!("{}", ests[i]);
-        for j in 0..cursos.len() {
-            let cad: String = "Curso: ".to_string() + cursos[j];
-            println!("{}", cad);
-            println!("{:?}", notas[i][j]);
-        }
-        println!("");
+// PILA
+fn pila_vacia(vec: &mut Vec<i64>) -> bool {
+    if vec.len() == 0 {
+        return true;
+    }else{
+        return false;
+    }
+    
+}
+
+fn apilar(capacidad: usize, vec: &mut Vec<i64>, value: i64) {
+    if vec.len() < capacidad {
+        vec.insert(vec.len(), value);
+    } else {
+        println!("La pila ha llegado a su maxima capacidad");
     }
 }
 
-// imprime la nota total por curso de cada estudiante
-// parciales 43, lab sobre 32 y examen final 25
-fn imprimir_nota_final(ests: &mut [String; 4], cursos: &mut [&str; 3], notas: &mut [[[i64;5];3];4]) {
-    for i in 0..ests.len() {
-        for j in 0..cursos.len() {
-            let mut nota_final: f64 = 0.0;
-            for k in 0..notas[i][j].len() {
-                let nota: f64 = 
-                    if notas[i][j].len() - 1  ==  k{
-                        let efinal: f64 = 25.0 / 100.0;
-                        (notas[i][j][k] as f64) * efinal
-                    } else if notas[i][j].len() - 2  == k {
-                        let lab: f64 = 32.0 / 100.0;
-                        (notas[i][j][k] as f64) * lab
-                    } else {
-                        let parcial: f64 = (43.0 / 3.0) / 100.0;
-                        (notas[i][j][k] as f64) * parcial
-                    };
-                nota_final = nota_final + nota;
-            }
+fn desapilar(vec: &mut Vec<i64>) -> i64 {
+    if !pila_vacia(vec) {
+        return vec.remove(vec.len()-1);
+    } else {
+        println!("La pila no tiene elementos");
+    }
+    return 0;
+}
 
-            let cad: String = ests[i].clone().to_string() + " -> Curso: " + cursos[j];
-            println!("{}", cad);
-            println!("{}", nota_final);
-        }
-        println!("");
+// COLA
+fn cola_vacia(vec: &mut Vec<i64>) -> bool {
+    if vec.len() == 0 {
+        return true;
+    }else{
+        return false;
     }
 }
 
-// correccion de notas 
-fn corregir_notas(corregir: &mut [[i64;5];3], notas: &mut [[[i64;5];3];4]) {
-    for i in 0..notas.len() {
-        for j in 0..notas[i].len() {
-            for k in 0..notas[i][j].len() {
-                notas[i][j][k] = corregir[j][k];
-            }
-        }
+fn encolar(capacidad: usize, vec: &mut Vec<i64>, value: i64) {
+    if vec.len() < capacidad {
+        vec.push(value);
+    } else {
+        println!("La cola ha llegado a su maxima capacidad");
     }
+}
+
+fn desencolar(vec: &mut Vec<i64>) -> i64 {
+    if !cola_vacia(vec) {
+        return vec.remove(0);
+    } else {
+        println!("La cola no tiene elementos");
+    }
+    return 0;
 }
 
 fn main () {
-    let mut estudiantes: [String; 4] = ["Lorenza".to_string(), "Rosendo".to_string(), "Fermina".to_string(), "Markel".to_string()];
+    let capacidad: usize = 10;
+    let mut pila: Vec<i64> = Vec::with_capacity(capacidad - 2);
+    let mut cola: Vec<i64> = vec![1,2,3,4,5];
+
+    let datos: [i64; 5] = [10,20,30,40,50];
+
+    for dato in datos {
+        apilar(capacidad, &mut pila, dato);
+    }
     
-    let mut cursos: [&str; 3] = ["Arqui1", "Archivos", "Compi2"];
+    println!("{:?}", pila);
+    println!("{}", desapilar(&mut pila));
+    apilar(capacidad, &mut pila, 100);
+    apilar(capacidad, &mut pila, 200);
+    apilar(capacidad, &mut pila, 300);
+    println!("{}", desapilar(&mut pila));
+    println!("{}", desapilar(&mut pila));
+    println!("{}", desapilar(&mut pila));
+    println!("{}", desapilar(&mut pila));
+    println!("{}", desapilar(&mut pila));
+    println!("{}", desapilar(&mut pila));
+    println!("{}", desapilar(&mut pila));
+    println!("{}", desapilar(&mut pila));
+    println!("{:?}", pila);
+    println!("Capacidad de pila");
+    println!("{}", pila.capacity());
+    println!("");
 
-    let mut notas_buenas: [[i64;5];3] = [
-        [53,88,95,89,75],
-        [81,51,57,67,93],
-        [94,74,58,84,100]
-    ];
+    encolar(capacidad, &mut cola, 800);
+    println!("{:?}", cola);
+    println!("{}", desencolar(&mut cola));
+    encolar(capacidad, &mut cola, 100);
+    encolar(capacidad, &mut cola, 200);
+    encolar(capacidad, &mut cola, 300);
+    println!("{}", desencolar(&mut cola));
+    println!("{}", desencolar(&mut cola));
+    println!("{}", desencolar(&mut cola));
+    println!("{}", desencolar(&mut cola));
+    println!("{}", desencolar(&mut cola));
+    println!("{}", desencolar(&mut cola));
+    println!("{}", desencolar(&mut cola));
+    println!("{}", desencolar(&mut cola));
+    println!("{:?}", cola);
+    println!("Capacidad de cola");
+    println!("{}", cola.capacity());
+    println!("");
 
-    let mut notas: [[[i64;5];3];4] = [
-        [[37,49,61,29,44],[56,60,51,68,70],[47,15,39,17,74]],
-        [[69,74,52,34,36],[24,44,50,18,76],[74,60,32,63,78]],
-        [[78,14,23,52,33],[28,79,77,55,24],[23,79,47,62,44]],
-        [[73,53,11,49,52],[29,16,65,34,12],[72,69,30,44,37]]
-    ];
+    // vectores entre vectores
+    let mut lista: Vec<Vec<i64>> = Vec::new();
+    lista.push(vec![0; 10]);
+    lista.push(vec![1; 10]);
+    lista.push(vec![2; 10]);
+    lista.push(vec![3; 10]);
+    lista.push(vec![75,23,10,29,30,12,49,10,93]);
+    println!("{:?}", lista);
+    println!("");
+    println!("{:?}", lista[0]);
+    println!("{:?}", lista[1]);
+    println!("{:?}", lista[2]);
+    println!("{:?}", lista[3]);
+    println!("{:?}", lista[4]);
+    println!("{}", lista[4][8]);
+    println!("");
 
-    println!("\nImprimir notas por curso y estudiantes\n");
-    imprimir_punteo(&mut estudiantes, &mut cursos, &mut notas);
-    println!("\nImprimir nota final por curso y estudiantes\n");
-    imprimir_nota_final(&mut estudiantes, &mut cursos, &mut notas);
-    println!("\nMejorar notas de todos los cursos\n");
-    corregir_notas(&mut notas_buenas, &mut notas);
-    println!("\nImprimir nota final actualizada por curso y estudiantes\n");
-    imprimir_nota_final(&mut estudiantes, &mut cursos, &mut notas);
+    let vec = vec!["Hola", "!", "Sale", "Este", "Semestre", "2022"];
+    println!("{}", vec.contains(&"Semestre") || (vec.contains(&"2023")));
+    println!("{}", vec.contains(&"Semestre") && (vec.contains(&"2023")));
+    println!("{}", vec.contains(&"Hola"));
 }

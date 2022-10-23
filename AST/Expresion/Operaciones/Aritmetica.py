@@ -3,6 +3,10 @@ from AST.Expresion.Operaciones.Operacion import operador, Operacion
 from AST.TablaSimbolos.Tipos import tipo,RetornoType
 from Analizador.Gramatica import E_list
 
+from AST.Instruccion.Imprimir import Imprimir
+from AST.TablaSimbolos.Tipos import Tipos
+from AST.Expresion.Primitivo import Primitivo
+
 class Aritmetica(Operacion, Expresion):
     def __init__(self, exp1, signo, exp2, expU=False):
         super().__init__(exp1, signo, exp2, expU)
@@ -81,7 +85,27 @@ class Aritmetica(Operacion, Expresion):
             elif self.operador == operador.DIVISION:
                 codigo += "/*DIVISION*/\n"
                 temp = controlador.Generador3D.obtenerTemporal()
+
+                etq1 = controlador.Generador3D.obtenerEtiqueta()
+                etq2 = controlador.Generador3D.obtenerEtiqueta()
+                etq3 = controlador.Generador3D.obtenerEtiqueta()
+
+                codigo += f'\t if({exp2_temp} != 0) goto {etq1};\n'
+                codigo += f'\tgoto {etq2};\n'
+
+                codigo += f'\t{etq1}:\n'
                 codigo += f'\t{temp} = {exp1_temp} / {exp2_temp};\n'
+                codigo += f'\tgoto {etq3};\n'
+
+                codigo += f'\t{etq2}:\n'
+                primitivo = Primitivo("Se intento divir entre 0",Tipos('STRING'))
+                imprimir = Imprimir(primitivo,True,[])
+                exp = imprimir.Ejecutar3D(controlador,ts)
+                codigo += exp
+                codigo += f'\t{temp} = {exp1_temp} ;\n'
+
+                codigo += f'\t{etq3}:\n'
+
                 retorno = RetornoType()
                 retorno.iniciarRetorno(codigo, "", temp, tipo_exp1)
                 return retorno
