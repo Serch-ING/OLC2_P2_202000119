@@ -134,7 +134,7 @@ class NativasVectores(Expresion,Intruccion):
                             return_exp = return_exp.tsproviene.ObtenerSimbolo(return_exp.idproviene)
 
                     codigo += self.generarAddSpacio(temp2, valor_expresion, controlador, temp1)
-                    valor_expresion.append(valor_exp1)
+                    valor_expresion.append(valor_tipo)
 
                     direccionA = len(valor_expresion)
 
@@ -195,7 +195,7 @@ class NativasVectores(Expresion,Intruccion):
 
 
                 codigo += self.generarAddSpacio(temp2,valor_expresion,controlador,temp1)
-                valor_expresion.append(self.exp1)
+                valor_expresion.append(exp1.tipo)
 
                 tempF = controlador.Generador3D.obtenerTemporal()
                 codigo += f'\t{tempF} = {temp2};\n'

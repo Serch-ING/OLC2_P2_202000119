@@ -77,4 +77,45 @@ class InstanciaVector(Simbolos):
         # valor = self.ciclo(listaDimensiones, index, valores, direccion, controlador)
         return retorno
 
+    def ObtenerValorV2(self, direccion, controlador, listatemporales, esreferencia):
+
+        codigo = ""
+
+        temp1 = controlador.Generador3D.obtenerTemporal()
+        temp2 = controlador.Generador3D.obtenerTemporal()
+
+        if not esreferencia.referencia:
+            codigo += f'\t{temp1} = SP + {direccion};\n'
+            codigo += f'\t{temp2} = Stack[(int){temp1}];\n'
+        else:
+            codigo += f'\t{temp2} = SP + {esreferencia.direccion};\n'
+            codigo += f'\t{temp2} = Stack[(int){temp2}];\n'
+            while esreferencia.referencia:
+                codigo += f'\t{temp2} = Stack[(int){temp2}];\n'
+                esreferencia = esreferencia.tsproviene.ObtenerSimbolo(esreferencia.idproviene)
+
+        temp4 = ""
+
+        while self.peek_stack(listatemporales) is not None:
+            temp3 = controlador.Generador3D.obtenerTemporal()
+            codigo += f'\t{temp3} = {temp2} + {listatemporales[0]};\n'
+            codigo += f'\t{temp3} = {temp3} +  2;\n'
+            listatemporales.remove(listatemporales[0])
+
+            temp4 = controlador.Generador3D.obtenerTemporal()
+            codigo += f'\t{temp2} = Heap[(int){temp3}];\n'
+
+            #codigo += f'\t{temp4} = Heap[(int){temp3}];\n'
+
+            #if self.peek_stack(listatemporales) is not None:
+            #    temp5 = controlador.Generador3D.obtenerTemporal()
+            #    codigo += f'\t{temp5} = {temp4} + 2;\n'
+            #    codigo += f'\t{temp2} = Heap[(int){temp5}];\n'
+
+
+        retorno = RetornoType()
+        retorno.iniciarRetorno(codigo, "", temp2,"")
+
+        return retorno
+
 

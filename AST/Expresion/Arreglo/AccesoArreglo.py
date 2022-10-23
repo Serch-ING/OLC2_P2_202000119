@@ -15,6 +15,9 @@ class AccesoArreglo(Expresion,Intruccion):
         self.opcion = False
         self.EsVector = True
 
+
+        self.VecordeVector = True
+
     def Ejecutar3D(self, controlador, ts):
         codigo = "/*Asignacion Arreglo*/"
         ts.Print_Table()
@@ -48,10 +51,14 @@ class AccesoArreglo(Expresion,Intruccion):
         if ts.Existe_id(self.idArreglo) is not True:
             return RetornoType()
 
+
+
         insArreglo = InstanciaArreglo(None, None, None)
         arreglo = ts.ObtenerSimbolo(self.idArreglo)
 
-
+        simbolo = arreglo
+        while simbolo.referencia:
+            simbolo = simbolo.tsproviene.ObtenerSimbolo(simbolo.idproviene)
 
         if not isinstance(arreglo, InstanciaVector):
 
@@ -67,7 +74,11 @@ class AccesoArreglo(Expresion,Intruccion):
         else:
 
             dimensiones = self.compilarDimensiones(controlador, ts)
-            valor = arreglo.ObtenerValor(arreglo.direccion,controlador,self.temporales,arreglo)
+            if self.VecordeVector or simbolo.valores[0] != tipo.VECTOR:
+                valor = arreglo.ObtenerValor(arreglo.direccion,controlador,self.temporales,arreglo)#obtener vector del vector
+            else:
+                valor = arreglo.ObtenerValorV2(arreglo.direccion, controlador, self.temporales, arreglo)#obtener valor del vector
+
             valor.codigo = self.codigo + valor.codigo
             valor.tipo = arreglo.tipo
             valor.etiqueta = "ETIQUETA"

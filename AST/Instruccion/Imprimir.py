@@ -41,6 +41,7 @@ class Imprimir(Intruccion):
                             # try:
 
                             if isinstance(self.lista[i], AccesoArreglo):
+                                self.lista[i].VecordeVector = False
                                 array = self.lista[i].Obtener3D(controlador, ts)
                                 codigo += array.codigo
                                 texto_salida += self.addsimbolos(array.temporal, array.tipo)
@@ -172,7 +173,14 @@ class Imprimir(Intruccion):
                                     tempAcceso = controlador.Generador3D.obtenerTemporal()
                                     codigo += f'\t{tempAcceso} = Heap[(int){valoid.temporal}];\n'
 
-                                    if isinstance(simbolo, InstanciaArreglo) :
+                                    validacion = False
+                                    if len(simbolo.valores) > 0:
+                                        if simbolo.valores[0] != t.VECTOR:
+                                            validacion = True
+                                    else:
+                                        validacion = True
+
+                                    if isinstance(simbolo, InstanciaArreglo) or validacion :
                                         temp1 = controlador.Generador3D.obtenerTemporal()
                                         etq1 = controlador.Generador3D.obtenerEtiqueta()
                                         etq2 = controlador.Generador3D.obtenerEtiqueta()
