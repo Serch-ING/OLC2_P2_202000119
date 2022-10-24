@@ -32,11 +32,21 @@ class Declaracion(Intruccion):
 
                 elif TipoExpresion == tipo.VECTOR:
                     declaracion_vector = DeclaracionVector(self.identificador.id, self.expresion, self.tipo, self.mut)
-                    return  declaracion_vector.Ejecutar3D(controlador, ts)
+                    return declaracion_vector.Ejecutar3D(controlador, ts)
                 
                 elif TipoExpresion == tipo.STRUCT:
-                    ts.Agregar_Simbolo(self.identificador.id, return_exp)
-                    return None
+                    temp1 = controlador.Generador3D.obtenerTemporal()
+                    sizeTabla = ts.size
+                    codigo += return_exp.codigo + "\n"
+                    codigo += f'\t{temp1} = SP + {sizeTabla};\n'
+                    codigo += f'\tStack[(int){temp1}] = {return_exp.temporal};\n'
+                    ts.size += 1
+
+                    newSimbolo = Simbolos()
+                    newSimbolo.SimboloStruck(self.identificador.id, return_exp.valor, return_exp.tipo, self.mut, sizeTabla,return_exp.diccionario)
+                    #ts.Agregar_Simbolo(self.identificador.id, return_exp)
+                    ts.Agregar_Simbolo(self.identificador.id, newSimbolo)
+                    return codigo
             except:
                 print("Declaracion no se esta recuperando un dato")
                 return None

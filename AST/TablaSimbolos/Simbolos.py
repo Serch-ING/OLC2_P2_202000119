@@ -29,6 +29,17 @@ class Simbolos() :
         self.tsproviene = None
         self.idproviene = ""
 
+        #struck
+        self.diccionario = None
+
+    def SimboloStruck(self,id,valor,tipo,mut,direccion,diccionario):
+        self.id = id
+        self.valor = valor
+        self.tipo = tipo
+        self.mut = mut
+        self.direccion = direccion
+        self.diccionario = diccionario
+
     def SimboloPremitivo(self,id,valor,tipo,mut,direccion):
         self.id = id
         self.valor = valor

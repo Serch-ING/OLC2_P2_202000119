@@ -16,4 +16,5 @@ class DeclararStruct(Expresion):
     def GuardarStruct(self, ts):
         print("================== Se guardo struct ================ ", self.identificador)
         if not ts.Existe_id(self.identificador):
-            ts.Agregar_Simbolo(self.identificador,RetornoType(self,tipo.STRUCT))
+            retorno = RetornoType(self,tipo.STRUCT)
+            ts.Agregar_Simbolo(self.identificador,retorno)

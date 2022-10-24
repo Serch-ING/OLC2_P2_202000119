@@ -13,49 +13,46 @@ class InstanciaStruct(Expresion):
         self.asignaciones = asignaciones
         self.diccionario = 0
 
+
     def Obtener3D(self, controlador, ts):
         struct = ts.ObtenerSimbolo(self.identificador)
         declaraciones  = struct.valor.declaraciones
         diccionario = {}
+        codigo = "/*Declaracion vector*/\n"
 
-        for x  in declaraciones:
-            nombre = x.identificador
-            tipo = x.expresion
-            if isinstance(tipo,Identificador):
-                tipo =  ts.ObtenerSimbolo(tipo.id)
-                tipo = tipo.valor.identificador
+        listatemporales = []
 
-            for y in self.asignaciones:
-                name = y.identificador
-                data = y.expresion.Obtener3D(controlador, ts)
-                agregar = data
-                if isinstance(y.expresion, Identificador):
-                    data = ts.ObtenerSimbolo(y.expresion.id)
-                    if isinstance(data.valor,InstanciaStruct):
-                        agregar = data
-                        data = data.valor.identificador
-                    else:
-                        agregar = data
-                        data = data.tipo
-                elif isinstance(data,RetornoType):
-                    if isinstance(data.valor,InstanciaStruct):
-                        agregar = data
-                        data = data.valor.identificador
-                    else:
-                        agregar = data
-                        data = data.tipo
+        for y in self.asignaciones:
+            name = y.identificador
+            data = y.expresion.Obtener3D(controlador, ts)
+            agregar = data
 
+            for x in declaraciones:
+                nombre = x.identificador
+                tipo = x.expresion
 
                 if name == nombre:
-                    if isinstance(tipo,Repeticiones):
-                        tipo = t.ARRAY
-                    if data == tipo:
-                        diccionario[name] = copy.deepcopy(copy.copy(agregar))
-                        break
+                    listatemporales.append(agregar.temporal)
+                    codigo += agregar.codigo
+                    diccionario[name] = copy.deepcopy(copy.copy(agregar))
+                    break
+        codigo += "/*Declaracion especifica*/\n"
+        temp1 = controlador.Generador3D.obtenerTemporal()
+        codigo += f'\t{temp1} = HP;\n'
+        codigo += f'\tHeap[(int)HP] = {len(self.asignaciones)};\n'
+        codigo += f'\tHP = HP + 1;\n'
+
+        for x in listatemporales:
+            codigo += f'\tHeap[(int)HP] = {x};\n'
+            codigo += f'\tHP = HP + 1;\n'
+
         self.diccionario = diccionario
 
-
-        return RetornoType(copy.deepcopy(copy.copy(self)),t.STRUCT)
+        retorno = RetornoType(copy.deepcopy(copy.copy(self)),t.STRUCT)
+        retorno.temporal = temp1
+        retorno.codigo = codigo
+        retorno.diccionario = diccionario
+        return retorno
 
     def SetValor(self):
         print("Ni idea")

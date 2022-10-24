@@ -46,6 +46,7 @@ class Identificador(Expresion):
                 retorno.etiquetaF = self.etiquetaF
 
             retorno.iniciarRetorno(codigo,"",temp2,existe_id.tipo)
+            retorno.diccionario = existe_id.diccionario
             return retorno
         else:
             return RetornoType("No se encontro valor", tipo.ERROR)

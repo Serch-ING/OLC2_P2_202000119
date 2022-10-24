@@ -68,9 +68,40 @@ class AccesoStruct(Intruccion,Expresion):
         print(self.identificador)
         print(self.expresiones)
         #print(self.exp)
-        self.ts = ts
-        self.controlador = controlador
-        return self.fn_obtner_valor(self.identificador,copy.deepcopy(self.expresiones))
+
+        #return self.fn_obtner_valor(self.identificador,copy.deepcopy(self.expresiones))
+        return self.obtener_valores(self.identificador, copy.deepcopy(self.expresiones),controlador,ts)
+
+    def obtener_valores(self,identificador,expresiones,controlador,ts):
+        codigo = f'/*obtener {self.identificador.id}*/\n'
+
+        id_buscado = identificador.Obtener3D(controlador, ts)
+        codigo += id_buscado.codigo
+
+        id_arr = expresiones[0]
+
+        simbolo = ts.ObtenerSimbolo(identificador.id)
+        diccionario_id = simbolo.diccionario
+
+        valor_acc = diccionario_id.get(id_arr.id)
+
+        contador = 1
+
+        temp1 = controlador.Generador3D.obtenerTemporal()
+
+        for x in diccionario_id:
+            if id_arr.id == x:
+                break
+            contador += 1
+            print(x)
+
+        codigo += f'\t{temp1} = {id_buscado.temporal} + {contador};\n'
+
+        retorno = RetornoType()
+        retorno.iniciarRetorno(codigo,"",temp1,valor_acc.tipo)
+
+        return  retorno
+
 
 
     def fn_obtner_valor(self,identificador,expresiones):

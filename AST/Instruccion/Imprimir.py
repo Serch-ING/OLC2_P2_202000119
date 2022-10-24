@@ -108,6 +108,14 @@ class Imprimir(Intruccion):
                                 # controlador.Generador3D.agregarInstruccion(ObtenerRetorno.codigo)
                                 texto_salida += self.addsimbolos(ObtenerRetorno.temporal, ObtenerRetorno.tipo)
 
+                            elif isinstance(self.lista[i], AccesoStruct):
+                                ObtenerRetorno = self.lista[i].Obtener3D(controlador, ts)
+                                codigo += ObtenerRetorno.codigo
+
+                                if ObtenerRetorno.tipo == t.DIRSTRING or ObtenerRetorno.tipo == t.STRING:
+                                    texto_salida += self.addsimbolos(ObtenerRetorno.temporal, ObtenerRetorno.tipo,False)
+                                else:
+                                    texto_salida += self.addsimbolos(ObtenerRetorno.temporal, ObtenerRetorno.tipo)
                             else:
                                 # try:
                                 ObtenerRetorno = self.lista[i].Obtener3D(controlador, ts)
@@ -452,24 +460,33 @@ class Imprimir(Intruccion):
         codigo += "/*Termina fun*/\n"
         return codigo
 
-    def addsimbolos(self, valor, tipo):
+    def addsimbolos(self, valor, tipo,validacion = True):
         txt = ""
         if t.ENTERO == tipo or t.USIZE == tipo:
             txt += "¥"
             txt += str(valor)
             txt += "¥"
+
         elif t.DECIMAL == tipo:
             txt += "¢"
             txt += str(valor)
             txt += "¢"
+
         elif t.BOOLEANO == tipo:
             txt += "¥"
             txt += str(valor)
             txt += "¥"  # 215×
-        elif t.STRING == tipo or t.DIRSTRING == tipo or t.CARACTER == tipo:
+
+        elif (t.STRING == tipo or t.DIRSTRING == tipo or t.CARACTER == tipo) and validacion:
             txt += "×"
             txt += str(valor)
             txt += "×"  # 215×
+
+        elif (t.STRING == tipo or t.DIRSTRING == tipo or t.CARACTER == tipo) and not validacion:
+            txt += "þ"
+            txt += str(valor)
+            txt += "þ"  # 215×
+
         else:
             txt += str(valor)
         return txt
@@ -603,6 +620,7 @@ class Imprimir(Intruccion):
 
     def obtenerCadenaUnidaAarray(self, texto, controlador):
         validacion1 = False
+
         temporal = ""
         codigo = ""
         temp = controlador.Generador3D.obtenerTemporal()
@@ -648,6 +666,7 @@ class Imprimir(Intruccion):
 
     def obtenerCadenaUnida(self, texto, controlador):
         validacion1 = False
+        validacion2 = False
         temporal = ""
         codigo = ""
         temp = controlador.Generador3D.obtenerTemporal()
@@ -679,6 +698,43 @@ class Imprimir(Intruccion):
                     codigo += f'\tHP = HP +1;\n'
                     temporal = ""
                     validacion1 = False
+                    continue
+                temporal += caracter
+                continue
+
+            if (caracter == "þ") and not validacion2:
+                validacion2 = True
+                continue
+
+            if validacion2:
+                if caracter == "þ":
+                    temp3 = controlador.Generador3D.obtenerTemporal()
+                    temp4 = controlador.Generador3D.obtenerTemporal()
+
+                    etq5 = controlador.Generador3D.obtenerEtiqueta()
+                    etq6 = controlador.Generador3D.obtenerEtiqueta()
+                    etq7 = controlador.Generador3D.obtenerEtiqueta()
+                    codigo += "/*parte strint*/\n"
+                    codigo += f'\t{temp3} = {temporal};\n'
+                    codigo += f'\t{temp3} = Heap[(int){temp3}] ;\n'
+
+                    codigo += f'\t{etq7}:\n'
+                    codigo += f'\t{temp4} = Heap[(int){temp3}] ;\n'
+
+                    codigo += f'\tif ({temp4} != 0 ) goto {etq5};\n'
+                    codigo += f'\tgoto {etq6};\n'
+
+                    codigo += f'\t{etq5}:\n'
+                    codigo += f'\tHeap[HP] = {temp4};\n'
+                    codigo += f'\tHP = HP +1;\n'
+
+                    codigo += f'\t{temp3} = {temp3} + 1;\n'
+                    codigo += f'\tgoto {etq7};\n'
+                    codigo += f'\t{etq6}:\n'
+                    #codigo += f'\tHeap[HP] = {temporal};\n'
+                    #codigo += f'\tHP = HP +1;\n'
+                    temporal = ""
+                    validacion2 = False
                     continue
                 temporal += caracter
                 continue

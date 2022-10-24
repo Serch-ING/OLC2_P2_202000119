@@ -1,9 +1,11 @@
-fn main () {
-    let a: i64 = 25 - 25;
-    let b: i64 = (((1 + 1) / 2) * 10) / a;
-    println!("{}", b);
 
-    let x: usize = 10 + 2 - (a as usize);
-    let arr: [i64; 2] = [1,2];
-    println!("{}", arr[x * 2 + 10 - ((a as usize) * 20)]);
+struct CentroTuristico {
+    nombre:String,
+    tipo: String
+}
+
+fn main () {
+    let mut v = CentroTuristico{nombre:"Cascada los amantes".to_string(),tipo:"nohay".to_string()};
+    println!("{}",v.nombre);
+    //println!("{}",v.tipo);
 }

@@ -35,6 +35,8 @@ class RetornoType():
         self.codigotempOtros = ""
         self.dimensiones = []
 
+        self.diccionario = None
+
     def iniciarRetorno(self,codigo, etiqueta, temporal,tipo):
         self.codigo = codigo
         self.etiqueta = etiqueta
