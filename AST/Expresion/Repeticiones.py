@@ -10,20 +10,39 @@ class Repeticiones(Expresion):
 
     def Obtener3D(self, controlador, ts):
         if not self.tipo:
+            codigo = "/*repeticiones*/\n"
             valor: RetornoType = self.valor.Obtener3D(controlador, ts)
-            ValorExpresion = valor.valor
-            TipoExpresion = valor.tipo
-
             numero: RetornoType = self.numero.Obtener3D(controlador, ts)
-            ValorEnumero = numero.valor
-            Tiponumero = numero.tipo
 
+            codigo += valor.codigo
+            codigo += numero.codigo
 
-            retorno = []
-            for x in range(0,ValorEnumero):
-                retorno.append(valor.valor)
+            temp1 = controlador.Generador3D.obtenerTemporal()
+            etq1 = controlador.Generador3D.obtenerEtiqueta()
+            etq2 = controlador.Generador3D.obtenerEtiqueta()
+            etq3 = controlador.Generador3D.obtenerEtiqueta()
+            temp2 = controlador.Generador3D.obtenerTemporal()
 
-            valorf = InstanciaArreglo(Tiponumero, 1, retorno)
-            return  RetornoType(valorf,tipo.ARRAY)
+            codigo += f'\t{temp1} = 0;\n'
+            codigo += f'\t{temp2} = HP;\n'
+            codigo += f'\tHeap[(int)HP] = {numero.temporal};\n'
+            codigo += f'\tHP = HP + 1;\n'
+
+            codigo += f'\t{etq1}:\n'
+            codigo += f'\tif({temp1} < {numero.temporal}) goto {etq2};\n'
+            codigo += f'\tgoto {etq3};\n'
+
+            codigo += f'\t{etq2}:\n'
+            codigo += f'\tHeap[(int)HP] = {valor.temporal};\n'
+            codigo += f'\tHP = HP + 1;\n'
+            codigo += f'\t{temp1} = {temp1} + 1;\n'
+            codigo += f'\tgoto {etq1};\n'
+
+            codigo += f'\t{etq3}:\n'
+
+            retorno = RetornoType()
+            retorno.iniciarRetorno(codigo,"",temp2,valor.tipo)
+
+            return retorno
         else:
             return RetornoType( self.valor, tipo.ARRAY)

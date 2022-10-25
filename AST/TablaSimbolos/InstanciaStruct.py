@@ -6,6 +6,7 @@ from AST.TablaSimbolos.Tipos import tipo as t
 from AST.Expresion.Identificador import Identificador
 from AST.Expresion.Repeticiones import Repeticiones
 import copy
+from AST.Expresion.Repeticiones import Repeticiones
 
 class InstanciaStruct(Expresion):
     def __init__(self, id, asignaciones):
@@ -27,6 +28,8 @@ class InstanciaStruct(Expresion):
         for x in declaraciones:
             nombre = x.identificador
             tipo = x.expresion
+            if isinstance(tipo, Repeticiones):
+                tipo = tipo.valor
             temporal = [nombre,tipo]
             for y in self.asignaciones:
 

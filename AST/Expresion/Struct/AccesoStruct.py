@@ -7,6 +7,8 @@ import colorama
 from colorama import Fore
 from colorama import Style
 import copy
+
+
 class AccesoStruct(Intruccion,Expresion):
 
     def __init__(self,id,expresiones,exp):
@@ -90,6 +92,7 @@ class AccesoStruct(Intruccion,Expresion):
         for x in diccionario_id:
             if id_arr.id == x[0]:
                 tipoF = x[1]
+
                 break
             contador += 1
             print(x)

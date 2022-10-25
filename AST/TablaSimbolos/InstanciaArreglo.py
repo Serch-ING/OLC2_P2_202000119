@@ -102,6 +102,7 @@ class InstanciaArreglo(Simbolos):
 
             if self.peek_stack(listatemporales) is not None:
                 codigo += f'\t{temp2} = {temp3} + {temp4};\n'
+
         if self.varImprimir is not None:
             codigo += f'\tgoto {etq3};\n'
             codigo += f'\t{etq2}:\n'

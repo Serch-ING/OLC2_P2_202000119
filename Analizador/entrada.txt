@@ -1,25 +1,12 @@
 
-struct CentroTuristico {
-    nombre:String
-    //,tipo: String
+struct StructArr {
+    datos: [i64; 10]
 }
 
 fn main () {
-println!("*******************VECTOR CON STRUCTS");
     
-    let mut v: Vec<CentroTuristico> = Vec::with_capacity(8);
-    
-    v.push(CentroTuristico{nombre:"Cascada los amantes".to_string()} );
-    v.push(CentroTuristico{nombre:"Biotopo del quetzal".to_string()} );
-    v.push(CentroTuristico{nombre:"Tikal".to_string()} );
-    v.push(CentroTuristico{nombre:"Rio dulce".to_string()} );
-    v.push(CentroTuristico{nombre:"Laguna ROJA".to_string()} );
-    v.push(CentroTuristico{nombre:"Playa Blanca".to_string()} );
-    v.push(CentroTuristico{nombre:"Antigua Guatemala".to_string()} );
-    v.push(CentroTuristico{nombre:"Lago de Atitlan".to_string()} );
-    
-    for valor in v {
-        println!("El nombre del Centro turistico es: {}",valor.nombre);
-    }
-        
+    let mut da = StructArr {
+        datos: [10; 10]
+    };
+   println!(" valor {:?} ",da.datos);    
 }
