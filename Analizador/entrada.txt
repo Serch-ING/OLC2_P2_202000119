@@ -1,12 +1,17 @@
 
-struct StructArr {
-    datos: [i64; 10]
-}
-
 fn main () {
-    
-    let mut da = StructArr {
-        datos: [10; 10]
-    };
-   println!(" valor {:?} ",da.datos);    
+    //let mut anio: i64 = 1200;
+    //let mut anio: i64 = 204;
+    //let mut anio: i64 = 7006;
+    let mut anio: i64 = 9999;
+    match anio {
+        
+        1200 | 2001 | 3002 => {
+            println!("1");
+        } 
+        
+        4003 | 204 | 5005 => println!("2"),
+        7006 =>  println!("3"), 
+        _ => println!("Resto de casos"), 
+    }
 }

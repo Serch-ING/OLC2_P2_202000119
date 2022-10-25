@@ -102,7 +102,7 @@ fn CreandoStruct ( anio: i64, color: i64, mecanico: bool) ->  Carro{
 
     let mut placa_: String = "".to_string();
 
-    /* Ejemplo 1: Match como instrucción */
+    // Ejemplo 1: Match como instrucción 
     // Después del match sigue una expresión
     match anio {
         // 1 | 2 | 3 estas son coincidencias

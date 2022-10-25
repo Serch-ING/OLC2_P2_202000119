@@ -14,13 +14,15 @@ class BloqueMatch(Intruccion,Expresion):
         #print("Se ejecuto instucccion con: ", ("ts","tslocal")[self.condicion])
         self.ts_local = TablaDeSimbolos(ts, "Matc" + str(id(self.matches)))
         retorno = None
+        codigo = "/*Bloque*/\n"
 
         for intruccion in self.instrucciones:
             try:
                 retorno = intruccion.Ejecutar3D(controlador, (ts, self.ts_local)[self.condicion])
+                codigo += retorno
             except:
                 pass
-        return retorno
+        return codigo
 
     def Obtener3D(self, controlador, ts):
         #print("Se ejecuto expresion con: ", ("ts", "tslocal")[self.condicion])

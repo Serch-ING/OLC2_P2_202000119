@@ -43,7 +43,7 @@ class Logica(Operacion, Expresion):
 
             elif self.operador == operador.OR:
                 self.exp1.etiquetaV = self.etiquetaV
-                self.exp1.etiquetaF =  controlador.Generador3D.obtenerEtiqueta()
+                self.exp1.etiquetaF = controlador.Generador3D.obtenerEtiqueta()
 
 
                 return_exp1: RetornoType = self.exp1.Obtener3D(controlador, ts)
