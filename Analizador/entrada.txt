@@ -1,17 +1,20 @@
 
 fn main () {
-    //let mut anio: i64 = 1200;
-    //let mut anio: i64 = 204;
-    //let mut anio: i64 = 7006;
-    let mut anio: i64 = 9999;
-    match anio {
-        
-        1200 | 2001 | 3002 => {
-            println!("1");
-        } 
-        
-        4003 | 204 | 5005 => println!("2"),
-        7006 =>  println!("3"), 
-        _ => println!("Resto de casos"), 
-    }
+    let mut color: i64 = 1;
+    //let mut color: i64 = 2;
+    //let mut color: i64 = 3;
+    //let mut color: i64 = 4;
+    //let mut color: i64 = 5;
+    //let mut color: i64 = 6;
+    
+    let numero = match color {
+        1 => 10,
+        2 => 20,
+        3 => 30,
+        4 => 40,
+        5 => 50,
+        _ => 60,
+    };
+    
+    println!("{}",numero);
 }
