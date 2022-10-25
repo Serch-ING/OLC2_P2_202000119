@@ -12,6 +12,7 @@ class Declaracion(Intruccion):
         self.tipo = tipo
         self.mut = mut
         self.referencia = referencia
+        self.objeto = None
 
 
     def Ejecutar3D(self, controlador, ts):
@@ -43,7 +44,7 @@ class Declaracion(Intruccion):
                     ts.size += 1
 
                     newSimbolo = Simbolos()
-                    newSimbolo.SimboloStruck(self.identificador.id, return_exp.valor, return_exp.tipo, self.mut, sizeTabla,return_exp.diccionario)
+                    newSimbolo.SimboloStruck(self.identificador.id, return_exp.tipo, self.mut, sizeTabla,return_exp.diccionario)
                     #ts.Agregar_Simbolo(self.identificador.id, return_exp)
                     ts.Agregar_Simbolo(self.identificador.id, newSimbolo)
                     return codigo
@@ -123,6 +124,27 @@ class Declaracion(Intruccion):
                     ts.Agregar_Simbolo(self.identificador.id, newSimbolo)
                     return codigo
 
+                elif self.tipo == tipo.STRUCT:
+                    tempHP = controlador.Generador3D.obtenerTemporal()
+                    sizeTabla = ts.size
+
+                    codigo += f'\t{tempHP} = HP;\n'
+                    codigo += f'\tHeap[(int)HP] = {len(self.objeto)};\n'
+                    codigo += f'\tHP = HP + 1;\n'
+                    for x in self.objeto:
+                        codigo += f'\tHeap[(int)HP] = 0;\n'
+                        codigo += f'\tHP = HP + 1;\n'
+
+                    temp1 = controlador.Generador3D.obtenerTemporal()
+                    codigo += f'\t{temp1} = SP + {sizeTabla};\n'
+                    codigo += f'\tStack[(int){temp1}] = {tempHP};\n'
+                    ts.size += 1
+
+                    newSimbolo = Simbolos()
+                    newSimbolo.SimboloStruck(self.identificador.id, self.tipo, self.mut, sizeTabla,self.objeto)
+                    # ts.Agregar_Simbolo(self.identificador.id, return_exp)
+                    ts.Agregar_Simbolo(self.identificador.id, newSimbolo)
+                    return codigo
             else:
                 newSimbolo = Simbolos()
                 newSimbolo.SimboloPremitivo(self.identificador.id, None, tipo.UNDEFINED, self.mut,sizeTabla)

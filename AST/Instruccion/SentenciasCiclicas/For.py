@@ -23,6 +23,7 @@ class For(Intruccion):
         self.etqS = ""
 
     def Ejecutar3D(self, controlador, ts):
+        diccionario = None
         print("Con iteracion: ",self.ID_Iterable)
         tipo_for = self.elementos[0]
         codigo = "/* For instruccion */\n"
@@ -30,42 +31,52 @@ class For(Intruccion):
 
         if tipo_for == 1:
 
+            array = self.elementos[1].Obtener3D(controlador, ts)
+            #declaracion = Declaracion(Identificador(self.ID_Iterable), None, tipo.ENTERO, True)
+            declaracion = Declaracion(Identificador(self.ID_Iterable), None, array.tipo, False)
 
-            declaracion = Declaracion(Identificador(self.ID_Iterable), None, tipo.ENTERO, True)
+            if array.tipo == tipo.STRUCT:
+                SimboloTemp: Simbolos = ts.ObtenerSimbolo(array.Objeto)
+                declaracion.objeto = SimboloTemp.valoresObjeto
             codigo += declaracion.Ejecutar3D(controlador, ts)
 
-            array = self.elementos[1].Obtener3D(controlador, ts)
             array.codigo += array.codigotemp
             codigo += array.codigo
 
             temp1 = controlador.Generador3D.obtenerTemporal()
-            codigo += f'\t{temp1} = 0;\n'
 
             etiquetaV = controlador.Generador3D.obtenerEtiqueta()
             etiquetaF = controlador.Generador3D.obtenerEtiqueta()
-
             etqFor = controlador.Generador3D.obtenerEtiqueta()
             self.etqE = etqFor
             self.etqS = etiquetaF
 
-            codigo += f'\t{etqFor}:\n'
             temp2 = controlador.Generador3D.obtenerTemporal()
-            codigo += f'\t{temp2} = {temp1} + {array.temporal};\n'
-
             temp3 = controlador.Generador3D.obtenerTemporal()
-            codigo += f'\t{temp3} = {temp2} + 1;\n'
-
             temp4 = controlador.Generador3D.obtenerTemporal()
-            codigo += f'\t{temp4} = Heap[(int){temp3}];\n'
-
             temp5 = controlador.Generador3D.obtenerTemporal()
             existe_id: Simbolos = ts.ObtenerSimbolo(self.ID_Iterable)
+
+            codigo += f'\t{temp1} = 0;\n'
+
+            postamanio = controlador.Generador3D.obtenerTemporal()
+            codigo += f'\t{postamanio} =  {array.temporal};\n'
+            if array.tipo == tipo.STRUCT:
+                codigo += f'\t{postamanio} =  {postamanio} + 1;\n'
+
+            codigo += f'\t{etqFor}:\n'
+            codigo += f'\t{temp2} = {temp1} + {postamanio};\n'
+            codigo += f'\t{temp3} = {temp2} + 1;\n'
+
+            codigo += f'\t{temp4} = Heap[(int){temp3}];\n'
             codigo += f'\t{temp5} = SP + {existe_id.direccion};\n'
             codigo += f'\tStack[(int){temp5}] = {temp4};\n'
 
             tempTamanio = controlador.Generador3D.obtenerTemporal()
+
             if isinstance(self.elementos[1],Identificador):
                 codigo += f'\t{tempTamanio} = Heap[(int){array.temporal}];\n'
+
             else:
                 codigo += f'\t{tempTamanio} = Heap[(int){array.temporal}];\n'
                 #codigo += f'\t{tempTamanio} = Stack[(int){array.temporal}];\n'
@@ -115,9 +126,6 @@ class For(Intruccion):
             codigo += f'\t{self.etqS}:\n'
 
             return codigo
-
-
-
 
 
     def Recorrer_ins(self,controlador,ts,lista):

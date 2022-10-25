@@ -32,9 +32,8 @@ class Simbolos() :
         #struck
         self.diccionario = None
 
-    def SimboloStruck(self,id,valor,tipo,mut,direccion,diccionario):
+    def SimboloStruck(self,id,tipo,mut,direccion,diccionario):
         self.id = id
-        self.valor = valor
         self.tipo = tipo
         self.mut = mut
         self.direccion = direccion

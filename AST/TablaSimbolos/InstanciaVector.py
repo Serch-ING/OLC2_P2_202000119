@@ -7,6 +7,7 @@ class InstanciaVector(Simbolos):
     def __init__(self,tipo, dimensiones, valores:[]):
         super().__init__()
         super().iniciarSimboloVector(tipo,dimensiones, valores)
+        self.objeto = None
 
     def SetValor(self, listaDimensiones, index, valores, dato_new):
 

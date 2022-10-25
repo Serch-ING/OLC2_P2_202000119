@@ -47,6 +47,11 @@ class Identificador(Expresion):
 
             retorno.iniciarRetorno(codigo,"",temp2,existe_id.tipo)
             retorno.diccionario = existe_id.diccionario
+            if retorno.tipo == tipo.STRUCT:
+                try:
+                    retorno.Objeto = existe_id.objeto
+                except:
+                    pass
             return retorno
         else:
             return RetornoType("No se encontro valor", tipo.ERROR)

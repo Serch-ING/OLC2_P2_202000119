@@ -18,6 +18,8 @@ class DeclaracionVector(Intruccion):
         self.mut = mut
         self.referencia = referencia
 
+        self.objeto = self.tipo
+
 
     def Ejecutar3D(self, controlador, ts):
 
@@ -94,6 +96,10 @@ class DeclaracionVector(Intruccion):
                 codigo += f'\tStack[(int){temp1}] = {temp2};\n'
 
                 new_vector.direccion = ts.size
+
+                if new_vector.tipo == tipo.STRUCT:
+                    new_vector.objeto = self.objeto.id
+
                 ts.Agregar_Simbolo(self.identificador, new_vector)
                 ts.size += 1
 

@@ -83,14 +83,13 @@ class AccesoStruct(Intruccion,Expresion):
         simbolo = ts.ObtenerSimbolo(identificador.id)
         diccionario_id = simbolo.diccionario
 
-        valor_acc = diccionario_id.get(id_arr.id)
-
         contador = 1
 
         temp1 = controlador.Generador3D.obtenerTemporal()
-
+        tipoF = None
         for x in diccionario_id:
-            if id_arr.id == x:
+            if id_arr.id == x[0]:
+                tipoF = x[1]
                 break
             contador += 1
             print(x)
@@ -98,7 +97,7 @@ class AccesoStruct(Intruccion,Expresion):
         codigo += f'\t{temp1} = {id_buscado.temporal} + {contador};\n'
 
         retorno = RetornoType()
-        retorno.iniciarRetorno(codigo,"",temp1,valor_acc.tipo)
+        retorno.iniciarRetorno(codigo,"",temp1,tipoF)
 
         return  retorno
 

@@ -11,31 +11,38 @@ class InstanciaStruct(Expresion):
     def __init__(self, id, asignaciones):
         self.identificador = id
         self.asignaciones = asignaciones
-        self.diccionario = 0
+        #self.diccionario = 0
 
 
     def Obtener3D(self, controlador, ts):
         struct = ts.ObtenerSimbolo(self.identificador)
         declaraciones  = struct.valor.declaraciones
-        diccionario = {}
-        codigo = "/*Declaracion vector*/\n"
+        codigo = "/*Declaracion Strcuk*/\n"
 
         listatemporales = []
+        diccionario = []
+        buscando = False
+        name = ""
+        agregar = ""
+        for x in declaraciones:
+            nombre = x.identificador
+            tipo = x.expresion
+            temporal = [nombre,tipo]
+            for y in self.asignaciones:
 
-        for y in self.asignaciones:
-            name = y.identificador
-            data = y.expresion.Obtener3D(controlador, ts)
-            agregar = data
+                if not buscando:
+                    name = y.identificador
+                    data = y.expresion.Obtener3D(controlador, ts)
+                    agregar = data
+                    buscando = True
 
-            for x in declaraciones:
-                nombre = x.identificador
-                tipo = x.expresion
-
-                if name == nombre:
-                    listatemporales.append(agregar.temporal)
-                    codigo += agregar.codigo
-                    diccionario[name] = copy.deepcopy(copy.copy(agregar))
-                    break
+                if buscando:
+                    if name == nombre:
+                        diccionario.append(temporal)
+                        listatemporales.append(agregar.temporal)
+                        codigo += agregar.codigo
+                        buscando = False
+                        break
         codigo += "/*Declaracion especifica*/\n"
         temp1 = controlador.Generador3D.obtenerTemporal()
         codigo += f'\t{temp1} = HP;\n'
@@ -46,7 +53,7 @@ class InstanciaStruct(Expresion):
             codigo += f'\tHeap[(int)HP] = {x};\n'
             codigo += f'\tHP = HP + 1;\n'
 
-        self.diccionario = diccionario
+        codigo += "/*fin Declaracion Strcuk*/\n"
 
         retorno = RetornoType(copy.deepcopy(copy.copy(self)),t.STRUCT)
         retorno.temporal = temp1

@@ -15,6 +15,10 @@ class DeclararStruct(Expresion):
 
     def GuardarStruct(self, ts):
         print("================== Se guardo struct ================ ", self.identificador)
+        diccionario = []
         if not ts.Existe_id(self.identificador):
+            for x in self.declaraciones:
+                diccionario.append([x.identificador,x.expresion])
             retorno = RetornoType(self,tipo.STRUCT)
+            retorno.valoresObjeto = diccionario
             ts.Agregar_Simbolo(self.identificador,retorno)
