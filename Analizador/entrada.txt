@@ -1,20 +1,21 @@
+struct Personaje {
+    nombre: String,
+    edad: i64,
+    descripcion: String
+}
 
-fn main () {
-    let mut color: i64 = 1;
-    //let mut color: i64 = 2;
-    //let mut color: i64 = 3;
-    //let mut color: i64 = 4;
-    //let mut color: i64 = 5;
-    //let mut color: i64 = 6;
+fn main (){
+    let per1 = CreandoPersonaje(200,2,true);
+    println!(" {}, {}",per1.nombre, per1.edad);
+}
+
+fn CreandoPersonaje (anio: i64, color: i64, mecanico: bool) -> Personaje{
     
-    let numero = match color {
-        1 => 10,
-        2 => 20,
-        3 => 30,
-        4 => 40,
-        5 => 50,
-        _ => 60,
+    let mut p1 = Personaje { 
+        nombre:"Fer".to_string(),
+        edad:18,
+        descripcion:"No hace nada".to_string()
     };
     
-    println!("{}",numero);
+    return p1;
 }

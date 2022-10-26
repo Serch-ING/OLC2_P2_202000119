@@ -22,8 +22,17 @@ class Funcion(Intruccion):
         print("Intrucciones de : ", self.identificador)
         codigo = ""
         temporal = ""
+        tipoadd = None
         if self.tipo is not None:
-            declaracion = Declaracion(Identificador("return"),None,self.tipo,True)
+            tipoadd = self.tipo
+            if isinstance(self.tipo,Identificador):
+                existe_id: Simbolos = ts.ObtenerSimbolo(self.tipo.id)
+                tipoadd = tipo.STRUCT
+
+            declaracion = Declaracion(Identificador("return"),None,tipoadd,True)
+            if tipoadd == tipo.STRUCT:
+                declaracion.objeto = existe_id.valoresObjeto
+
             declaracion = declaracion.Ejecutar3D(controlador,ts)
             self.retorno = Identificador("return")
             codigo += declaracion
