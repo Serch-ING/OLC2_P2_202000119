@@ -116,10 +116,12 @@ class Imprimir(Intruccion):
 
                                 if ObtenerRetorno.tipo == t.DIRSTRING or ObtenerRetorno.tipo == t.STRING:
                                     texto_salida += self.addsimbolos(ObtenerRetorno.temporal, ObtenerRetorno.tipo,False)
+
                                 else:
-                                    tempF = controlador.Generador3D.obtenerTemporal()
-                                    codigo += f'\t{tempF} = Heap[(int){ObtenerRetorno.temporal}];\n'
-                                    texto_salida += self.addsimbolos(tempF, ObtenerRetorno.tipo)
+                                    #tempF = controlador.Generador3D.obtenerTemporal()
+                                    #codigo += f'\t{tempF} = Heap[(int){ObtenerRetorno.temporal}];\n'
+                                    #texto_salida += self.addsimbolos(tempF, ObtenerRetorno.tipo)
+                                    texto_salida += self.addsimbolos(ObtenerRetorno.temporal, ObtenerRetorno.tipo)
                             else:
                                 # try:
                                 ObtenerRetorno = self.lista[i].Obtener3D(controlador, ts)
@@ -352,7 +354,8 @@ class Imprimir(Intruccion):
                                     codigo += valoid.codigo
 
                                     tempactual = controlador.Generador3D.obtenerTemporal()
-                                    codigo += f'\t{tempactual} = Heap[(int){valoid.temporal}];\n'
+                                    #codigo += f'\t{tempactual} = Heap[(int){valoid.temporal}];\n'
+                                    codigo += f'\t{tempactual} = {valoid.temporal};\n'
 
                                     tempAcceso = controlador.Generador3D.obtenerTemporal()
                                     codigo += f'\t{tempAcceso} = Heap[(int){tempactual}];\n'
@@ -800,7 +803,7 @@ class Imprimir(Intruccion):
                     etq7 = controlador.Generador3D.obtenerEtiqueta()
                     codigo += "/*parte strint*/\n"
                     codigo += f'\t{temp3} = {temporal};\n'
-                    codigo += f'\t{temp3} = Heap[(int){temp3}] ;\n'
+                    #codigo += f'\t{temp3} = Heap[(int){temp3}] ;\n'
 
                     codigo += f'\t{etq7}:\n'
                     codigo += f'\t{temp4} = Heap[(int){temp3}] ;\n'

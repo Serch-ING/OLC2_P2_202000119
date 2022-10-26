@@ -8,6 +8,7 @@ from colorama import Fore
 from colorama import Style
 import copy
 from AST.Expresion.Identificador import Identificador
+from AST.TablaSimbolos.Tipos import tipo as t
 
 class AccesoStruct(Intruccion,Expresion):
 
@@ -25,68 +26,66 @@ class AccesoStruct(Intruccion,Expresion):
         print(self.expresiones)
         print(self.exp)
 
+        codigo = f'/*asignar en struck*/\n'
 
-        if isinstance(self.identificador, AccesoArreglo):
-            struck_ccr = self.identificador.Obtener3D(controlador, ts)
-            struck_dic = struck_ccr.valor.diccionario
-        else:
-            struck_ccr = ts.ObtenerSimbolo(self.identificador.id)
-            struck_dic = struck_ccr.valor.diccionario
-        expresiones = copy.deepcopy(self.expresiones)
+        valor = self.exp.Obtener3D(controlador,ts)
+        codigo += valor.codigo
 
-        while (True):
+        retorno = self.obtener_valores(self.identificador, copy.deepcopy(self.expresiones), controlador, ts)
+        codigo += retorno.codigo
 
-            if len(expresiones) == 1:
-                id = expresiones[0].id
-                valor_acc = struck_dic.get(id)
-                if valor_acc is not  None:
-                    if not hasattr(self.exp,'valor'):
-                        if isinstance( self.exp,AccesoStruct):
-                            valor = self.exp.Obtener3D(controlador, ts)
-                            struck_dic[id].valor = valor.valor
-                            return
-
-
-                        else:
-
-                            valor = self.exp.Obtener3D(controlador, ts)
-                            struck_dic[id].valor = valor.valor
-                            return None
-                print(Fore.BLUE + Style.BRIGHT + "ERROR Inst 2" + Style.RESET_ALL)
-                while True:
-                    pass
-            else:
-                id = expresiones[0].id
-                valor_acc = struck_dic.get(id)
-                if valor_acc is not None:
-                    struck_dic = valor_acc.valor.diccionario
-                    expresiones.pop(0)
-
-            print(Fore.BLUE + Style.BRIGHT + "ERROR Inst" + Style.RESET_ALL)
-
+        codigo += f'\tHeap[(int){retorno.temporal}] = {valor.temporal};\n'
+        return codigo
 
     def Obtener3D(self, controlador, ts):
         print("====== Expresion Struct ======")
         print(self.identificador)
         print(self.expresiones)
 
+        codigo = f'/*obtener en struck*/\n'
 
-        #return self.fn_obtner_valor(self.identificador,copy.deepcopy(self.expresiones))
-        return self.obtener_valores(self.identificador, copy.deepcopy(self.expresiones),controlador,ts)
+        retorno = self.obtener_valores(self.identificador, copy.deepcopy(self.expresiones),controlador,ts)
+        retorno.codigo = codigo + retorno.codigo
+
+
+        temp1 = controlador.Generador3D.obtenerTemporal()
+        retorno.codigo += f'\t{temp1} = Heap[(int){retorno.temporal}];\n'
+        retorno.temporal = temp1
+
+        return retorno
 
     def obtener_valores(self,identificador,expresiones,controlador,ts):
-        codigo = f'/*obtener {self.identificador.id}*/\n'
+        codigo = ""
 
-        id_buscado = identificador.Obtener3D(controlador, ts)
-        codigo += id_buscado.codigo
+        if isinstance(self.identificador, AccesoArreglo):
+            simbolo = ts.ObtenerSimbolo(self.identificador.idArreglo)
+            BusquedaStruck = ts.ObtenerSimbolo(simbolo.objeto)
+        else:
+            simbolo = ts.ObtenerSimbolo(identificador.id)
+            BusquedaStruck = ts.ObtenerSimbolo(simbolo.NombreStruck)
 
-        simbolo = ts.ObtenerSimbolo(identificador.id)
-
-        BusquedaStruck = ts.ObtenerSimbolo(simbolo.NombreStruck)
         diccionario_id = BusquedaStruck.valoresObjeto
 
-        copiaExpresioes = expresiones
-        retornoTemp = self.recorrerArreglo(copiaExpresioes.pop(0),diccionario_id,copiaExpresioes,ts,controlador,id_buscado.temporal)
+        temp1 = controlador.Generador3D.obtenerTemporal()
+        temp2 = controlador.Generador3D.obtenerTemporal()
+
+        if not simbolo.referencia:
+            codigo += f'\t{temp1} = SP + {simbolo.direccion};\n'
+            codigo += f'\t{temp2} = Stack[(int){temp1}];\n'
+        else:
+            codigo += f'\t{temp2} = SP + {simbolo.direccion};\n'
+            codigo += f'\t{temp2} = Stack[(int){temp2}];\n'
+            while simbolo.referencia:
+                codigo += f'\t{temp2} = Stack[(int){temp2}];\n'
+                simbolo = simbolo.tsproviene.ObtenerSimbolo(simbolo.idproviene)
+
+        #ejecutamos a donde buscara
+        #id_buscado = identificador.Obtener3D(controlador, ts)
+        #codigo += id_buscado.codigo
+
+        #ejecutamps
+        retornoTemp = self.recorrerArreglo(expresiones.pop(0), diccionario_id, expresiones, ts, controlador,temp2)
+        #retornoTemp = self.recorrerArreglo(expresiones.pop(0),diccionario_id,expresiones,ts,controlador,id_buscado.temporal)
 
         codigo += retornoTemp[0]
 
@@ -133,44 +132,6 @@ class AccesoStruct(Intruccion,Expresion):
         retorno.append(tipoFinal)
         return retorno
 
-
-
-
-    def fn_obtner_valor(self,identificador,expresiones):
-
-        if isinstance(identificador,AccesoArreglo):
-            struck_ccr = identificador.Obtener3D(self.controlador, self.ts)
-            print(struck_ccr)
-            struck_dic = struck_ccr.valor.diccionario
-        else:
-            struck_ccr =  self.ts.ObtenerSimbolo(identificador.id)
-            struck_dic = struck_ccr.valor.diccionario
-
-        while(True):
-            if not isinstance(expresiones[0], AccesoStruct):
-                if len(expresiones) == 1:
-                    id = expresiones[0].id
-                    valor_acc = struck_dic.get(id)
-                    if valor_acc is not None:
-                        return RetornoType(valor_acc.valor, valor_acc.tipo)
-                    print(Fore.BLUE + Style.BRIGHT + "ERROR Obtener" + Style.RESET_ALL)
-                else:
-                    id = expresiones[0].id
-                    valor_acc = struck_dic.get(id)
-                    if valor_acc is not None:
-
-                        struck_dic = valor_acc.valor.diccionario
-                        expresiones.pop(0)
-
-            else:
-
-                expr = expresiones[0].identificador
-                expresiones = expresiones[0].expresiones
-                if not isinstance(expr, AccesoStruct):
-                    if len(expresiones) == 1:
-                        id = expr.id
-                        valor_acc = struck_dic.get(id)
-                        struck_dic = valor_acc.valor.diccionario
 
 
 

@@ -106,7 +106,7 @@ fn PrintListNormal(actualDL : &mut Vec<Node>, valores: &mut StructValores){
             i = actualDL[actual as usize].point.right;
             
             
-            if actual == valores.last{
+            if actual == (valores.last){
                 break;
             }
             
@@ -128,7 +128,7 @@ fn PrintListBack(actualDL : &mut Vec<Node>, valores: &mut StructValores){
             i = actualDL[actual as usize].point.left;
             
             
-            if actual == valores.first{
+            if actual == (valores.first){
                 break;
             }
             
@@ -139,7 +139,7 @@ fn PrintListBack(actualDL : &mut Vec<Node>, valores: &mut StructValores){
 
 
 
-fn main(){
+fn main (){
 
 
     let mut actualDL: Vec<Node> = Vec::with_capacity(10);

@@ -6,6 +6,7 @@ from AST.TablaSimbolos.Tipos import RetornoType
 from AST.Expresion.Identificador import Identificador
 from Analizador.Gramatica import E_list
 from AST.TablaSimbolos.InstanciaArreglo import InstanciaArreglo
+from AST.TablaSimbolos.InstanciaVector import InstanciaVector
 from AST.TablaSimbolos.Tipos import tipo as t
 class Llamada(Intruccion, Expresion):
 
@@ -149,7 +150,18 @@ class Llamada(Intruccion, Expresion):
                         else:
                             aux_fun.tipo = aux_fun.tipo[0]
 
-                            if return_lla.tipo == aux_fun.tipo:
+                            try:
+                                simbolotemp = ts.ObtenerSimbolo(aux_lla.id)
+                                if isinstance(simbolotemp,InstanciaVector):
+                                    temporalTipo = simbolotemp.tipo
+                                    temporal = simbolotemp.objeto
+                                else:
+                                    temporalTipo = simbolotemp.tipo
+                                    temporal = simbolotemp.NombreStruck
+                            except:
+                                temporal = None
+                                temporalTipo = None
+                            if return_lla.tipo == aux_fun.tipo or return_lla.tipo == temporalTipo:
                                 tempReferencia = controlador.Generador3D.obtenerTemporal()
                                 temp1 = controlador.Generador3D.obtenerTemporal()
                                 temp2 = controlador.Generador3D.obtenerTemporal()
@@ -164,6 +176,12 @@ class Llamada(Intruccion, Expresion):
                                 simbolo.referencia = True
                                 simbolo.idproviene = aux_lla.id
                                 simbolo.tsproviene = ts
+                                try:
+                                    if temporalTipo == t.STRUCT:
+                                        simbolo.NombreStruck = temporal
+                                        simbolo.objeto = temporal
+                                except:
+                                    pass
                                 ts_local.Agregar_Simbolo(aux_fun.identificador.id, simbolo)
                                 ts_local.size += 1
                     else:
