@@ -125,9 +125,9 @@ fn main () {
 /*
 [10, 20, 30, 40, 50]
 50
-3500
-2200
-1250
+300
+200
+100
 40
 30
 20
@@ -145,9 +145,9 @@ Capacidad de pila
 4
 5
 800
-1250
-2200
-3500
+100
+200
+300
 []
 Capacidad de cola
 10
@@ -164,6 +164,5 @@ Capacidad de cola
 true
 false
 true
-
 
 */

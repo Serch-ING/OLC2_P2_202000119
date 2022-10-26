@@ -139,4 +139,3 @@ fn CreandoStruct ( anio: i64, color: i64, mecanico: bool) ->  Carro{
         
     };
 }
-
