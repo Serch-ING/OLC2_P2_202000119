@@ -25,7 +25,13 @@ fn main (){
         descripcion:"No hace nada".to_string(),
         carro_: car
     };
-    //println!(" {}, {}, {}, {} ",per1.nombre, per1.edad, per1.carro_.tipo,per1.carro_.color);
-    println!("{}",per1.carro_.tipo);
+    println!(" {}, {}, {}, {} ",per1.nombre, per1.edad, per1.carro_.tipo,per1.carro_.color);
+    //println!("{}",per1.carro_.tipo);
+    //println!("{}",per1.nombre);
 }
+
+
+
+
+
 

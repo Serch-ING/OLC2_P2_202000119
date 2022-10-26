@@ -69,7 +69,7 @@ class AccesoStruct(Intruccion,Expresion):
         print("====== Expresion Struct ======")
         print(self.identificador)
         print(self.expresiones)
-        #print(self.exp)
+
 
         #return self.fn_obtner_valor(self.identificador,copy.deepcopy(self.expresiones))
         return self.obtener_valores(self.identificador, copy.deepcopy(self.expresiones),controlador,ts)
@@ -85,26 +85,8 @@ class AccesoStruct(Intruccion,Expresion):
         BusquedaStruck = ts.ObtenerSimbolo(simbolo.NombreStruck)
         diccionario_id = BusquedaStruck.valoresObjeto
 
-        contador = 1
-
-        temp1 = controlador.Generador3D.obtenerTemporal()
-        tipoF = None
-        #for y in expresiones:
-        #    id_arr = y
-        #    nombre = id_arr.id
-        #    for x in diccionario_id:
-        #        nombretemp = x[0]
-        #        tipotemp = x[1]
-        #        if nombre == nombretemp:
-        #            tipoF = tipotemp
-        #            break
-        #        contador += 1
-        #        print(x)
-
         copiaExpresioes = expresiones
         retornoTemp = self.recorrerArreglo(copiaExpresioes.pop(0),diccionario_id,copiaExpresioes,ts,controlador,id_buscado.temporal)
-
-        #codigo += f'\t{temp1} = {id_buscado.temporal} + {contador};\n'
 
         codigo += retornoTemp[0]
 
