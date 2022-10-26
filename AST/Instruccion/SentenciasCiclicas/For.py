@@ -37,7 +37,7 @@ class For(Intruccion):
 
             if array.tipo == tipo.STRUCT:
                 SimboloTemp: Simbolos = ts.ObtenerSimbolo(array.Objeto)
-                declaracion.objeto = SimboloTemp.valoresObjeto
+                declaracion.objeto = array.Objeto
             codigo += declaracion.Ejecutar3D(controlador, ts)
 
             array.codigo += array.codigotemp

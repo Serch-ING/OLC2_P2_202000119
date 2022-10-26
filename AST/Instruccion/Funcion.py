@@ -31,7 +31,7 @@ class Funcion(Intruccion):
 
             declaracion = Declaracion(Identificador("return"),None,tipoadd,True)
             if tipoadd == tipo.STRUCT:
-                declaracion.objeto = existe_id.valoresObjeto
+                declaracion.objeto = self.tipo.id
 
             declaracion = declaracion.Ejecutar3D(controlador,ts)
             self.retorno = Identificador("return")
@@ -68,6 +68,10 @@ class Funcion(Intruccion):
             controlador.Generador3D.agregarFuncion(codigo, self.identificador)
             identificador = Identificador("return")
             identificador = identificador.Obtener3D(controlador,ts)
+
+            if isinstance(self.tipo, Identificador):
+                identificador.NombreStruck = self.tipo.id
+
             return identificador
 
     def agregarFuncion(self, ts: TablaDeSimbolos):

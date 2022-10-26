@@ -129,10 +129,13 @@ class Declaracion(Intruccion):
                     tempHP = controlador.Generador3D.obtenerTemporal()
                     sizeTabla = ts.size
 
+                    objeto = ts.ObtenerSimbolo(self.objeto)
+                    valoresarr = objeto.valoresObjeto
+
                     codigo += f'\t{tempHP} = HP;\n'
-                    codigo += f'\tHeap[(int)HP] = {len(self.objeto)};\n'
+                    codigo += f'\tHeap[(int)HP] = {len(valoresarr)};\n'
                     codigo += f'\tHP = HP + 1;\n'
-                    for x in self.objeto:
+                    for x in valoresarr:
                         codigo += f'\tHeap[(int)HP] = 0;\n'
                         codigo += f'\tHP = HP + 1;\n'
 
@@ -143,6 +146,7 @@ class Declaracion(Intruccion):
 
                     newSimbolo = Simbolos()
                     newSimbolo.SimboloStruck(self.identificador.id, self.tipo, self.mut, sizeTabla,self.objeto)
+                    newSimbolo.NombreStruck = self.objeto
                     # ts.Agregar_Simbolo(self.identificador.id, return_exp)
                     ts.Agregar_Simbolo(self.identificador.id, newSimbolo)
                     return codigo
