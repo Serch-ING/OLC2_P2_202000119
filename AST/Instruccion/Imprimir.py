@@ -117,7 +117,9 @@ class Imprimir(Intruccion):
                                 if ObtenerRetorno.tipo == t.DIRSTRING or ObtenerRetorno.tipo == t.STRING:
                                     texto_salida += self.addsimbolos(ObtenerRetorno.temporal, ObtenerRetorno.tipo,False)
                                 else:
-                                    texto_salida += self.addsimbolos(ObtenerRetorno.temporal, ObtenerRetorno.tipo)
+                                    tempF = controlador.Generador3D.obtenerTemporal()
+                                    codigo += f'\t{tempF} = Heap[(int){ObtenerRetorno.temporal}];\n'
+                                    texto_salida += self.addsimbolos(tempF, ObtenerRetorno.tipo)
                             else:
                                 # try:
                                 ObtenerRetorno = self.lista[i].Obtener3D(controlador, ts)

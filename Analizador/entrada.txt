@@ -1,38 +1,27 @@
-struct StructArr {
-    datos: [i64; 10]
-}
-
-struct CentroTuristico {
-    nombre:String
-}
-
-
-
 fn main () {
-     println!("*******************VECTOR CON STRUCTS");
-    
-    let mut v: Vec<CentroTuristico> = Vec::with_capacity(8);
-    
-    v.push(CentroTuristico{nombre:"Cascada los amantes".to_string()} );
-    v.push(CentroTuristico{nombre:"Biotopo del quetzal".to_string()} );
-    v.push(CentroTuristico{nombre:"Tikal".to_string()} );
-    v.push(CentroTuristico{nombre:"Rio dulce".to_string()} );
-    v.push(CentroTuristico{nombre:"Laguna ROJA".to_string()} );
-    v.push(CentroTuristico{nombre:"Playa Blanca".to_string()} );
-    v.push(CentroTuristico{nombre:"Antigua Guatemala".to_string()} );
-    v.push(CentroTuristico{nombre:"Lago de Atitlan".to_string()} );
-    
-    for valor in v {
-        println!("El nombre del Centro turistico es: {}",valor.nombre);
-    }
+let mut placa_: String = "".to_string();
+   let anio = 4003 ;
+    match anio {
+        // 1 | 2 | 3 estas son coincidencias
+        1200 | 2001 | 3002 => {
+            placa_ = "20012PLO0".to_string();
+        } //esto se conoce como brazo
         
-    
-    println!("*******************STRUCT CON ARRAY"); 
-    
-    let mut da = StructArr {
-        datos: [10; 10]
+        4003 | 204 | 5005 => placa_ = "200345LO0".to_string(),//esto se conoce como brazo
+        7006 =>  placa_ = "290PLO0".to_string(), // esto es un error!
+        _ => println!("Resto de casos"), //brazo por defecto
+    }
+
+	println!("{}",placa_);
+   let color = 3;
+   let colorAuto = match color {
+        1 => "amarillo",
+        2 => "verde",
+        3 => "rojo",
+        4 => "azul",
+        5 => "negro",
+        _ => "N/A",
     };
     
-    println!(" valor {:?} ",da.datos);
-    
+    println!("{}",colorAuto);
 }

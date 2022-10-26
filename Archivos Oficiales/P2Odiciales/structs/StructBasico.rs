@@ -115,7 +115,7 @@ fn CreandoStruct ( anio: i64, color: i64, mecanico: bool) ->  Carro{
         _ => println!("Resto de casos"), //brazo por defecto
     }
     
-    /*  Match como expresión */
+    //  Match como expresión 
     let colorAuto = match color {
         1 => "amarillo",
         2 => "verde",
