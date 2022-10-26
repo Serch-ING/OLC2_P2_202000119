@@ -23,7 +23,7 @@ struct Personaje {
 
 
 
-fn main(){
+fn main (){
 
     println!("*******************VECTOR CON STRUCTS");
     

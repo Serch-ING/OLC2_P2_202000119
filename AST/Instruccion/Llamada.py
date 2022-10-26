@@ -48,8 +48,7 @@ class Llamada(Intruccion, Expresion):
                     while tabla.padre.name != "Main":
                         tabla = tabla.padre
 
-
-                if not controlador.Generador3D.FuncionEjecutado(self.identificador) :
+                if not controlador.Generador3D.FuncionEjecutado(self.identificador):
                     if self.identificador != "main":
                         controlador.Generador3D.agregaridfuncion(self.identificador)
                     retorno = simbolo_funcion.Ejecutar3D(controlador, ts_local)
@@ -60,7 +59,12 @@ class Llamada(Intruccion, Expresion):
                         if self.identificador == x.name:
                             tsbusqueda = x
                     identificador = Identificador("return")
+
                     retorno = identificador.Obtener3D(controlador,tsbusqueda)
+                    funcionTemp = ts.ObtenerSimbolo(self.identificador)
+                    if isinstance(funcionTemp.tipo, Identificador):
+                        retorno.NombreStruck = funcionTemp.tipo.id
+
                 funcion = ts.ObtenerSimbolo(self.identificador)
 
 

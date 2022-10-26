@@ -95,7 +95,8 @@ class Match(Intruccion,Expresion):
             if not Ultimo:
                 codigo += f'\t{etiquetaV}:\n'
             else:
-                codigo += f'\t{Fanterior}:\n'
+                if Fanterior is not None:
+                    codigo += f'\t{Fanterior}:\n'
 
             bloquematch = match.Ejecutar3D(controlador, ts)
             codigo += bloquematch
