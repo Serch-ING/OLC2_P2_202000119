@@ -17,35 +17,25 @@ class InstanciaStruct(Expresion):
 
     def Obtener3D(self, controlador, ts):
         struct = ts.ObtenerSimbolo(self.identificador)
-        declaraciones  = struct.valor.declaraciones
+        declaraciones = struct.valor.declaraciones
         codigo = "/*Declaracion Strcuk*/\n"
 
         listatemporales = []
-        diccionario = []
         buscando = False
         name = ""
-        agregar = ""
         for x in declaraciones:
             nombre = x.identificador
             tipo = x.expresion
-            if isinstance(tipo, Repeticiones):
-                tipo = tipo.valor
-            temporal = [nombre,tipo]
+
             for y in self.asignaciones:
+                name = y.identificador
 
-                if not buscando:
-                    name = y.identificador
+                if name == nombre:
                     data = y.expresion.Obtener3D(controlador, ts)
-                    agregar = data
-                    buscando = True
+                    listatemporales.append(data.temporal)
+                    codigo += data.codigo
+                    break
 
-                if buscando:
-                    if name == nombre:
-                        diccionario.append(temporal)
-                        listatemporales.append(agregar.temporal)
-                        codigo += agregar.codigo
-                        buscando = False
-                        break
         codigo += "/*Declaracion especifica*/\n"
         temp1 = controlador.Generador3D.obtenerTemporal()
         codigo += f'\t{temp1} = HP;\n'
@@ -61,7 +51,8 @@ class InstanciaStruct(Expresion):
         retorno = RetornoType(copy.deepcopy(copy.copy(self)),t.STRUCT)
         retorno.temporal = temp1
         retorno.codigo = codigo
-        retorno.diccionario = diccionario
+        #retorno.diccionario = diccionario
+        retorno.NombreStruck = self.identificador
         return retorno
 
     def SetValor(self):

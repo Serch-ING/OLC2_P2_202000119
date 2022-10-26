@@ -31,6 +31,7 @@ class Simbolos() :
 
         #struck
         self.diccionario = None
+        self.NombreStruck = None
 
     def SimboloStruck(self,id,tipo,mut,direccion,diccionario):
         self.id = id

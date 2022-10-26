@@ -45,6 +45,7 @@ class Declaracion(Intruccion):
 
                     newSimbolo = Simbolos()
                     newSimbolo.SimboloStruck(self.identificador.id, return_exp.tipo, self.mut, sizeTabla,return_exp.diccionario)
+                    newSimbolo.NombreStruck = return_exp.NombreStruck
                     #ts.Agregar_Simbolo(self.identificador.id, return_exp)
                     ts.Agregar_Simbolo(self.identificador.id, newSimbolo)
                     return codigo

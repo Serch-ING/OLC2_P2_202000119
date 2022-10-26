@@ -40,6 +40,8 @@ class RetornoType():
         self.Objeto = None
         self.valoresObjeto = []
 
+        self.NombreStruck = None
+
     def iniciarRetorno(self,codigo, etiqueta, temporal,tipo):
         self.codigo = codigo
         self.etiqueta = etiqueta

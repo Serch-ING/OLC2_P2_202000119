@@ -7,7 +7,7 @@ import colorama
 from colorama import Fore
 from colorama import Style
 import copy
-
+from AST.Expresion.Identificador import Identificador
 
 class AccesoStruct(Intruccion,Expresion):
 
@@ -80,29 +80,77 @@ class AccesoStruct(Intruccion,Expresion):
         id_buscado = identificador.Obtener3D(controlador, ts)
         codigo += id_buscado.codigo
 
-        id_arr = expresiones[0]
-
         simbolo = ts.ObtenerSimbolo(identificador.id)
-        diccionario_id = simbolo.diccionario
+
+        BusquedaStruck = ts.ObtenerSimbolo(simbolo.NombreStruck)
+        diccionario_id = BusquedaStruck.valoresObjeto
 
         contador = 1
 
         temp1 = controlador.Generador3D.obtenerTemporal()
         tipoF = None
-        for x in diccionario_id:
-            if id_arr.id == x[0]:
-                tipoF = x[1]
+        #for y in expresiones:
+        #    id_arr = y
+        #    nombre = id_arr.id
+        #    for x in diccionario_id:
+        #        nombretemp = x[0]
+        #        tipotemp = x[1]
+        #        if nombre == nombretemp:
+        #            tipoF = tipotemp
+        #            break
+        #        contador += 1
+        #        print(x)
 
-                break
-            contador += 1
-            print(x)
+        copiaExpresioes = expresiones
+        retornoTemp = self.recorrerArreglo(copiaExpresioes.pop(0),diccionario_id,copiaExpresioes,ts,controlador,id_buscado.temporal)
 
-        codigo += f'\t{temp1} = {id_buscado.temporal} + {contador};\n'
+        #codigo += f'\t{temp1} = {id_buscado.temporal} + {contador};\n'
+
+        codigo += retornoTemp[0]
 
         retorno = RetornoType()
-        retorno.iniciarRetorno(codigo,"",temp1,tipoF)
+        retorno.iniciarRetorno(codigo,"",retornoTemp[1],retornoTemp[2])
 
-        return  retorno
+        return retorno
+
+    def recorrerArreglo(self,busqueda,diccionario,expresiones,ts,controlador,tamporal):
+        codigo = ""
+        tempretorno = ""
+        tipoFinal = None
+
+        temp1 = controlador.Generador3D.obtenerTemporal()
+        contador = 1
+        BusquedaStruck = None
+        retornoTemp = []
+        retorno = []
+
+        for x in diccionario:
+            nombre = x[0]
+            tipo = x[1]
+            if busqueda.id == nombre:
+                tipoFinal = tipo
+                if isinstance(tipo,Identificador):
+                    BusquedaStruck = ts.ObtenerSimbolo(tipo.id)
+                break
+            contador += 1
+
+        codigo += f'\t{temp1} = {tamporal} + {contador};\n'
+        tempretorno = temp1
+        if BusquedaStruck is not None:
+            temp2 = controlador.Generador3D.obtenerTemporal()
+            codigo += f'\t{temp2} = Heap[(int){temp1}];\n'
+            retornoTemp = self.recorrerArreglo(expresiones.pop(0), BusquedaStruck.valoresObjeto, expresiones, ts, controlador,temp2)
+
+        if retornoTemp != []:
+            codigo += retornoTemp[0]
+            tempretorno = retornoTemp[1]
+            tipoFinal = retornoTemp[2]
+
+        retorno.append(codigo)
+        retorno.append(tempretorno)
+        retorno.append(tipoFinal)
+        return retorno
+
 
 
 

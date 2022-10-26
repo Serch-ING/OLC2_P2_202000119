@@ -1,21 +1,31 @@
+
+struct Carro {
+    placa: String,
+    color: String,
+    tipo: String
+}
+
 struct Personaje {
     nombre: String,
     edad: i64,
-    descripcion: String
+    descripcion: String,
+    carro_: Carro
 }
 
 fn main (){
-    let per1 = CreandoPersonaje(200,2,true);
-    println!(" {}, {}",per1.nombre, per1.edad);
-}
-
-fn CreandoPersonaje (anio: i64, color: i64, mecanico: bool) -> Personaje{
-    
-    let mut p1 = Personaje { 
-        nombre:"Fer".to_string(),
-        edad:18,
-        descripcion:"No hace nada".to_string()
+    let mut car = Carro { 
+        placa:"150PLO".to_string(),
+        color:"Rojo".to_string(), 
+        tipo:"Automatico".to_string() 
     };
     
-    return p1;
+    let mut per1 = Personaje { 
+        nombre:"Fer".to_string(),
+        edad:18,
+        descripcion:"No hace nada".to_string(),
+        carro_: car
+    };
+    //println!(" {}, {}, {}, {} ",per1.nombre, per1.edad, per1.carro_.tipo,per1.carro_.color);
+    println!("{}",per1.carro_.tipo);
 }
+
