@@ -3,7 +3,7 @@ fn fibonacci(n: i64) -> i64 {
     match n {
         0 => return 1,
         1 => return 1,
-        _ => return fibonacci(n - 1) + fibonacci(n - 2),
+        _ => return fibonacci(-1+n) + fibonacci(-2+n),
     }
 }
 
@@ -17,7 +17,7 @@ fn hanoi(n: i64, desde: i64, hacia: i64, via: i64) {
 }
  
 
-fn main(){
+fn main (){
     println!("--------------------------");
     println!("----ARCHIVO RECURSIVOS----");
     println!("--------------------------");
