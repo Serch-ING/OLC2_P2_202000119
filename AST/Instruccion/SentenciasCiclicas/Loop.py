@@ -2,12 +2,16 @@ from AST.Abstracto.Instruccion import Intruccion
 from AST.Abstracto.Expresion import Expresion
 from AST.TablaSimbolos.Tipos import tipo, RetornoType
 from AST.TablaSimbolos.TablaSimbolos import TablaDeSimbolos
-
+from AST.Instruccion.SentenciasControl.Ifs import Ifs
+from AST.Instruccion.SentenciasTranferencia.Break import Break
+from AST.Instruccion.SentenciasTranferencia.Continue import Continue
 
 class Loop(Intruccion,Expresion):
 
     def __init__(self, lista_instrucciones):
         self.lista_instrucciones = lista_instrucciones
+        self.etqE = ""
+        self.etqS = ""
 
     def Obtener3D(self, controlador, ts):
         print("Llego a loop")
@@ -38,28 +42,40 @@ class Loop(Intruccion,Expresion):
 
 
     def Ejecutar3D(self, controlador, ts):
-        #print("Loop ins")
-        #print("Llego a loop")
-        #try:
-            while True:
-                ts_local = TablaDeSimbolos(ts, "Loop" + str(id(self)))
 
-                for instruccion in self.lista_instrucciones:
-                    retorno = instruccion.Ejecutar3D(controlador, ts_local)
+        codigo = "/* WHILE instruccion */\n"
 
-                    if retorno is not None:
-                        if isinstance(retorno, RetornoType):
-                            if retorno.final == tipo.BREAK:
-                                if retorno.tipo != tipo.UNDEFINED:
-                                    print("Erro no se esperaba una expresion")
+        etqLoop = controlador.Generador3D.obtenerEtiqueta()
+        etqSalida = controlador.Generador3D.obtenerEtiqueta()
 
-                                return None
+        self.etqE = etqLoop
+        self.etqS = etqSalida
 
-                            if retorno.final == tipo.CONTINUE:
-                                break
+        codigo += f'{etqLoop}:\n'
 
-                            if retorno.final == tipo.RETURN:
-                                return retorno
-        #except:
-            #print("Error en el Loop")
+        ts_local = TablaDeSimbolos(ts, "While" + str(id(self)))
+        codigo += self.Recorrer_ins(controlador, ts_local, self.lista_instrucciones)
+
+        codigo += f'\tgoto {etqLoop};\n'
+        codigo += f'\t{etqSalida}:\n'
+
+        return codigo
+
+    def Recorrer_ins(self,controlador,ts,lista):
+        codigo = ""
+        for instruccion in lista:
+            if isinstance(instruccion,Ifs):
+                instruccion.etqE = self.etqE
+                instruccion.etqS = self.etqS
+
+            if isinstance(instruccion,Break):
+                instruccion.etq = self.etqS
+
+            if isinstance(instruccion, Continue):
+                instruccion.etq = self.etqE
+
+            codigo += instruccion.Ejecutar3D(controlador, ts)
+
+        return codigo
+
 

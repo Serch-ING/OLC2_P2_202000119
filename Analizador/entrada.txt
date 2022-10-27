@@ -94,6 +94,49 @@ fn InsertLast(val : i64, actualDL : &mut Vec<Node>, valores: &mut StructValores)
 }
 
 
+fn PrintListNormal(actualDL : &mut Vec<Node>, valores: &mut StructValores){
+
+
+    if (valores.first !=  -1){
+        let mut i = valores.first;
+        let mut actual = 0;
+        loop{
+            actual = actualDL[i as usize].idx;
+            println!("Val|| de nodo: {} ", actualDL[actual as usize].val);
+            i = actualDL[actual as usize].point.right;
+            
+            
+            if actual == (valores.last){
+                break;
+            }
+            
+        }
+    }
+    
+}
+
+
+fn PrintListBack(actualDL : &mut Vec<Node>, valores: &mut StructValores){
+
+
+    if (valores.first !=  -1){
+        let mut i = valores.last;
+        let mut actual = 0;
+        loop{
+            actual = actualDL[i as usize].idx;
+            println!("Val|| de nodo: {} ", actualDL[actual as usize].val);
+            i = actualDL[actual as usize].point.left;
+            
+            
+            if actual == (valores.first){
+                break;
+            }
+            
+        }
+    }
+    
+}
+
 
 
 fn main (){
@@ -145,6 +188,16 @@ fn main (){
     println!("val: {} indice: {} right: {} left: {}",actualDL[5].val, actualDL[5].idx,actualDL[5].point.right, actualDL[5].point.left);
     println!("val: {} indice: {} right: {} left: {}",actualDL[6].val, actualDL[6].idx,actualDL[6].point.right, actualDL[6].point.left);
     println!("val: {} indice: {} right: {} left: {}",actualDL[7].val, actualDL[7].idx,actualDL[7].point.right, actualDL[7].point.left);
+    
+    
+    
+    println!("");
+    println!("Imprimir desde inicio");
+    PrintListNormal(&mut actualDL, &mut refs);
+    
+    println!("");
+    println!("Imprimir desde fin");
+    PrintListBack(&mut actualDL, &mut refs);
     
     
 
