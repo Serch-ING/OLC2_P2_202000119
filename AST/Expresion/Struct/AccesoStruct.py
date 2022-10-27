@@ -66,18 +66,28 @@ class AccesoStruct(Intruccion,Expresion):
 
         diccionario_id = BusquedaStruck.valoresObjeto
 
-        temp1 = controlador.Generador3D.obtenerTemporal()
+
         temp2 = controlador.Generador3D.obtenerTemporal()
 
-        if not simbolo.referencia:
-            codigo += f'\t{temp1} = SP + {simbolo.direccion};\n'
-            codigo += f'\t{temp2} = Stack[(int){temp1}];\n'
+        if isinstance(self.identificador, AccesoArreglo):
+            #self.identificador.opcion = True
+            retornoAccesoArreglo = self.identificador.Obtener3D(controlador, ts)
+            codigo += retornoAccesoArreglo.codigo
+            codigo += f'\t{temp2} = {retornoAccesoArreglo.temporal};\n'
         else:
-            codigo += f'\t{temp2} = SP + {simbolo.direccion};\n'
-            codigo += f'\t{temp2} = Stack[(int){temp2}];\n'
-            while simbolo.referencia:
+            temp1 = controlador.Generador3D.obtenerTemporal()
+            if not simbolo.referencia:
+                codigo += f'\t{temp1} = SP + {simbolo.direccion};\n'
+                codigo += f'\t{temp2} = Stack[(int){temp1}];\n'
+            else:
+                codigo += f'\t{temp2} = SP + {simbolo.direccion};\n'
                 codigo += f'\t{temp2} = Stack[(int){temp2}];\n'
-                simbolo = simbolo.tsproviene.ObtenerSimbolo(simbolo.idproviene)
+                while simbolo.referencia:
+                    codigo += f'\t{temp2} = Stack[(int){temp2}];\n'
+                    simbolo = simbolo.tsproviene.ObtenerSimbolo(simbolo.idproviene)
+
+
+
 
         #ejecutamos a donde buscara
         #id_buscado = identificador.Obtener3D(controlador, ts)
@@ -104,6 +114,7 @@ class AccesoStruct(Intruccion,Expresion):
         BusquedaStruck = None
         retornoTemp = []
         retorno = []
+
 
         for x in diccionario:
             nombre = x[0]

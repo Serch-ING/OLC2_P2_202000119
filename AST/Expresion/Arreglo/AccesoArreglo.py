@@ -65,19 +65,34 @@ class AccesoArreglo(Expresion,Intruccion):
         while simbolo.referencia:
             simbolo = simbolo.tsproviene.ObtenerSimbolo(simbolo.idproviene)
 
-        if not isinstance(arreglo, InstanciaVector):
+        comprobacion = True
+        try:
+            nombrestruck = ts.ObtenerSimbolo(arreglo.NombreStruck)
+            if nombrestruck.tipo == tipo.STRUCT:
+                comprobacion = False
+        except:
+            pass
+
+        if not isinstance(arreglo, InstanciaVector) and comprobacion:
 
             dimensiones = self.compilarDimensiones(controlador, ts)
             if not self.opcion:
-
                 insArreglo.varImprimir = self.varprint
                 valor = insArreglo.Obtener3D(arreglo.direccion,controlador,self.temporales,arreglo,ts)
             else:
                 valor = insArreglo.Obtener3DV2(arreglo.direccion, controlador,self.temporales,arreglo)
+
             valor.codigo = self.codigo + valor.codigo
             valor.tipo = arreglo.tipo
             return valor
-
+        elif not comprobacion:
+            insVecto = InstanciaVector("","","")
+            dimensiones = self.compilarDimensiones(controlador, ts)
+            valor = insVecto.ObtenerValor(arreglo.direccion, controlador, self.temporales, arreglo)
+            valor.codigo = self.codigo + valor.codigo
+            valor.tipo = arreglo.tipo
+            #valor.etiqueta = "ETIQUETA"
+            return valor
         else:
 
             dimensiones = self.compilarDimensiones(controlador, ts)

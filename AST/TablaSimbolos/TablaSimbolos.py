@@ -3,11 +3,11 @@ from Analizador.Gramatica import E_list
 
 class TablaDeSimbolos():
 
-    def __init__(self, padre, name):
+    def __init__(self, padre, name,tssize = 0):
         self.padre = padre
         self.name = name
         self.tabla = {}
-        self.size = 0
+        self.size = tssize
 
         # Solo para reportes
         self.siguiente = []

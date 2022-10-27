@@ -1,141 +1,152 @@
-struct StructArr {
-    datos: [i64; 10]
+
+struct Apuntadores {
+    right : i64,
+    left : i64
 }
 
-struct CentroTuristico {
-    nombre:String
+struct Node {
+    idx : i64,
+    val : i64,
+    point : Apuntadores
 }
 
-struct Carro {
-    placa: String,
-    color: String,
-    tipo: String
+struct StructValores{
+    first: i64,
+    last:i64,
+    count:i64
 }
 
-struct Personaje {
-    nombre: String,
-    edad: i64,
-    descripcion: String,
-    carro_: Carro,
-    numeros : StructArr
+
+fn InsertFirst(val : i64, actualDL : &mut Vec<Node>, valores: &mut StructValores){
+
+    if (valores.first !=  -1) {
+    
+        let indice = actualDL[valores.first as usize].idx;
+    
+        valores.first = valores.count;
+
+        actualDL[valores.first as usize].val = val;
+        actualDL[valores.first as usize].idx = valores.first;
+        
+        
+        actualDL[valores.first as usize].point.left = -1;
+        actualDL[valores.first as usize].point.right = indice;
+        
+
+        actualDL[indice as usize].point.left = valores.first ;
+    
+    } else{
+        valores.first = valores.count;
+        valores.last = valores.first;
+        
+            
+        //let ind:usize = valores.count as usize;
+        actualDL[valores.count as usize].idx = valores.count;
+        actualDL[valores.count as usize].val = val;
+        actualDL[valores.count as usize].point.left = -1;
+        actualDL[valores.count as usize].point.right = -1;
+        
+    }  
+    
+    valores.count = valores.count + 1;
+	
+
 }
-// Struct
+
+
+fn InsertLast(val : i64, actualDL : &mut Vec<Node>, valores: &mut StructValores){
+    
+    if (valores.first !=  -1) {
+    
+        let indice = actualDL[valores.last as usize].idx;
+    
+        valores.last = valores.count;
+
+        actualDL[valores.last as usize].val = val;
+        actualDL[valores.last as usize].idx = valores.last;
+        
+        
+        actualDL[valores.last as usize].point.left = indice;
+        actualDL[valores.last as usize].point.right = -1;
+        
+
+        actualDL[indice as usize].point.right = valores.count ;
+    
+    } else{
+        valores.first = valores.count;
+        valores.last = valores.first;
+        
+            
+        //let ind:usize = valores.count as usize;
+        actualDL[valores.count as usize].idx = valores.count;
+        actualDL[valores.count as usize].val = val;
+        actualDL[valores.count as usize].point.left = -1;
+        actualDL[valores.count as usize].point.right = -1;
+        
+    }
+    
+    
+    
+    
+    valores.count = valores.count + 1;
+	
+
+}
+
 
 
 
 fn main (){
 
-    println!("*******************VECTOR CON STRUCTS");
-    
-    let mut v: Vec<CentroTuristico> = Vec::with_capacity(8);
-    
-    v.push(CentroTuristico{nombre:"Cascada los amantes".to_string()} );
-    v.push(CentroTuristico{nombre:"Biotopo del quetzal".to_string()} );
-    v.push(CentroTuristico{nombre:"Tikal".to_string()} );
-    v.push(CentroTuristico{nombre:"Rio dulce".to_string()} );
-    v.push(CentroTuristico{nombre:"Laguna ROJA".to_string()} );
-    v.push(CentroTuristico{nombre:"Playa Blanca".to_string()} );
-    v.push(CentroTuristico{nombre:"Antigua Guatemala".to_string()} );
-    v.push(CentroTuristico{nombre:"Lago de Atitlan".to_string()} );
-    
-    for valor in v {
-        println!("El nombre del Centro turistico es: {}",valor.nombre);
-    }
-        
-    
-    println!("*******************STRUCT CON ARRAY"); 
-    
-    let mut da = StructArr {
-        datos: [10; 10]
-    };
-    
-    println!(" valor {:?} ",da.datos);
-    
-    
-    println!("*******************CREANDO STRUCTS ");
-    
-    let mut p1 = Personaje { 
-        nombre:"Fer".to_string(),
-        edad:18,
-        descripcion:"No hace nada".to_string(),
-        carro_: Carro { placa:"150PLO".to_string(),
-                        color:"Rojo".to_string(), 
-                        tipo:"Automatico".to_string() 
-            
-        },
-        numeros: da
-    };
-    
-    let per1 = CreandoPersonaje(200,2,true);
-    let per2 = CreandoPersonaje(201,1,true);
-    let per3 = CreandoPersonaje(300,3,false);
-    
-    
-    println!("Persona <<per1>> nombre: {}, edad: {}, carroTipo: {}, carroColor: {} ",per1.nombre, per1.edad, per1.carro_.tipo,per1.carro_.color);
-    println!("Persona <<per2>> nombre: {}, edad: {}, carroTipo: {}, carroColor: {} ",per2.nombre, per2.edad, per2.carro_.tipo,per2.carro_.color);
-    println!("Persona <<per3>> nombre: {}, edad: {}, carroTipo: {}, carroColor: {} ",per3.nombre, per3.edad, per3.carro_.tipo,per3.carro_.color);
 
+    let mut actualDL: Vec<Node> = Vec::with_capacity(10);
+    
+    actualDL.push(Node{idx :0,val:0, point:Apuntadores{left:0,right:0}});
+    actualDL.push(Node{idx :0,val:0, point:Apuntadores{left:0,right:0}});
+    actualDL.push(Node{idx :0,val:0, point:Apuntadores{left:0,right:0}});
+    actualDL.push(Node{idx :0,val:0, point:Apuntadores{left:0,right:0}});
+    actualDL.push(Node{idx :0,val:0, point:Apuntadores{left:0,right:0}});
+    actualDL.push(Node{idx :0,val:0, point:Apuntadores{left:0,right:0}});
+    actualDL.push(Node{idx :0,val:0, point:Apuntadores{left:0,right:0}});
+    actualDL.push(Node{idx :0,val:0, point:Apuntadores{left:0,right:0}});
+    actualDL.push(Node{idx :0,val:0, point:Apuntadores{left:0,right:0}});
+    actualDL.push(Node{idx :0,val:0, point:Apuntadores{left:0,right:0}});
+
+        
+    let mut refs: StructValores = StructValores{first:-1,count:0,last:-1};
+    
+    
+    println!("Primero: {},  Ultimo: {}, Tamaño: {}",  refs.first,refs.last, refs.count);
+    
+    println!("---Insertar al inicio---");
+    InsertFirst(4, &mut actualDL, &mut refs);
+    println!("---Insertar al inicio---");
+    InsertFirst(1, &mut actualDL, &mut refs);
+    println!("---Insertar al inicio---");
+    InsertFirst(22, &mut actualDL, &mut refs);
+    println!("---Insertar al final---");
+    InsertLast(8, &mut actualDL, &mut refs);
+    println!("---Insertar al inicio---");
+    InsertFirst(7, &mut actualDL, &mut refs);
+    println!("---Insertar al inicio --");
+    InsertFirst(6, &mut actualDL, &mut refs);
+    println!("---Insertar al inicio---");
+    InsertFirst(223, &mut actualDL, &mut refs);
+    println!("---Insertar al final---");
+    InsertLast(3, &mut actualDL, &mut refs);
+    println!("Primero: {},  Ultimo: {}, Tamaño: {}",  refs.first,refs.last, refs.count);
+    
+    
+    println!("val: {} indice: {} right: {} left: {}",actualDL[0].val, actualDL[0].idx,actualDL[0].point.right, actualDL[0].point.left);
+    println!("val: {} indice: {} right: {} left: {}",actualDL[1].val, actualDL[1].idx,actualDL[1].point.right, actualDL[1].point.left);
+    println!("val: {} indice: {} right: {} left: {}",actualDL[2].val, actualDL[2].idx,actualDL[2].point.right, actualDL[2].point.left);
+    println!("val: {} indice: {} right: {} left: {}",actualDL[3].val, actualDL[3].idx,actualDL[3].point.right, actualDL[3].point.left);
+    println!("val: {} indice: {} right: {} left: {}",actualDL[4].val, actualDL[4].idx,actualDL[4].point.right, actualDL[4].point.left);
+    println!("val: {} indice: {} right: {} left: {}",actualDL[5].val, actualDL[5].idx,actualDL[5].point.right, actualDL[5].point.left);
+    println!("val: {} indice: {} right: {} left: {}",actualDL[6].val, actualDL[6].idx,actualDL[6].point.right, actualDL[6].point.left);
+    println!("val: {} indice: {} right: {} left: {}",actualDL[7].val, actualDL[7].idx,actualDL[7].point.right, actualDL[7].point.left);
+    
+    
 
 }
 
-fn CreandoPersonaje (anio: i64, color: i64, mecanico: bool) -> Personaje{
-
-    let mut datos = StructArr {
-        datos: [10; 10]
-    };
-
-    let mut car = CreandoStruct(anio,color,mecanico);
-    
-    let mut p1 = Personaje { 
-        nombre:"Fer".to_string(),
-        edad:18,
-        descripcion:"No hace nada".to_string(),
-        carro_: car,
-        numeros:datos
-    };
-    
-    return p1;
-}
-
-
-fn CreandoStruct ( anio: i64, color: i64, mecanico: bool) ->  Carro{
-
-    let mut placa_: String = "".to_string();
-
-    // Ejemplo 1: Match como instrucción 
-    // Después del match sigue una expresión
-    match anio {
-        // 1 | 2 | 3 estas son coincidencias
-        1200 | 2001 | 3002 => {
-            placa_ = "20012PLO0".to_string();
-        } //esto se conoce como brazo
-        
-        4003 | 204 | 5005 => placa_ = "200345LO0".to_string(),//esto se conoce como brazo
-        7006 =>  placa_ = "290PLO0".to_string(), // esto es un error!
-        _ => println!("Resto de casos"), //brazo por defecto
-    }
-    
-    //  Match como expresión 
-    let colorAuto = match color {
-        1 => "amarillo",
-        2 => "verde",
-        3 => "rojo",
-        4 => "azul",
-        5 => "negro",
-        _ => "N/A",
-    };
-
-    let mut tipo : String = "".to_string();
-    if mecanico {
-        tipo = "mecanico".to_string(); 
-    }
-    else{
-        tipo = "Automatico".to_string();
-    }
-
-    return Carro { placa: placa_,
-                    color:colorAuto.to_string(), 
-                    tipo:tipo
-        
-    };
-}
