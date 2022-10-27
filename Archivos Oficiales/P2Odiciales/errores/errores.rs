@@ -1,5 +1,5 @@
 
-fn main(){
+fn main (){
     println!("{}",1+"cadena");
     println!("{}",x);
 
@@ -34,4 +34,4 @@ fn main(){
 
 fn parametros_invalidos(x: i64) {
     println!("{}",x)
-}
+};}

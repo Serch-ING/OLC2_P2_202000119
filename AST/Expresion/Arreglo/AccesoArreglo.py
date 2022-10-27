@@ -53,7 +53,14 @@ class AccesoArreglo(Expresion,Intruccion):
         print("Llego a accesoL ",self.idArreglo, " lista dimensiones: ",self.listaExpresiones)
 
         if ts.Existe_id(self.idArreglo) is not True:
-            return RetornoType()
+            texto = "No se encontro arreglo"
+            codigo = ""
+            for x in texto:
+                codigo += f'printf("%c", (int){ord(x)});'
+            retorno = RetornoType()
+            retorno.codigo = codigo
+
+            return retorno
 
 
 
