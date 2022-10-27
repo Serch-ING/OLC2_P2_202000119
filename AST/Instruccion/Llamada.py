@@ -91,6 +91,7 @@ class Llamada(Intruccion, Expresion):
 
 
     def validar_parametros(self, parametros_llamada, parametros_funcion, controlador, ts, ts_local):
+        print(self.identificador)
         codigo = "/*Llamada*/\n"
         if ts.name != "Main":
             while ts.padre.name != "Main":
@@ -140,8 +141,7 @@ class Llamada(Intruccion, Expresion):
                                 codigo += f'\tStack[(int){temp2}]= {tempReferencia};\n'
 
                                 simbolo = Simbolos()
-                                simbolo.SimboloPremitivo(aux_fun.identificador.id, None, aux_fun.tipo, aux_fun.mut,
-                                                         ts_local.size)
+                                simbolo.SimboloPremitivo(aux_fun.identificador.id, None, aux_fun.tipo, aux_fun.mut,ts_local.size)
                                 simbolo.referencia = True
                                 simbolo.idproviene = aux_lla.id
                                 simbolo.tsproviene = ts
@@ -185,23 +185,38 @@ class Llamada(Intruccion, Expresion):
                                 ts_local.Agregar_Simbolo(aux_fun.identificador.id, simbolo)
                                 ts_local.size += 1
                     else:
-
-                        if return_lla.tipo == aux_fun.tipo:
+                        try:
+                            simbolotemp = ts.ObtenerSimbolo(aux_lla.id)
+                            if isinstance(simbolotemp, InstanciaVector):
+                                temporalTipo = simbolotemp.tipo
+                                temporal = simbolotemp.objeto
+                            else:
+                                temporalTipo = simbolotemp.tipo
+                                temporal = simbolotemp.NombreStruck
+                        except:
+                            temporal = None
+                            temporalTipo = None
+                        if return_lla.tipo == aux_fun.tipo or return_lla.tipo == temporalTipo:
                             tempReferencia = controlador.Generador3D.obtenerTemporal()
                             temp1 = controlador.Generador3D.obtenerTemporal()
                             temp2 = controlador.Generador3D.obtenerTemporal()
 
-                            codigo += f'\n\t{tempReferencia} = SP + {return_lla.direccion};\n'
+                            codigo += f'\n\t{tempReferencia} = SP + {return_lla.direccion};/*Referencia*/\n'
                             codigo += f'\t{temp1} = SP + {ts.size};\n'
                             codigo += f'\t{temp2} = {temp1} + {ts_local.size};/*P simulado*/\n'
                             codigo += f'\tStack[(int){temp2}]= {tempReferencia};\n'
 
                             simbolo = Simbolos()
-                            simbolo.SimboloPremitivo(aux_fun.identificador.id, None, aux_fun.tipo, aux_fun.mut,
-                                                     ts_local.size)
+                            simbolo.SimboloPremitivo(aux_fun.identificador.id, None, aux_fun.tipo, aux_fun.mut,ts_local.size)
                             simbolo.referencia = True
                             simbolo.idproviene = aux_lla.id
                             simbolo.tsproviene = ts
+                            try:
+                                if temporalTipo == t.STRUCT:
+                                    simbolo.NombreStruck = temporal
+                                    simbolo.objeto = temporal
+                            except:
+                                pass
                             ts_local.Agregar_Simbolo(aux_fun.identificador.id, simbolo)
                             ts_local.size += 1
             codigo += f'\tSP = SP + {ts.size};\n'
