@@ -6,10 +6,15 @@ from Analizador.Gramatica import E_list
 from AST.Instruccion.Imprimir import Imprimir
 from AST.TablaSimbolos.Tipos import Tipos
 from AST.Expresion.Primitivo import Primitivo
+from AST.Instruccion.Llamada import Llamada
+from AST.Instruccion.Declaracion import Declaracion
+from AST.Expresion.Identificador import  Identificador
 
 class Aritmetica(Operacion, Expresion):
     def __init__(self, exp1, signo, exp2, expU=False):
         super().__init__(exp1, signo, exp2, expU)
+
+        self.llamadaDoble = False
 
     def operacionConcatenar(self, controlador, expresionRetorno):
         codigo = ""
@@ -30,6 +35,12 @@ class Aritmetica(Operacion, Expresion):
 
     def Obtener3D(self, controlador, ts):
         codigo = "/*ARITMETICA*/\n"
+        try:
+            if (isinstance(self.exp1, Llamada)):
+                if type(self.exp1) == type(self.exp2):
+                    self.llamadaDoble = True
+        except:
+            pass
         return_exp1: RetornoType = self.exp1.Obtener3D(controlador, ts)
         exp1_temp = return_exp1.temporal
         valor_exp1 = return_exp1.valor
@@ -37,12 +48,32 @@ class Aritmetica(Operacion, Expresion):
         tipo_exp1 = return_exp1.tipo
 
         if not self.expU:
+            if self.llamadaDoble:
+                declaracion1 = Declaracion(Identificador(exp1_temp), None, tipo_exp1, False)
+                codigo += declaracion1.Ejecutar3D(controlador, ts)
+
+                tempppp1 = controlador.Generador3D.obtenerTemporal()
+                existe_id1 = ts.ObtenerSimbolo(exp1_temp)
+
+                codigo += f'\t{tempppp1} = SP + {existe_id1.direccion};\n'
+                codigo += f'\tStack[(int){tempppp1}] = {exp1_temp};\n'
 
             return_exp2: RetornoType = self.exp2.Obtener3D(controlador, ts)
             exp2_temp = return_exp2.temporal
             valor_exp2 = return_exp2.valor
             codigo += return_exp2.codigo + "\n"
             tipo_exp2 = return_exp2.tipo
+
+            if self.llamadaDoble:
+                declaracion2 = Declaracion(Identificador(exp2_temp), None, tipo_exp2, False)
+                codigo += declaracion2.Ejecutar3D(controlador, ts)
+
+                tempppp2 = controlador.Generador3D.obtenerTemporal()
+                existe_id2 = ts.ObtenerSimbolo(exp2_temp)
+
+                codigo += f'\t{tempppp2} = SP + {existe_id2.direccion};\n'
+                codigo += f'\tStack[(int){tempppp2}] = {exp2_temp};\n'
+
 
             if self.operador == operador.SUMA:
 
@@ -59,8 +90,27 @@ class Aritmetica(Operacion, Expresion):
                     retorno.iniciarRetorno(codigo, "", temp, tipo.STRING)
                     return retorno
 
+                elif self.llamadaDoble :
+
+                    temp = controlador.Generador3D.obtenerTemporal()
+
+                    identificador = Identificador(exp1_temp)
+                    identificador = identificador.Obtener3D(controlador, ts)
+                    codigo += identificador.codigo
+
+                    identificador2 = Identificador(exp2_temp)
+                    identificador2 = identificador2.Obtener3D(controlador, ts)
+                    codigo += identificador2.codigo
+
+                    codigo += f'\t{temp} = {identificador.temporal} + {identificador2.temporal};\n'
+                    retorno = RetornoType()
+                    retorno.iniciarRetorno(codigo, "", temp, tipo_exp1)
+                    return retorno
+
+
                 else:
                     temp = controlador.Generador3D.obtenerTemporal()
+
                     codigo += f'\t{temp} = {exp1_temp} + {exp2_temp};\n'
                     retorno = RetornoType()
                     retorno.iniciarRetorno(codigo,"",temp,tipo_exp1)

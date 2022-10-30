@@ -67,7 +67,7 @@ class ArregloData(Expresion):
                 if i == 0:
                     tipoFinal = instanciaArray.tipo
                     listaDimensiones.extend(instanciaArray.dimensiones)
-                    codigo += f'\tHeap[HP] = {len(listatemporales) * (i + 1) - 1 * (i + 1)} + {(i+1)};\n'
+                    codigo += f'\tHeap[HP] = {len(listatemporales) * (i + 1) - 1 * (i + 1) + (i+1)};\n'
                 else:
                     factor = ( len(listatemporales)- (i) )
 

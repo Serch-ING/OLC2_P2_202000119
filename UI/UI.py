@@ -10,7 +10,10 @@ import webbrowser
 import os
 from AST.TablaErrores import TablaErrores
 opcion = ["No data"]
+
+
 def ventanas():
+
         global opcion
 
         ventana = Tk()
@@ -26,12 +29,12 @@ def ventanas():
             ConsoleTxt.delete('1.0', END)
             ConsoleTxt.configure(state='disabled')
 
-            f = io.open("../Analizador/entrada.txt", mode="r", encoding="utf-8")
-            entrada = f.read()
-            instrucciones = g.parse(entrada)
+            #f = io.open("../Analizador/entrada.txt", mode="r", encoding="utf-8")
+            #entrada = f.read()
+            #instrucciones = g.parse(entrada)
 
             CodeText = CodeTxt.get("1.0", 'end-1c')
-            #instrucciones = g.parse(CodeText)
+            instrucciones = g.parse(CodeText)
 
             ts = TablaDeSimbolos(None,"Main")
             controlador= Controlador()
@@ -86,7 +89,16 @@ def ventanas():
             webbrowser.open('file://' + os.path.realpath(filename))
 
         Button(pes1, text="Tabla de errores", command=Open_TablaErrores).place(x=10, y=160)
-        Button(pes1, text="Tabla de base de datos", command=Run_code).place(x=10, y=200)
+
+        def Open_TablaErrore():
+            Consoletexet = ConsoleTxt.get("1.0", 'end-1c')
+            AST_ej = AST([])
+            AST_ej.Optimizacion(Consoletexet)
+
+           #filename = '../Reportes/Tabla.HTML'
+            #webbrowser.open('file://' + os.path.realpath(filename))
+
+        Button(pes1, text="Opt. codigo", command=Open_TablaErrore).place(x=10, y=200)
         # Terminar ------------------------------------------------------------------------------------
 
         ventana.mainloop()

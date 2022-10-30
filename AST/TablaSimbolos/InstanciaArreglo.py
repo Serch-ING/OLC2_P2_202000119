@@ -85,17 +85,18 @@ class InstanciaArreglo(Simbolos):
 
         while self.peek_stack(listatemporales) is not None:
             temp3 = controlador.Generador3D.obtenerTemporal()
+            tempooo = listatemporales[0]
             codigo += f'\t{temp3} = {temp2} + {listatemporales[0]};\n'
             codigo += f'\t{temp3} = {temp3} +  1;\n'
             listatemporales.remove(listatemporales[0])
 
             if primeravex and self.varImprimir is not None:
                 primeravex = False
-                codigo += f'\tif({temp3} < {size}) goto {etq1};\n'
+                codigo += f'\tif({tempooo} < {size}) goto {etq1};\n'
                 codigo += f'\tgoto {etq2};\n'
 
                 codigo += f'\t{etq1}:\n'
-                codigo += f'\tif({temp3} < 0) goto {etq2};\n'
+                codigo += f'\tif({tempooo} < 0) goto {etq2};\n'
 
             temp4 = controlador.Generador3D.obtenerTemporal()
             codigo += f'\t{temp4} = Heap[(int){temp3}];\n'

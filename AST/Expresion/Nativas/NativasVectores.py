@@ -100,7 +100,8 @@ class NativasVectores(Expresion,Intruccion):
 
                     codigo += f'\t{etq3}:\n'
 
-                    codigo += f'\tHeap[(int){tempF}] = {temp3} - 1;\n'
+                    codigo += f'\t{temp3} = {temp3} - 1;\n'
+                    codigo += f'\tHeap[(int){tempF}] = {temp3};\n'
 
                     retorno = RetornoType()
                     retorno.iniciarRetorno(codigo,"",tempExp,return_exp.tipo)
@@ -154,9 +155,15 @@ class NativasVectores(Expresion,Intruccion):
 
                     codigo += f'\t{temp2} = {temp2} + {templong};\n'
 
-                    codigo += f'\tHeap[(int){temp2}] = {exp1.temporal};\n'
+                    codigo += f'\tHeap[(int){temp2}] = {exp1.temporal};\n' \
+                              f''
 
-                    codigo += f'\tHeap[(int){tempF}] = {templong} + 1;\n'
+
+                    temppp = controlador.Generador3D.obtenerTemporal()
+                    codigo += f'\t{temppp} = {templong} + 1;\n'
+
+
+                    codigo += f'\tHeap[(int){tempF}] = {temppp};\n'
 
                     if return_exp.withcapacity == 0:
                         return_exp.withcapacity = 4

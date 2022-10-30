@@ -79,7 +79,23 @@ class Logica(Operacion, Expresion):
 
                 temporal = ""
                 if return_exp1.temporal != "":
-                    codigo += f'{return_exp1.temporal} = !{return_exp1.temporal};\n'
+                    etq1 = controlador.Generador3D.obtenerEtiqueta()
+                    etq2 = controlador.Generador3D.obtenerEtiqueta()
+                    etq3 = controlador.Generador3D.obtenerEtiqueta()
+
+                    codigo += f'\tif({return_exp1.temporal} ==0 ) goto {etq1};\n'
+                    codigo += f'\tgoto {etq2};\n'
+
+                    codigo += f'\t{etq1}:\n'
+                    codigo += f'{return_exp1.temporal} = 1;\n'
+                    codigo += f'\tgoto {etq3};\n'
+
+                    codigo += f'\t{etq2}:\n'
+                    codigo += f'{return_exp1.temporal} = 0;\n'
+
+                    codigo += f'\t{etq3}:\n'
+
+                    #codigo += f'{return_exp1.temporal} = !{return_exp1.temporal};\n'
                     temporal = return_exp1.temporal
 
                     if return_exp1.etiqueta == "a":
